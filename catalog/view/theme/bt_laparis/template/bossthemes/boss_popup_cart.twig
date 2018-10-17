@@ -1,0 +1,77 @@
+<div class="modal-dialog modal-popup-cart">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" title="{{ button_close }}" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="addcart-popup">
+        <div class="item-box">
+          <div class="item-thumbnail"> <img src="{{ image }}" alt="{{ name }}" class="photo" /> </div>
+          <h3 class="added-item-message"> <i class="fa fa-check-square"></i> <span>{{ text_product_added }}</span> </h3>
+          <div class="name"><span>{{ name }}</span></div>
+          <div class="item-price"> <span>{{ quantity }}</span> <span class="multiplier">x</span> <span class="surcharge">{{ price }}</span> </div>
+          <div class="item-buttons"> <a class="btn btn-default" href="#" data-dismiss="modal" aria-hidden="true"><span>{{ button_continue }}</span></a> <a class="btn btn-primary" href="{{ checkout }}"><span>{{ button_checkout }}</span></a> </div>
+        </div>
+        <div class="minicart-box">
+          <div class="bt-drop-cart-popup"><span>{{ sum_cart }} {{ text_item }}</span></div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="items-list items-list-products add-to-cart-popup">
+          {% if (products) %} 
+          <h2 class="box-title">{{ text_customer_bought }}</h2>
+          <div class="row">
+            {% for product in products %} 
+            <div class="product-layout product-grid col-sm-4">
+              <div class="product-thumb">
+                <div class="image"><a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a>
+                  <div class="button-group">
+                    <button type="button" onclick="btadd.cart('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>
+                    <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist('{{ product['product_id'] }}');"><i class="lnr lnr-heart"></i></button>
+                    <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare('{{ product['product_id'] }}');"><i class="lnr lnr-sync"></i></button>
+                  </div>
+                </div>
+                <div class="caption">
+                  <h4 class="name"><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+                  <p class="price">
+                    {% if (not product['special']) %} 
+                    {{ product['price'] }} 
+                    {% else %} 
+                    <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                    {% endif %} 
+                    {% if (product['tax']) %} 
+                    <span class="price-tax">{{ text_tax }} {{ product['tax'] }}</span>
+                    {% endif %} 
+                  </p>
+                </div>
+                {% if (product['rating']) %} 
+                <div class="rating">
+                  {% set i = 1 %}{% for i in i..5 %} 
+                  {% if (product['rating'] < i) %} 
+                  <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                  {% else %} 
+                  <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                  {% endif %} 
+                  {% endfor %} 
+                </div>
+                {% endif %} 
+                <p class="description">{{ product['description'] }}</p>
+                {% if (product['special']) %} 
+                <div class="save-off">{{ text_save_off }}</div>
+                {% endif %} 
+              </div>
+            </div>
+            {% endfor %} 
+          </div>
+          {% endif %} 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+bossDragDrop(1)
+$('.btn-quickshop').click(function(){
+	$('#myModal_drag').modal('hide');
+});
+</script>

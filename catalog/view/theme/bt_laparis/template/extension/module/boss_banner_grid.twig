@@ -1,0 +1,56 @@
+<div class="bt-banner-grid">
+  {% if (auto) %} 
+  <div id="bt-banner-grid{{ module }}" class="row autogrid">
+    {% for banner in banners %} 
+    <div class="col-sm-{{ 12/per_row }}">
+      <div class="banner-layout">
+        <div class="effect {{ banner['effect'] }} "> <img src="{{ banner['image'] }}" alt="{{ banner['title'] }}">
+          <div class="img-caption">
+            <div> {{ banner['caption'] }} </div>
+            <a href="{{ banner['link'] ? banner['link'] : 'javascript:void(0)' }}" title="{{ banner['title'] }}">{{ banner['title'] }}</a> </div>
+        </div>
+        {% if (banner['title']) %} 
+        <div class="banner-title">
+          <h2>{{ banner['title'] }}</h2>
+        </div>
+        {% endif %} 
+      </div>
+    </div>
+    {% endfor %} 
+  </div>
+  {% else %} 
+  <div id="bt-banner-grid{{ module }}">
+    {% for banners in array_chunk(banners, per_row) %} 
+    <div class="row">
+      {% for banner in banners %} 
+      <div class="col-sm-{{ 12/per_row }}">
+        <div class="banner-layout">
+          <div class="effect {{ banner['effect'] }} "> <img src="{{ banner['image'] }}" alt="{{ banner['title'] }}">
+            <div class="img-caption">
+              <div> {{ banner['caption'] }} </div>
+              <a href="{{ banner['link'] ? banner['link'] : 'javascript:void(0)' }}" title="{{ banner['title'] }}">{{ banner['title'] }}</a> </div>
+          </div>
+          {% if (banner['title']) %} 
+          <div class="banner-title">
+            <h2>{{ banner['title'] }}</h2>
+          </div>
+          {% endif %} 
+        </div>
+      </div>
+      {% endfor %} 
+    </div>
+    {% endfor %} 
+  </div>
+  {% endif %} 
+</div>
+{% if (auto) %} 
+<script type="text/javascript">
+$(window).load(function(){
+	$('#bt-banner-grid{{ module }}').masonry({
+		itemSelector: '#bt-banner-grid{{ module }} .col-sm-{{ 12/per_row }}',
+		columnWidth: '#bt-banner-grid{{ module }} .col-sm-{{ 12/per_row }}',
+		percentPosition: true
+	}).masonry('reloadItems');
+});
+</script>
+{% endif %} 

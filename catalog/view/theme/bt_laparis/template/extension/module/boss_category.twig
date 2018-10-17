@@ -1,0 +1,52 @@
+{% if (not rend_child) %} 
+<div class="box bt-category">
+  <div id="submenu">
+    <div class="box-heading">
+      <h2>{{ heading_title }}</h2>
+    </div>
+    <div class="box-content">
+      <ul id="bt-category-{{ module }}" class="box-category">
+        {% for category in categories %} 
+        <li{{ category['category_id'] == category_id ? ' class="expand"' : '' }}>
+          {% if (category['category_id'] == category_id) %} 
+          <a href="{{ category['href'] }}" class="active">{{ category['name'] }}</a>
+          {% else %} 
+          <a href="{{ category['href'] }}">{{ category['name'] }}</a>
+          {% endif %} 
+          {{ _this.rendChildrenCategories(category, 1) }} 
+        </li>
+        {% endfor %} 
+      </ul>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('#bt-category-{{ module }}').cutomAccordion({
+		classExpand: 'expand',
+		classArrow: 'hidden',
+		menuClose: false,
+		autoClose: true,
+		saveState: false,
+		disableLink: false,		
+		autoExpand: true
+	});
+});
+</script>
+{% else %} 
+  {% if (category['children']) %} 
+  <ul class="item_child">
+	{% for child in category['children'] %} 
+	<li{{ child['category_id'] == child_id ? ' class="expand"' : '' }}>
+      <span class="plus-minus"></span>
+	  {% if (child['category_id'] == child_id) %} 
+	  <a href="{{ child['href'] }}" class="active">{{ child['name'] }}</a>
+	  {% else %} 
+	  <a href="{{ child['href'] }}">{{ child['name'] }}</a>
+	  {% endif %} 
+      {{ _this.rendChildrenCategories(child, level) }} 
+	</li>
+	{% endfor %} 
+  </ul>
+  {% endif %} 
+{% endif %}

@@ -1,0 +1,26 @@
+
+.color_content,.font_content{display:none;}
+.open .color_content,.open .font_content{
+	display:block;
+
+}
+legend{
+	cursor: pointer;
+}
+#colorsetting .color_content .item {
+	float:left;
+	margin-bottom: 20px;
+	margin-left: 15px;
+	margin-right: 25px;
+	min-width: 26%;
+}
+#colorsetting .color_content .item input{
+	margin-left: 15px;
+	border: 1px solid #eaeaea;
+	height: 30px;
+	padding-left: 15px;
+	padding-right: 15px;
+	text-align: center;
+	color: #e1e1e1;
+	float: right;
+}

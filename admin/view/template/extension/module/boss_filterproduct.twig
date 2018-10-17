@@ -1,0 +1,421 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-featured" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %}
+      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-boss_filterproduct" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control"/>
+              {% if (error_name) %}
+                <div class="text-danger">{{ error_name }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-title">{{ entry_title }}</label>
+            <div class="col-sm-10">
+              {% for language in languages %}
+                <div class="input-group">
+                  <span class="input-group-addon"> <img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}"/> </span>
+                  <input name="title[{{ language['language_id'] }}]" value="{{ title[language['language_id']] is defined ? title[language['language_id']] : '' }}" class="form-control"/>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_icon }}</label>
+            <div class="col-sm-2">
+              <div class="input-group">
+                <input type="text" name="icon" data-placement="bottomRight" class="form-control icp icp-auto" value="{{ icon }}"/>
+                <span class="input-group-addon"></span></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-position">{{ entry_position }}</label>
+            <div class="col-sm-10">
+              <select name="position" id="input-position" class="form-control">
+                {% for value,name in positions %}
+                  <option value="{{ value }}" {{ value == position ? 'selected' : '' }}>{{ name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="status" id="input-status" class="form-control">
+                {% if (status) %}
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="nav nav-tabs" id="module_content">
+                <li class="active"><a href="#moduletab" data-toggle="tab">{{ tab_tabs }}</a></li>
+                <li><a href="#modulesetting" data-toggle="tab">{{ tab_setting }}</a></li>
+              </ul>
+              <div class="tab-content">
+                <div id="moduletab" class="tab-pane active">
+                  <table id="tableMoldue" class="table">
+                    <thead>
+                    <tr>
+                      <td class="left">{{ column_number }}</td>
+                      <td class="left">{{ column_title }}</td>
+                      <td class="left">{{ column_icon }}</td>
+                      <td class="left">{{ column_get_product }}</td>
+                      <td></td>
+                    </tr>
+                    </thead>
+                    {% set tab_row = 0 %}
+                    {% for tab in tabs %}
+                      <tbody id="moduletab-row{{ tab_row }}">
+                      <tr>
+                        <td class="left">{% set column_number = 'undefined' %}
+                          <b>#{{ tab_row + 1 }}</b></td>
+                        <td class="left">
+                          {% for language in languages %}
+                            <div class="input-group">
+                              <span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}"/></span>
+                              <input name="tabs[{{ tab_row }}][title][{{ language['language_id'] }}]" value="{{ tab['title'][language['language_id']] is defined ? tab['title'][language['language_id']] : '' }}" class="form-control"/>
+                            </div>
+                          {% endfor %}
+                        </td>
+                        <td class="text-left">
+                          <a href="" id="thumb-icon{{ tab_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ tab['thumb'] is defined ?tab['thumb']:placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}"/></a>
+                          <input type="hidden" name="tabs[{{ tab_row }}][icon]" value="{{ tab['icon'] }}" id="input-icon{{ tab_row }}" class="form-control"/>
+                        </td>
+                        <td class="left">
+                          <select name="tabs[{{ tab_row }}][type_product]" onchange="showCategories(this,{{ tab_row }})" class="form-control">
+                            {% for key_type,text in filter_types %}
+                              <option value="{{ key_type }}" {% if (tab['type_product'] == key_type) %} {{ "selected=selected" }}{% endif %}>{{ text }}</option>
+                            {% endfor %}
+                          </select>
+                          {% if (tab['type_product'] == 'featured') %}
+                            <div id="bt_featured{{ tab_row }}">
+                              <input type="text" name="tabs[{{ tab_row }}][filter_type_featured]" value="" placeholder="{{ entry_product }}" id="input-product-featured" class="form-control"/>
+                              <div id="product-featured-{{ tab_row }}" class="well well-sm" style="height: 150px; overflow: auto;">
+                                {% for product in products %}
+                                  <div id="product-featured-{{ tab_row }}{{ product['product_id'] }}">
+                                    <i class="fa fa-minus-circle"></i> {{ product['name'] }}
+                                    <input type="hidden" name="tabs[{{ tab_row }}][product_featured][]" value="{{ product['product_id'] }}"/>
+                                  </div>
+                                {% endfor %}
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if (tab['type_product'] == 'category') %}
+                            {% if (error_category[tab_row] is defined ) %}
+                              <div class="text-danger">{{ error_category[tab_row] }}</div>
+                            {% endif %}
+                            <div class="well well-sm" style="height: 150px; overflow: auto;" id="scrollbox{{ tab_row }}">
+                              {% for category in categories %}
+                                <div class="">
+                                  {% if (tab['filter_type_category'] is defined and category['category_id'] == tab['filter_type_category']) %}
+                                    <input type="radio" name="tabs[{{ tab_row }}][filter_type_category]" value="{{ category['category_id'] }}" checked="checked"/>
+                                    {{ category['name'] }}
+                                  {% else %}
+                                    <input type="radio" name="tabs[{{ tab_row }}][filter_type_category]" value="{{ category['category_id'] }}"/>
+                                    {{ category['name'] }}
+                                  {% endif %}
+                                </div>
+                              {% endfor %}
+                            </div>
+                          {% endif %}</td>
+                        <td class="text-right">
+                          <button type="button" onclick="$('#moduletab-row{{ tab_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button>
+                        </td>
+                      </tr>
+                      </tbody>
+                      {% set tab_row = tab_row + 1 %}
+                    {% endfor %}
+                    <tfoot>
+                    <tr>
+                      <td colspan="4"></td>
+                      <td class="text-left">
+                        <button type="button" onclick="addTab(this,{{ tab_row }});" data-toggle="tooltip" title="{{ button_add_tab }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button>
+                      </td>
+                    </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <div id="modulesetting" class="tab-pane">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_image }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="config[image_width]" value="{{ config['image_width'] is defined ? config['image_width'] : '' }}" size="3" class="form-control"/>
+                      <input type="text" name="config[image_height]" value="{{ config['image_height'] is defined ? config['image_height'] : '' }}" size="3" class="form-control"/>
+                      {% if (error_image_width) %}
+                        <div class="text-danger">{{ error_image_width }}</div>
+                      {% endif %}
+                      {% if (error_image_height) %}
+                        <div class="text-danger">{{ error_image_height }}</div>
+                      {% endif %}</div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_column }}</label>
+                    <div class="col-sm-10">
+                      <select name="config[column]" class="form-control">
+                        <option value="1" {{ config['column'] is defined and config['column'] == '1' ? 'selected="selected"' : '' }}>
+                          1
+                        </option>
+                        <option value="2" {{ config['column'] is defined and config['column'] == '2' ? 'selected="selected"' : '' }}>
+                          2
+                        </option>
+                        <option value="3" {{ config['column'] is defined and config['column'] == '3' ? 'selected="selected"' : '' }}>
+                          3
+                        </option>
+                        <option value="4" {{ config['column'] is defined and config['column'] == '4' ? 'selected="selected"' : '' }}>
+                          4
+                        </option>
+                        <option value="6" {{ config['column'] is defined and config['column'] == '6' ? 'selected="selected"' : '' }}>
+                          6
+                        </option>
+                        <option value="12" {{ config['column'] is defined and config['column'] == '12' ? 'selected="selected"' : '' }}>
+                          12
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_limit }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="config[limit]" value="{{ config['limit'] is defined ? config['limit'] : '' }}" size="3" class="form-control"/>
+                      {% if (error_limit) %}
+                        <div class="text-danger">{{ error_limit }}</div>
+                      {% endif %}</div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_scroll }}</label>
+                    <div class="col-sm-10">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_slide }}</label>
+                        <div class="col-sm-10"><select name="config[scrolling_panel]" class="form-control">
+                            <option value="1" {{ (config['scrolling_panel'] is defined and config['scrolling_panel'] == 1) ? 'selected="selected"' : '' }}>{{ text_enabled }}</option>
+                            <option value="0" {{ (config['scrolling_panel'] is defined and config['scrolling_panel'] == 0) ? 'selected="selected"' : '' }}>{{ text_disabled }}</option>
+                          </select></div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_numrow }}</label>
+                        <div class="col-sm-10">
+                          <input type="text" name="config[numrow]" class="form-control" value="{{ config['numrow'] is defined ? config['numrow'] : '' }}" size="3"/>
+                          {% if (error_numrow) %}
+                            <div class="text-danger">{{ error_numrow }}</div>
+                          {% endif %}</div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_perrow }}</label>
+                        <div class="col-sm-10">
+                          <input type="text" name="config[perrow]" class="form-control" value="{{ config['perrow'] is defined ? config['perrow'] : '' }}" size="3"/>
+                          {% if (error_perrow) %}
+                            <div class="text-danger">{{ error_perrow }}</div>
+                          {% endif %}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_tab }}</label>
+                    <div class="col-sm-10"><select name="config[use_tab]" class="form-control">
+                        <option value="1" {{ (config['use_tab'] is defined and config['use_tab'] == 1) ? 'selected="selected"' : '' }}>{{ text_enabled }}</option>
+                        <option value="0" {{ (config['use_tab'] is defined and config['use_tab'] == 0) ? 'selected="selected"' : '' }}>{{ text_disabled }}</option>
+                      </select></div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_scrolling_tab }}</label>
+                    <div class="col-sm-10">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_slide_tab }}</label>
+                        <div class="col-sm-10"><select name="config[scrolling_tab]" class="form-control">
+                            <option value="0" {{ (config['scrolling_tab'] is defined and config['scrolling_tab'] == 0) ? 'selected="selected"': '' }}>{{ text_disabled }}</option>
+                            <option value="1" {{ (config['scrolling_tab'] is defined and config['scrolling_tab'] == 1) ? 'selected="selected"' : '' }}>{{ text_enabled }}</option>
+                          </select></div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_num_tab }}</label>
+                        <div class="col-sm-10">
+                          <input type="number" name="config[num_tab]" class="form-control" value="{{ config['num_tab'] is defined ? config['num_tab'] : '' }}" size="3"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_prolarge }}</label>
+                    <div class="col-sm-10">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_show_prolarge }}</label>
+                        <div class="col-sm-10"><select name="config[product_large]" class="form-control">
+                            <option value="0" {{ (config['product_large'] is defined and config['product_large'] == 0) ? 'selected="selected"' : '' }}>{{ text_disabled }}</option>
+                            <option value="1" {{ (config['product_large'] is defined and config['product_large'] == 1)? 'selected="selected"' : '' }}>{{ text_enabled }}</option>
+                          </select></div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_add_img_large }}</label>
+                        <div class="col-sm-10">
+                          <input type="number" name="config[add_img_width]" class="form-control" value="{{ config['add_img_width'] is defined ? config['add_img_width'] : '' }}" size="3"/>
+                          <input type="number" name="config[add_img_height]" class="form-control" value="{{ config['add_img_height'] is defined ? config['add_img_height'] : '' }}" size="3"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_class_css }}</label>
+                    <div class="col-sm-10"><select name="config[class_css]" class="form-control">
+                        {% for key_type,text in class_csss %}
+                          <option value="{{ key_type }}" {% if (config['class_css'] is defined and config['class_css'] == key_type) %} {{ "selected=selected" }}{% endif %}>{{ text }}</option>
+                        {% endfor %}
+                      </select></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+    //var tab_row = {{ tab_row }};;
+    // add menu
+    $('input[name="icon"]').iconpicker();
+
+    function addTab(btnAddTab, tab_row) {
+        html = '<tbody id="moduletab-row' + tab_row + '">';
+        html += '<tr>';
+        html += '<td class="left"><b>#' + (tab_row + 1) + '</b></td><td class="left">';
+      {% for language in languages %}
+        html += '<div class="input-group">';
+        html += '<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+        html += '<input type="input" name="tabs[' + tab_row + '][title][{{ language['language_id'] }}]" class="form-control"/>';
+        html += '</div>';
+      {% endfor %}
+        html += '</td>';
+        html += '  <td class="text-left"><a href="" id="thumb-icon' + tab_row + '" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="tabs[' + tab_row + '][icon]" value="" id="input-icon' + tab_row + '" class="form-control"/></td>';
+        html += '<td class="left">';
+        html += '<select name="tabs[' + tab_row + '][type_product]" onchange="showCategories(this,' + tab_row + ')" class="form-control">';
+      {% for key,text in filter_types %}
+        html += '<option value="{{ key }}">{{ text }}</option>';
+      {% endfor %}
+        html += '</select></td>';
+
+        html += '<td class="text-right"><button type="button" onclick="$(\'#moduletab-row' + tab_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+        html += '</tr></tbody>';
+        $('#tableMoldue tfoot').before(html);
+        $(btnAddTab).replaceWith('<button type="button" onclick="addTab(this, ' + (tab_row + 1) + ');" data-toggle="tooltip" title="{{ button_add_tab }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button>');
+
+    }
+
+    //--></script>
+<script type="text/javascript"><!--
+    function showCategories(select, row) {
+        if (select.options[select.selectedIndex].value == 'category') {
+            $('#bt_featured' + row).slideUp("normal", function () {
+                $(this).remove();
+            });
+            divclass = 'odd';
+            html     = '<div class="well well-sm" style="height: 150px; overflow: auto;" id="scrollbox' + row + '">';
+          {% for category in categories %}
+            divclass = divclass == 'even' ? 'odd' : 'even';
+            html += '<div class="' + divclass + '">';
+            html += '<input type="radio" name="tabs[' + row + '][filter_type_category]" value="{{ category['category_id'] }}" />';
+            html += '{{ addslashes(category['name']) }}'
+            html += '</div>';
+          {% endfor %}
+            html += '</div>';
+
+            $(select).after(html);
+        } else if (select.options[select.selectedIndex].value == 'featured') {
+            $('#scrollbox' + row).slideUp("normal", function () {
+                $(this).remove();
+            });
+
+            html = '<div id="bt_featured' + row + '"><input type="text" name="tabs[' + row + '][filter_type_featured]" value="" placeholder="{{ entry_product }}" id="input-product-featured-' + row + '" class="form-control" />';
+            html += ' <div id="product-featured-' + row + '" class="well well-sm" style="height: 150px; overflow: auto;">';
+            html += '</div></div>';
+
+            nhtml = html.replace(/bt_row_replace/gi);
+            $(select).after(nhtml);
+            autoslectfeatured(row);
+        } else {
+            $('#bt_featured' + row).slideUp("normal", function () {
+                $(this).remove();
+            });
+            $('#scrollbox' + row).slideUp("normal", function () {
+                $(this).remove();
+            });
+        }
+    }
+
+    //--></script>
+<script type="text/javascript"><!--
+    $('#module_content li:first-child a').tab('show');
+
+    function autoslectfeatured(key) {
+        $('input[name=\'tabs[' + key + '][filter_type_featured]\']').autocomplete({
+            'source': function (request, response) {
+                $.ajax({
+                    url     : 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+                    dataType: 'json',
+                    success : function (json) {
+                        response($.map(json, function (item) {
+                            return {
+                                label: item['name'],
+                                value: item['product_id']
+                            }
+                        }));
+                    }
+                });
+            },
+            'select': function (item) {
+                $('input[name=\'tabs[' + key + '][filter_type_featured]\']').val('');
+
+                $('#product-featured-' + key + item['value']).remove();
+
+                $('#product-featured-' + key).append('<div id="product-featured-' + key + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="tabs[' + key + '][product_featured][]" value="' + item['value'] + '" /></div>');
+            }
+        });
+
+        $('#product-featured-' + key).delegate('.fa-minus-circle', 'click', function () {
+            $(this).parent().remove();
+        });
+
+    };
+  {% if (tabs is defined ) %}
+  {% set tab_key = 0 %}
+  {% for tab in tabs %}
+  {% if (tab['type_product'] == 'featured') %}
+    autoslectfeatured('{{ tab_key }}');
+  {% endif %}
+  {% set tab_key = tab_key + 1 %} {% endfor %}
+  {% endif %}
+    //--></script>
+{{ footer }}

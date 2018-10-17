@@ -1,0 +1,143 @@
+@import '../_main';
+/*node*/
+* {
+	outline: none;
+	box-sizing: border-box;
+	&:before {
+		box-sizing: border-box;
+	}
+	&:after {
+		box-sizing: border-box;
+	}
+}
+body {
+	position: relative;
+	@include font(13px);
+	font-weight: 400;
+	color: $text_color;
+	line-height: 1.6666;
+	background-color: $white;
+	padding-left: 280px;
+}
+h1, h2, h3 {
+	font-weight: 600;
+	text-transform: uppercase;
+	margin-top: 0;
+}
+h1 {
+	@include font1(20px);
+	margin-bottom: 10px;
+	color: $black;
+}
+h2 {
+	@include font1(18px);
+	margin-bottom: 10px;
+	color: $text_color;
+}
+h3, footer h1, footer h2 {
+	@include font1(16px);
+}
+h3 {
+	color: $text_color;
+}
+h4 {
+	color: $color_tundora_approx;
+	font-size: 15px;
+}
+h5 {
+	color: $color_tundora_approx;
+	font-size: 12px;
+}
+h6 {
+	color: $color_tundora_approx;
+	font-size: 10.2px;
+}
+.fa {
+	font-size: 13px;
+}
+.lnr {
+	font-size: 13px;
+}
+legend {
+	font-size: 18px;
+	padding: 7px 0;
+}
+label {
+	font-size: 13px;
+	line-height: 13px;
+	font-weight: normal;
+	margin-bottom: 10px;
+}
+input {
+	&:-webkit-autofill {
+		background-color: $white!important;
+		&:focus {
+			background-color: $white!important;
+		}
+	}
+}
+input[type="radio"] {
+	vertical-align: -2px;
+}
+input[type="checkbox"] {
+	vertical-align: -2px;
+}
+img {
+	max-width: 100%;
+}
+ul, ol {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+a {
+	@include transition_linear(0.3s);
+	color: $link_color;
+	cursor: pointer;
+	text-decoration: none;
+	&:hover, &:focus, &:hover {
+		color: $link_color_hover;
+		text-decoration: none;
+		text-decoration: none;
+		outline: none;
+	}
+}
+select.form-control, textarea.form-control, input[type="text"].form-control, 
+input[type="password"].form-control, input[type="datetime"].form-control, 
+input[type="datetime-local"].form-control, input[type="date"].form-control,
+input[type="month"].form-control, input[type="time"].form-control, 
+input[type="week"].form-control, input[type="number"].form-control,
+input[type="email"].form-control, input[type="url"].form-control, 
+input[type="search"].form-control, input[type="tel"].form-control,
+input[type="color"].form-control {
+	font-size: 13px;
+}
+table {
+	background-color: rgba(0, 0, 0, 0);
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+span {
+	&.hidden-xs {
+		display: inline;
+	}
+	&.hidden-sm {
+		display: inline;
+	}
+	&.hidden-md {
+		display: inline;
+	}
+	&.hidden-lg {
+		display: inline;
+	}
+}
+b {
+	font-weight: 600;
+}
+strong {
+	font-weight: 600;
+}
+div {
+	
+}

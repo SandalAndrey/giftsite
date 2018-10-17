@@ -1,0 +1,7 @@
+@import '../_main';
+/*content*/
+#content {
+	* + .product-filter, * + .article-filter {
+		margin-top: 0px;
+	}
+}

@@ -1,0 +1,125 @@
+{{ header }}{{ column_left }} 
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+		  <div class="pull-right">
+			<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+		  <h1>{{ heading_title }}</h1>
+		  <ul class="breadcrumb">
+			{% for breadcrumb in breadcrumbs %} 
+			<li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+			{% endfor %} 
+		  </ul>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		{% if (error_warning) %} 
+		<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+		{% endif %} 
+		{% if (success) %} 
+		<div class="alert alert-success"><i class="fa fa-exclamation-circle"></i>{{ success }} 
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+		{% endif %} 
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-sliderlist" class="form-horizontal">
+					<h3 class="bt-heading">Slides List</h3>
+					<div id="success" class="alert alert-success"> </div>
+					<table class="table table-striped table-bordered table-hover" id="bt_slide_list">
+						<thead>
+							<tr>
+								<td width="50px">#id</td>
+								<td width="20%px">Name</td>
+								<td width="100px">Status</td>
+								<td width="300px">Background</td>
+								<td width="25%">Action</td>
+								<td width="100px"></td>
+							</tr>
+						</thead>
+						<tbody class="ui-sortable">
+							{% if (slides is not empty ) %} 
+							{% for slide in slides %} 
+							<tr id="slideorder_{{ slide['slide_id'] }}">
+								<td>{{ slide['slide_id'] }}</td>
+								<td>Slider ({{ slide['slideset']['background'] is defined ?slide['slideset']['background']:'' }})</td>
+								<td>{{ slide['status']?'Enable':'Disable' }}</td>
+								<td>{% if (slide['slideset']['type_background'] == 'color_bg') %}<img style="border: 1px solid #ddd; width:250px;height:100px; background:{{ slide['slideset']['background'] }}" src="../image/catalog/transparent.png" alt="slider1.png" />{% else %}<img style="border: 1px solid #ddd; width:250px;height:100px;" src="{{ slide['slideset']['background'] is defined ?'../image/'~slide['slideset']['background']:'../image/transparent.png' }}" alt="slider1.png" />{% endif %}</td>
+								<td><p><a class="btn btn-primary" href="{{ slide['edit_link'] }}" >Edit</a> <a class="btn btn-danger " onclick="deleteSlide({{ slide['slide_id'] }},{{ slide['slider_id'] }},{{ slide['module_id'] }});" >Delete</a> <a class="btn btn-default " onclick="copySlide({{ slide['slide_id'] }},{{ slide['slider_id'] }},{{ slide['module_id'] }});" >Copy</a> </p></td>
+								<td><div class="bt-drag"><span class="bt-icon ui-icon ui-icon-arrowthick-2-n-s">&nbsp;</span></div></td>
+							</tr>
+							{% endfor %} 
+							{% else %} 
+								<tr><td colspan="6">{{ 'No slide' }}</td></tr>
+							{% endif %} 
+						</tbody>
+					</table>
+					<div class="bt-button bt-right">
+						<p><a class="btn btn-warning" href="{{ modulesetting }}" >Slider Setting</a> <a class="btn btn-success " href="{{ new_slide }}" >Add New Slide</a></p>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"><!--
+$(document).ready(function(){ 
+
+    $("#success").hide();
+	
+	$(function() {
+		$("#bt_slide_list tbody").sortable({ opacity: 0.8, cursor: 'move', update: function() {
+			var order = $(this).sortable("serialize") + '&update=update'; 
+			$.post("index.php?route=extension/module/boss_revolutionslider/updateSortSlide&user_token={{ user_token }}", order, function(theResponse){
+				$("#success").html(theResponse);
+				$("#success").slideDown('slow');
+				slideout();
+			});
+		{{ '}}' }});
+		
+	});
+
+});
+
+function slideout(){
+	setTimeout(function(){
+		$("#success").slideUp("slow", function () {});
+
+	}, 3000);
+}
+
+function deleteSlide(id,slider_id,module_id){
+	if (!confirm('{{ text_confirm }}')) {
+		return false;
+	}else{
+		$.ajax({
+			url: 'index.php?route=extension/module/boss_revolutionslider/deleteSlide&user_token={{ user_token }}&slide_id='+id+'&slider_id='+slider_id+'&module_id='+module_id,
+			async:false,
+			type: 'post',
+			dataType: 'json',
+			success: function(json) {
+				location = json['redirect'];
+			}
+		});
+	}
+}
+
+function copySlide(id,slider_id,module_id){
+	$.ajax({
+		url: 'index.php?route=extension/module/boss_revolutionslider/copySlide&user_token={{ user_token }}&slide_id='+id+'&slider_id='+slider_id+'&module_id='+module_id,
+		async:false,
+		type: 'post',
+		dataType: 'json',
+		success: function(json) {
+			location = json['redirect'];
+		}
+	});
+}
+//--></script>
+{{ footer }}

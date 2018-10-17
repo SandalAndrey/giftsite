@@ -1,0 +1,17 @@
+{{ header }}
+{% set config = registry.get('config') %}
+{% set language_id = config.get('config_language_id') %}
+{% set request = registry.get('request') %}
+{% set boss_product = config.get('boss_product') %}
+{% set text_save_off = config.get('theme_' ~ config.get('config_theme') ~ '_text_save_off') %}
+{% set text_save_off = text_save_off[language_id] is defined ? text_save_off[language_id] : '' %}
+{% set template_directory = config.get('theme_' ~ config.get('config_theme') ~ '_directory') %}
+{% set path = template_directory ~ '/template/product/product/' %}
+{% set layout = boss_product['layout'] is defined ? boss_product['layout'] ~ '.twig' : 'product_1.twig' %}
+{% if (request.get['style'] is defined) %}
+	{% if (file_exists(constant('DIR_TEMPLATE') ~ path ~ request.get['style'] ~ '.twig')) %}
+ 	{% set layout = request.get['style'] ~ '.twig' %}
+ {% endif %}
+{% endif %}
+{{ include(path ~ layout) }}
+{{ footer }}

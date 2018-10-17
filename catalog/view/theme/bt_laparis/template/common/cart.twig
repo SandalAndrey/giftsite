@@ -1,0 +1,72 @@
+{% set config = registry.get('config') %}
+
+{% set language_id = config.get('config_language_id') %}
+
+{% set text_view_cart = text_cart %}
+
+{% set text_cart = config.get('theme_' ~ config.get('config_theme') ~ '_text_cart') %}
+{% set text_cart = text_cart[language_id] is defined ? text_cart[language_id] : '' %}
+
+
+<div id="cart" class="dropup"> <a data-toggle="dropdown" data-loading-text="{{ text_loading }}" class="dropdown-toggle"><i class="lnr lnr-cart"></i> <span class="hidden-xs">{{ text_cart }}</span></a>
+  <ul class="dropdown-menu">
+    {% if (products or vouchers) %} 
+    <li class="show-product-cart">
+      <table class="table">
+        {% for product in products %} 
+        <tr>
+          <td class="text-left image"><div class="image">
+              {% if (product['thumb']) %} 
+              <a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" title="{{ product['name'] }}" class="img-thumbnail" /></a>
+              {% endif %} 
+              <div class="remove">
+                <button type="button" onclick="cart.remove('{{ product['cart_id'] }}');" title="{{ button_remove }}" class="btn-danger"><i class="fa fa-times"></i></button>
+              </div>
+            </div></td>
+          <td class="text-left name"><a href="{{ product['href'] }}">{{ product['name'] }}</a>
+            {% if (product['option']) %} 
+            {% for option in product['option'] %} 
+            <br />
+            - <small>{{ option['name'] }} {{ option['value'] }}</small>
+            {% endfor %} 
+            {% endif %} 
+            {% if (product['recurring']) %} 
+            <br />
+            - <small>{{ text_recurring }} {{ product['recurring'] }}</small>
+            {% endif %} 
+            <div class="quantity-price">{{ product['quantity'] }} x <span class="price">{{ product['total'] }}</span></div></td>
+        </tr>
+        {% endfor %} 
+        {% for voucher in vouchers %} 
+        <tr>
+          <td class="text-left image"><div class="image">
+              <div class="remove">
+                <button type="button" onclick="voucher.remove('{{ voucher['cart_id'] }}');" title="{{ button_remove }}" class="btn-danger"><i class="fa fa-times"></i></button>
+              </div>
+            </div></td>
+          <td class="text-left"><div class="description">{{ voucher['description'] }}</div>
+            <div class="quantity">1 x <span class="price">{{ voucher['amount'] }}</div></td>
+        </tr>
+        {% endfor %} 
+      </table>
+    </li>
+    <li>
+      <div class="cart-bottom">
+        <table class="minicart-total">
+          {% for total in totals %} 
+          <tr>
+            <td class="text-left"><span>{{ total['title'] }}</span></td>
+            <td class="text-right">{{ total['text'] }}</td>
+          </tr>
+          {% endfor %} 
+        </table>
+        <div class="buttons"> <a href="{{ cart }}" class="btn btn-primary btn-block"><i class="lnr lnr-cart"></i> {{ text_view_cart }}</a><a class="btn btn-default btn-block" href="{{ checkout }}">{{ text_checkout }}</a> </div>
+      </div>
+    </li>
+    {% else %} 
+    <li>
+      <p class="text-center">{{ text_empty }}</p>
+    </li>
+    {% endif %} 
+  </ul>
+</div>

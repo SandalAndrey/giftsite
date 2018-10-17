@@ -1,0 +1,159 @@
+{% if (columns['params'] is defined ) %} 
+	{% set params = json_decode(columns['params'], constant('true')) %}
+		
+{% else %} 
+	{% set params = [] %}
+{% endif %}
+
+<div id="btnewmenucolumn">
+	<table class="table table-striped table-bordered table-hover">
+		<tr><td>{{ entry_num_column }}</td>
+			<td class="left">{{ btform . makeSelectHTML(arrcolumns, 'num_column','',columns['num_column'] is defined ? columns['num_column'] : '') }}</td></tr>
+		<tr><td>{{ entry_sort_order }}</td>
+			<td>{{ btform . textField('sort_order',columns['sort_order'] is defined ?columns['sort_order']:'',11) }}</td></tr>
+		<tr><td>{{ entry_status }}</td>
+			<td class="left">{{ btform . makeSelectHTML(arrstatus, 'status','',columns['status'] is defined ? columns['status'] : '') }}</td></tr>
+		<tr><td>{{ entry_type }}</td>
+			<td class="left">{{ btform . makeSelectHTML(arrtypes, 'type','menutype',columns['type'] is defined ? columns['type'] : '') }}</td></tr>
+		<tr id="type-category" class="menutype">
+		<td>Categories:</td><td>
+			<div id="opt_category">
+				<span>{{ text_choose_category }}</span><div class="well well-sm" style="height: 150px; overflow: auto;">
+					<div class="odd">
+					{{ btform . radioField('params[category_id]',0,params['category_id'] is defined ? params['category_id'] : '',text_root_category) }}					  
+					</div>
+					{% set divclass = 'odd' %} 
+					{% for category in categories %} 
+					  {% set divclass = divclass == 'even' ? 'odd' : 'even' %} 
+					  <div class="{{ divclass }}">					 
+						{{ btform . radioField('params[category_id]',category['category_id'],params['category_id'] is defined ? params['category_id'] : '',category['name']) }}						
+					  </div>
+					{% endfor %} 
+				</div>
+			</div>
+		</td></tr>
+		<tr id="type-product" class="menutype">
+			<td>Products:</td><td>
+				<div id="opt_product">						
+					<p><span>{{ text_w_x_h }}</span>
+						{{ btform . textField('params[product_img_w]',params['product_img_w'] is defined ? params['product_img_w'] : '',3) }}						
+						{{ btform . textField('params[product_img_h]',params['product_img_h'] is defined ? params['product_img_h'] : '',3) }} 
+						</p>
+					<p><span>Autocomplete</span>
+					{{ btform . textField('product_autocomplete','',20) }} 
+					</p>
+					<div class="well well-sm" style="height: 150px; overflow: auto;" id="product_list">						
+						{% if (params['product_ids'] is defined ) %} 
+							{% for product_id in params['product_ids'] %} 
+							  <div class="" id="product-item-{{ product_id }}"><i class="fa fa-minus-circle"></i> {{ products_name[product_id] is defined ?products_name[product_id]:'' }} 
+							   {{ btform . createFieldHidden('params[product_ids][]',product_id) }} 
+							  </div>
+							{% endfor %} 
+						{% endif %} 
+					</div>
+				</div>
+			</td></tr>
+			<tr id="type-manufacturer" class="menutype">
+			<td>Manufacturers</td><td>
+				<p><span>Image size(WxH)</span>
+						{{ btform . textField('params[manufacturer_img_w]',params['manufacturer_img_w'] is defined ? params['manufacturer_img_w'] : '',3) }} 
+						{{ btform . textField('params[manufacturer_img_h]',params['manufacturer_img_h'] is defined ? params['manufacturer_img_h'] : '',3) }} 
+						</p><br />
+				<p><span>Show name</span>
+				{{ btform . makeSelectHTML(arrstatus,'params[manufacturer_name]','',params['manufacturer_name'] is defined ? params['manufacturer_name'] : '') }} 
+				</p> <br />
+				<span>Select Manufacturers</span>
+				<div class="well well-sm" style="height: 150px; overflow: auto;">
+					
+					{% for manufacturer in manufacturers %} 
+						 {% set id_manu = [] %}
+						<div class="">
+							{{ btform . checkboxField('params[manufacturer_id][]',manufacturer['manufacturer_id'],params['manufacturer_id'] is defined ?params['manufacturer_id']:id_manu) }}
+								
+							{{ manufacturer['name'] }} 
+						</div>
+					{% endfor %} 
+				</div>
+			</td></tr>
+			<tr id="type-information" class="menutype">
+			<td>Informations</td><td>
+				<div id="opt_information">
+					<p></p><span>Select Informations</span>
+					<div class="well well-sm" style="height: 150px; overflow: auto;">
+						{% for information in informations %} 
+						<div class="">
+							{% set id_info = [] %} {{ btform . checkboxField('params[information_id][]',information['information_id'],params['information_id'] is defined ?params['information_id']:id_info) }}						  
+						  {{ information['title'] }} 
+						  </div>
+						{% endfor %} 
+					</div>
+				</div>
+			</td></tr>
+		<tr id="type-html" class="menutype">
+			<td>HTML</td><td>				
+				<ul class="nav nav-tabs" id="language-html">
+					{% for language in languages %} 
+					<li><a href="#tab-language-html-{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+					{% endfor %} 
+					</ul>
+				<div class="tab-content">
+					{% for language in languages %} 
+					<div class="tab-pane" id="tab-language-html-{{ language['language_id'] }}">	
+						<textarea data-toggle="summernote" class="form-control" name="content_text_{{ language['language_id'] }}" id="input-description{{ language['language_id']}}" rows="10" cols="50" >{{ params['content_text'][language['language_id']] is defined ?params['content_text'][language['language_id']]:'' }}</textarea>
+					
+					<br />
+					<i>If menu content is HTML so all submenu of this menu will not be showed</i>{# echo "<pre>"; print_r($params);echo "</pre>"; #}
+					</div>
+					{% endfor %} 
+				</div>
+			</td></tr>
+		
+	</table>
+</div>
+<script type="text/javascript"><!--
+$('#language-html li:first-child a').tab('show');
+$(".menutype").hide();
+$("#type-"+ $("#menutype").val()).show();
+$("#menutype").change( function(){
+	$(".menutype").hide();
+	$("#type-"+$(this).val()).show();
+} );
+$('input[name=\'product_autocomplete\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',			
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('#product-item-' + item['value']).remove();
+		
+		$('#product_list').append('<div id="product-item-' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="params[product_ids][]" value="' + item['value'] + '" /></div>');	
+	
+		data = $.map($('#product_list input'), function(element) {
+			return $(element).attr('value');
+		});
+						
+		$('input[name=\'params[product_ids]\']').attr('value', data.join());	
+	}	
+});
+
+$('#product_list').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+
+	data = $.map($('#product_list input'), function(element) {
+		return $(element).attr('value');
+	});
+					
+	$('input[name=\'params[product_ids]\']').attr('value', data.join());	
+});
+
+//--></script>

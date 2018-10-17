@@ -1,0 +1,315 @@
+{{ header }}{{ column_left }} 
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-featured" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %} 
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %} 
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %} 
+    <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-boss_featured" class="form-horizontal">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_name }}</label>
+            <div class="col-sm-10">{{ btform.textField('name',name is defined ? name : '',3,'class="form-control"') }}</div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_status }}</label>
+            <div class="col-sm-10">{{ btform.makeSelectHTML(status_values, 'status', '', status is defined ? status : '','class="form-control"') }}</div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ text_get_product }}</label>
+            <div class="col-sm-10">{{ btform.makeSelectHTML(filter_types, 'type_product',"",type_product is defined ?type_product:'', 'class="form-control"') }} 
+              <div id="bt_featured">
+                <input type="text" name="featured" value="" placeholder="{{ entry_product }}" id="input-product-featured" class="form-control" />
+                <div id="product-featured" class="well well-sm" style="height: 150px; overflow: auto;">
+                  {% for product in products %} 
+                  <div id="product-featured{{ product['product_id'] }}"><i class="fa fa-minus-circle"></i> {{ product['name'] }} 
+                    <input type="hidden" name="product_featured[]" value="{{ product['product_id'] }}" />
+                  </div>
+                  {% endfor %} 
+                </div>
+              </div>
+              <div id="bt_category">
+                <input type="text" name="category" value="{{ category_name }}" placeholder="{{ entry_category }}" id="input-category" class="form-control" />
+                <input type="hidden" name="category_id" value="{{ category_id }}" />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_image }}</label>
+            <div class="col-sm-5">{{ btform.textField('image_width',image_width is defined ? image_width : '',3,'class="form-control"') }} 
+              {% if (error_width) %} 
+              <div class="text-danger">{{ error_width }}</div>
+              {% endif %} 
+            </div>
+            <div class="col-sm-5">{{ btform.textField('image_height',image_height is defined ? image_height : '',3,'class="form-control"') }} 
+              {% if (error_height) %} 
+              <div class="text-danger">{{ error_height }}</div>
+              {% endif %} 
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_limit }}</label>
+            <div class="col-sm-10">{{ btform.textField('limit',limit is defined ? limit : '',3,'class="form-control"') }}</div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_column }}</label>
+            <div class="col-sm-10">{{ btform.makeSelectHTML(column_values, 'column', '', column is defined ? column : '','class="form-control"') }}</div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_scroll }}</label>
+            <div class="col-sm-10">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Show Slider</label>
+                <div class="col-sm-8">{{ btform.makeSelectHTML(status_values, 'show_slider','',show_slider is defined ? show_slider : '','class="form-control"') }}</div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-6">
+                  <label class="col-sm-4 control-label">{{ entry_row }}</label>
+                  <div class="col-sm-8">{{ btform.textField('num_row',num_row is defined ? num_row : '',9,'class="form-control"') }}</div>
+                </div>
+                <div class="col-sm-6">
+                  <label class="col-sm-4 control-label">{{ entry_properrow }}</label>
+                  <div class="col-sm-8">{{ btform.textField('per_row',per_row is defined ? per_row : '',10,'class="form-control"') }}</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_pagination }}</label>
+                <div class="col-sm-10">{{ btform.makeSelectHTML(status_values, 'pagination', '', pagination is defined ? pagination : '', 'class="form-control"') }}</div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_center }}</label>
+                <div class="col-sm-10">{{ btform.makeSelectHTML(status_values, 'center', '', center is defined ? center : '', 'class="form-control"') }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_prolarge }}</label>
+            <div class="col-sm-10">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_prolarge }}: </label>
+                <div class="col-sm-10">{{ btform.makeSelectHTML(status_values, 'show_pro_large', '', show_pro_large is defined ? show_pro_large : constant('true'), 'class="form-control"') }}</div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_get_prolarge }}:&nbsp;&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" name="product_name" value="{{ product_name }}" placeholder="{{ entry_product }}" id="input-product" class="form-control" />
+                  <input type="hidden" name="product_id" value="{{ product_id }}" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_img_large }}&nbsp;&nbsp; </label>
+                <div class="col-sm-5">{{ btform.textField('img_width', img_width is defined ? img_width : '380', 3, 'class="form-control"') }}</div>
+                <div class="col-sm-5">{{ btform.textField('img_height', img_height is defined ? img_height : '380', 3, 'class="form-control"') }}</div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_add_img_large }}&nbsp;&nbsp; </label>
+                <div class="col-sm-5">{{ btform.textField('add_img_width', add_img_width is defined ? add_img_width : '100' , 3, 'class="form-control"') }}</div>
+                <div class="col-sm-5">{{ btform.textField('add_img_height', add_img_height is defined ? add_img_height : '100' , 3, 'class="form-control"') }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_product_layout }}</label>
+            <div class="col-sm-10">{{ btform.makeSelectHTML(product_layout_values, 'product_layout', '', product_layout is defined ? product_layout : '','class="form-control"') }}</div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_position }}</label>
+            <div class="col-sm-10">{{ btform.makeSelectHTML(position_values, 'position', '', position is defined ? position : '','class="form-control"') }}</div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_title }}</label>
+            <div class="col-sm-10">
+              {% for language in languages %} 
+              <div class="input-group"> <span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                <input type="text" name="title[{{ language['language_id'] }}]" value="{{ title[language['language_id']] is defined ? title[language['language_id']] : '' }}" class="form-control">
+              </div>
+              {% endfor %} 
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_description }}</label>
+            <div class="col-sm-10">
+              <ul class="nav nav-tabs">
+                {% for language in languages %} 
+                <li><a href="#input-description-{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" subject="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                {% endfor %} 
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %} 
+                <div class="tab-pane" id="input-description-{{ language['language_id'] }}">
+                  <textarea name="description[{{ language['language_id'] }}]" placeholder="{{ entry_description }}" id="input-description{{ language['language_id'] }}" data-toggle="summernote" class="form-control">{{ description[language['language_id']] is defined ? description[language['language_id']] : '' }}</textarea>
+                </div>
+                {% endfor %} 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_banner_left }}</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-banner-left">{{ entry_banner_left }}</label>
+            <div class="col-sm-10"> <a href="" id="thumb-image-banner-left" data-toggle="image" class="img-thumbnail"><img src="{{ banner_left['thumb'] }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+              <input type="hidden" name="banner_left[image]" value="{{ banner_left['image'] }}" placeholder="{{ entry_banner_left }}" id="input-banner-left" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-banner-left-link">{{ entry_banner_left_link }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="banner_left[link]" value="{{ banner_left['link'] }}" placeholder="{{ entry_banner_left_link }}" id="input-banner-left-link" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_banner_right }}</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-banner-right">{{ entry_banner_right }}</label>
+            <div class="col-sm-10"> <a href="" id="thumb-image-banner-right" data-toggle="image" class="img-thumbnail"><img src="{{ banner_right['thumb'] }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+              <input type="hidden" name="banner_right[image]" value="{{ banner_right['image'] }}" placeholder="{{ entry_banner_right }}" id="input-banner-right" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-banner-right-link">{{ entry_banner_right_link }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="banner_right[link]" value="{{ banner_right['link'] }}" placeholder="{{ entry_banner_right_link }}" id="input-banner-right-link" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script> 
+<script type="text/javascript">
+$('#content .nav-tabs li:first-child a').each(function(index, element) {
+    $(this).tab('show');
+});
+</script> 
+<script type="text/javascript"><!--
+$('select[name="type_product"]').on('change', function() {
+	if ($(this).val() == 'category') {
+		$('#bt_featured').css('display', 'none');
+		$('#bt_category').css('display', '');
+	}else if ($(this).val() == 'featured') {
+		$('#bt_featured').css('display', '');
+		$('#bt_category').css('display', 'none');
+	}else {
+		$('#bt_featured').css('display', 'none');
+		$('#bt_category').css('display', 'none');
+	}
+});
+
+$('select[name="type_product"]').trigger('change');
+//--></script> 
+<script type="text/javascript"><!--
+$('input[name=\'featured\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'product-featured\']').val('');
+
+		$('#product-featured' + item['value']).remove();
+
+		$('#product-featured').append('<div id="product-featured' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product_featured[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#product-featured').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// Category
+$('input[name=\'category\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				json.unshift({
+					category_id: 0,
+					name: '{{ text_none }}'
+				});
+
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'category\']').val(item['label']);
+		$('input[name=\'category_id\']').val(item['value']);
+	}
+});
+
+// Related
+$('input[name=\'product_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				json.unshift({
+					product_id: 0,
+					name: '{{ text_none }}'
+				});
+
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'product_name\']').val(item['label']);
+		$('input[name=\'product_id\']').val(item['value']);
+	}
+});
+//--></script> 
+{{ footer }} 

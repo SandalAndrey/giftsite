@@ -1,0 +1,118 @@
+@import '../_main';
+
+/*boss newsletter*/
+.bt-newsletter {
+	&.sidebar {
+		.sub-title, .boss-newsletter, .boss-newslette-result {
+			margin-bottom: 30px;
+		}
+	}
+	&.content {
+		padding: 25px 0px;
+		background: $black;
+		color: #8b8b8b;
+		.row {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			align-items: center;
+		}
+		.title {
+			text-align: left;
+			padding: 8px 0px;
+			> * {
+				display: inline-block;
+				margin: 0px;
+			}
+			h2 {
+				font-size: 13px;
+				text-transform: uppercase;
+				margin-right: 20px;
+				color: $white;
+			}
+		}
+		.form-control, .form-control:hover, .form-control:focus, .form-control:active {
+			background: transparent;
+			border-color: transparent;
+			box-shadow: none;
+			outline: none;
+			color: #8b8b8b;
+			padding: 17px 0px 0px 0px;
+		}
+		.input-group-addon {
+			border: 1px solid $white;
+			background: $primary_color;
+			@include transition_ease(0.5s);
+			a {
+				color: $white;
+				text-transform: uppercase;
+			}
+			&:hover {
+				background: $primary_color_hover;
+				color: $primary_color;
+			}
+		}
+		.boss-newslette-result {
+		
+		}
+		.newsletter-content {
+			padding-bottom: 15px;
+			border-bottom: 1px solid #373737;
+		}
+	}
+}
+.bt-newsletter-popup {
+	.title {
+		color: $white;
+		margin-bottom: 50px;
+		h2 {
+			font-size: 70px;
+			line-height: 70px;
+			text-transform: uppercase;
+			color: $white;
+			margin-bottom: 10px;
+		}
+	}
+	.boss-newsletter {
+		&.input-group {
+			padding: 15px;
+			border: 1px solid $border_color;
+			.form-control {
+				border: none;
+				outline: none;
+				box-shadow: none;
+				background: transparent;
+				color: $white;
+				height: 46px;
+				&::-webkit-input-placeholder {
+					color: $white;
+				}
+				&::-moz-placeholder {
+					color: $white;
+				}
+				&:-ms-input-placeholder {
+					color: $white;
+				}
+				&:-moz-placeholder {
+					color: $white;
+				}
+			}
+			.input-group-addon {
+				padding: 0px;
+				border: none;
+				outline: none;
+				box-shadow: none;
+				background: transparent;
+			}
+		}
+	}
+	.checkbox {
+		margin: 15px 0px;
+		color: $white;
+	}
+	.boss-newslette-result {
+		color: $white;
+	}
+}

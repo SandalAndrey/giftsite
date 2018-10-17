@@ -1,0 +1,48 @@
+<div class="box block bt-blog-category">
+  <div class="box-heading block-title">
+    <h2>{{ heading_title }}</h2>
+  </div>
+  <div class="box-content">
+      {% if (categories) %}
+      <ul class="box-category" id="bt-blog-category-{{ module }}">
+        {% for category in categories %} 
+        {% set icon=0 %} 
+        <li class="" >
+          {% if (category['blog_category_id'] == blog_category_id) %} 
+          <a href="{{ category['href'] }}" class="active">{{ category['name'] }} <span>{{ category['total'] }}</span></a>
+          {% if (category['children']) %} {{ '<span class="plus"></span>' }}{% endif %}
+          {% else %} 
+          <a href="{{ category['href'] }}">{{ category['name'] }} {% if (category['total']) %}(<span>{{ category['total'] }}</span>){% endif %}</a>
+          {% if (category['children']) %} {{ '<span class="plus"></span>' }}{% endif %} 
+          {% endif %} 
+          {% if (category['children']) %} 
+          <ul class="item_child">
+            {% for child in category['children'] %} 
+            {% if (child['blog_category_id'] == child_id) %} 
+            <li class="active"><a href="{{ child['href'] }}">{{ child['name'] }} <span>{{ child['total'] }}</span></a></li>
+            {% else %} 
+            <li><a href="{{ child['href'] }}"> {{ child['name'] }} <span>{{ child['total'] }}</span></a></li>
+            {% endif %} 
+            {% endfor %} 
+          </ul>
+          {% endif %} 
+        </li>
+        {% endfor %} 
+      </ul>
+      {% else %} 
+      {{ 'There are no Category.' }} 
+      {% endif %} 
+  </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('#bt-blog-category-{{ module }}').cutomAccordion({
+		classExpand : 'opencate',
+		menuClose: false,
+		autoClose: true,
+		saveState: false,
+		disableLink: false,		
+		autoExpand: true
+	});
+});
+</script>

@@ -1,0 +1,47 @@
+<modification>
+   <name><![CDATA[<font color="#0000"><b>Add Newsletter Menu</font>]]></name>
+	<version><![CDATA[<b>1.0</b>]]></version>
+	<code>newsletter</code>
+	<author><![CDATA[<font color="#CC0000"><b>Bossthemes</font>]]></author>
+	<link><![CDATA[www.bossthemes.com]]></link>
+	<file path="admin/controller/common/column_left.php">
+		<operation>
+			<search><![CDATA[if ($marketing) {]]></search>
+			<add position="before"><![CDATA[
+			$this->load->language('marketing/newssubscribers');
+			
+			if ($this->user->hasPermission('access', 'marketing/newssubscribers')) {		
+				$marketing[] = array(
+					'name'	   => $this->language->get('heading_title'),
+					'href'     => $this->url->link('marketing/newssubscribers', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);					
+			}
+            ]]></add>
+		</operation>
+	</file>
+	<file path="admin/controller/marketing/contact.php">
+		<operation>
+			<search><![CDATA[case 'newsletter':]]></search>
+			<add position="after"><![CDATA[
+			$results = $this->model_customer_customer->getNewsletterSubscribers();
+			
+			foreach ($results as $result) {
+				$emails[] = $result['email_id'];
+			}
+			]]></add>
+		</operation>
+	</file>
+	<file path="admin/model/customer/customer.php">
+		<operation>
+			<search><![CDATA[class ModelCustomerCustomer extends Model {]]></search>
+			<add position="after"><![CDATA[
+			public function getNewsletterSubscribers() {
+				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "subscribe");
+
+				return $query->rows;
+			}
+			]]></add>
+		</operation>
+	</file>
+</modification>

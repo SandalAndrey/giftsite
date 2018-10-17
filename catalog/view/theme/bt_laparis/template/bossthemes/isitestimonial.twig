@@ -1,0 +1,88 @@
+{{ header }}{{ column_left }}{{ column_right }} 
+
+<div class="bt-breadcrumb">
+  <div class="container">
+    <ul class="breadcrumb">
+      {% for breadcrumb in breadcrumbs %} 
+      <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ breadcrumb['href'] }}" itemprop="url"><span itemprop="title">{{ breadcrumb['text'] }}</span></a></li>
+      {% endfor %} 
+    </ul>
+  </div>
+</div>
+<div class="container">
+  <div class="row">{{ column_left }}{{ column_right }} 
+    {% if (column_left and column_right) %} 
+    {% set class = 'col-sm-6' %} 
+    {% elseif (column_left or column_right) %} 
+    {% set class = 'col-sm-9' %} 
+    {% else %} 
+    {% set class = 'col-sm-12' %} 
+    {% endif %} 
+    <div id="content" class="{{ class }}">{{ content_top }} 
+      <h1 class="heading-title">{{ heading_title }}</h1>
+      <p><strong>{{ text_conditions }}</strong></p>
+      <form action="{{ action }}" method="post" enctype="multipart/form-data" id="testimonial">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group required">
+              <label class="control-label" for="input-name">{{ entry_name }}</label>
+              <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+              {% if (error_name) %} 
+              <span class="error">{{ error_name }}</span>
+              {% endif %} 
+            </div>
+            <div class="form-group required">
+              <label class="control-label" for="input-email">{{ entry_email }}</label>
+              <input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
+              {% if (error_email) %} 
+              <span class="error">{{ error_email }}</span>
+              {% endif %} 
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="input-city">{{ entry_city }}</label>
+              <input type="text" name="city" value="{{ city }}" placeholder="{{ entry_city }}" id="input-city" class="form-control" />
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group required">
+              <label class="control-label" for="input-title">{{ entry_title }}</label>
+              <input type="text" name="title" value="{{ title }}" placeholder="{{ entry_title }}" id="input-title" class="form-control" />
+              {% if (error_title) %} 
+              <span class="error">{{ error_title }}</span>
+              {% endif %} 
+            </div>
+            <div class="form-group required">
+              <label class="control-label" for="input-enquiry">{{ entry_enquiry }}</label>
+              <textarea name="description" rows="6" placeholder="{{ entry_enquiry }}" id="input-enquiry" class="form-control">{{ description }}</textarea>
+              {% if (error_enquiry) %} 
+              <span class="error">{{ error_enquiry }}</span>
+              {% endif %} 
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label class="control-label">{{ entry_rating }}</label>
+              &nbsp; <span>{{ entry_bad }}</span>&nbsp;
+              <input type="radio" name="rating" value="1" style="margin: 0;" {% if ( rating == 1 ) %} {{ 'checked="checked"' }}{% endif %} />
+              &nbsp;
+              <input type="radio" name="rating" value="2" style="margin: 0;" {% if ( rating == 2 ) %} {{ 'checked="checked"' }}{% endif %} />
+              &nbsp;
+              <input type="radio" name="rating" value="3" style="margin: 0;" {% if ( rating == 3 ) %} {{ 'checked="checked"' }}{% endif %} />
+              &nbsp;
+              <input type="radio" name="rating" value="4" style="margin: 0;" {% if ( rating == 4 ) %} {{ 'checked="checked"' }}{% endif %} />
+              &nbsp;
+              <input type="radio" name="rating" value="5" style="margin: 0;" {% if ( rating == 5 ) %} {{ 'checked="checked"' }}{% endif %} />
+              &nbsp; <span>{{ entry_good }}</span> </div>
+          </div>
+          {% if (captcha) %} 
+          <div class="form-group"> {{ captcha }} </div>
+          {% endif %} 
+        </div>
+        <div class="buttons">
+          <button onclick="$('#testimonial').submit();" class="btn btn-primary pull-left"><span>{{ button_send }}</span></button>
+          <a href="{{ showall_url }}" class="btn btn-default pull-right"><span>{{ show_all }}</span></a> </div>
+      </form>
+      {{ content_bottom }} </div>
+  </div>
+</div>
+{{ footer }}

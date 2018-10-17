@@ -1,0 +1,12 @@
+<div class="bt-tagcloud box style-2">
+    <div class="box-heading">
+	   <h2>{{ heading_title }}</h2>
+    </div>
+    <div class="box-content"> 
+		{% if (boss_tagcloud) %} 
+		  {{ boss_tagcloud }} 
+		{% else %} 
+		  {{ text_notags }} 
+		{% endif %} 
+    </div>
+</div>

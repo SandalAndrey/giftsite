@@ -1,0 +1,33 @@
+@import '../_main';
+/*product alphabet*/
+.bt-alphabet {
+	overflow: hidden; 
+	.boss-alphabet {
+		ul {
+			overflow: hidden;
+			li {
+			    float: left;   
+			    list-style: none outside none;
+			    text-align: center;
+			    text-transform: uppercase;  
+				margin-right: 7px;
+				margin-bottom: 7px;
+				a {
+					display: block;
+				    line-height: 22px;
+				    text-decoration: none;
+				    text-transform: uppercase;
+					border: 1px solid $color_border_primary;
+					height: 24px;
+					width: 24px;
+					background-color: transparent;   
+					color: $icon_color;
+					&:hover {
+						border-color: $primary_color;
+						color: $primary_color;
+					}
+				}
+			}
+		}
+	}
+}

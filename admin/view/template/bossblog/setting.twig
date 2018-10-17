@@ -1,0 +1,233 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-featured" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary">
+          <i class="fa fa-save"></i>
+        </button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+          <i class="fa fa-reply"></i>
+        </a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li>
+            <a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %}
+      <div class="alert alert-danger">
+        <i class="fa fa-exclamation-circle"></i>
+        {{ error_warning }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <i class="fa fa-list"></i>
+          {{ heading_title }}</h3>
+      </div>
+      <div class="panel-body">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="{{ boss_category }}">
+              {{ text_boss_category }}</a>
+          </li>
+          <li>
+            <a href="{{ boss_articles }}">
+              {{ text_boss_articles }}</a>
+          </li>
+          <li>
+            <a href="{{ boss_comments }}">
+              {{ text_boss_comments }}</a>
+          </li>
+          <li class="active">
+            <a href="{{ boss_settings }}">
+              {{ text_boss_settings }}</a>
+          </li>
+        </ul>
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-blog-setting" class="form-horizontal">
+          <ul class="nav nav-tabs" id="module">
+            <li>
+              <a href="#tab-general" data-toggle="tab">{{ tab_general }}</a>
+            </li>
+            <li>
+              <a href="#tab-option" data-toggle="tab">{{ tab_option }}</a>
+            </li>
+            <li>
+              <a href="#tab-image" data-toggle="tab">{{ tab_image }}</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+              <div class="form-group required">
+                <label class="col-sm-3 control-label" for="input-blog-name">{{ entry_name }}</label>
+                <div class="col-sm-9">
+                  <input type="text" name="module_bossblog_name" value="{{ module_bossblog_name is defined ? module_bossblog_name : '' }}" placeholder="{{ entry_name }}" class="form-control"/>
+                  {% if (error_blog_name is not empty) %}
+                    <div class="text-danger">{{ error_blog_name }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-blog-seo-url">
+                  <span data-toggle="tooltip" title="{{ help_seo_url }}">{{ entry_keyword }}</span>
+                </label>
+                <div class="col-sm-9">
+                  {% for language in languages %}
+                    <div class="input-group">
+                      <span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/></span>
+                      <input type="text" name="seo_url[0][{{ language.language_id }}]" value="{% if seo_url[0][language.language_id] %}{{ seo_url[0][language.language_id] }}{% endif %}" placeholder="{{ entry_keyword }}" class="form-control"/>
+                    </div>
+                    {% if error_keyword[store.store_id][language.language_id] %}
+                      <div class="text-danger">{{ error_keyword[store.store_id][language.language_id] }}</div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-option">
+              <fieldset>
+                <legend>{{ text_items }}</legend>
+                <div class="form-group required">
+                  <label class="col-sm-3 control-label">
+                    <span data-toggle="tooltip" title="{{ help_bossblog_limit }}">{{ entry_bossblog_limit }}</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="module_bossblog_limit" value="{{ module_bossblog_limit }}" class="form-control"/>
+                    {% if (error_bossblog_limit) %}
+                      <div class="text-danger">{{ error_bossblog_limit }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="form-group required">
+                  <label class="col-sm-3 control-label">
+                    <span data-toggle="tooltip" title="{{ help_blog_admin_limit }}">{{ entry_blog_admin_limit }}</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="module_bossblog_admin_limit" value="{{ module_bossblog_admin_limit }}" class="form-control"/>
+                    {% if (error_blog_admin_limit) %}
+                      <div class="text-danger">{{ error_blog_admin_limit }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>{{ text_article }}</legend>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span data-toggle="tooltip" title="{{ help_comment }}">{{ entry_comment }}</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <label class="radio-inline">
+                      {% if (module_bossblog_comment_status) %}
+                        <input type="radio" name="module_bossblog_comment_status" value="1" checked="checked"/>
+                        {{ text_yes }}
+                      {% else %}
+                        <input type="radio" name="module_bossblog_comment_status" value="1"/>
+                        {{ text_yes }}
+                      {% endif %}
+                    </label>
+                    <label class="radio-inline">
+                      {% if (not module_bossblog_comment_status) %}
+                        <input type="radio" name="module_bossblog_comment_status" value="0" checked="checked"/>
+                        {{ text_no }}
+                      {% else %}
+                        <input type="radio" name="module_bossblog_comment_status" value="0"/>
+                        {{ text_no }}
+                      {% endif %}
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">
+                    <span data-toggle="tooltip" title="{{ help_approval }}">{{ entry_approval }}</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <label class="radio-inline">
+                      {% if (module_bossblog_approval_status) %}
+                        <input type="radio" name="module_bossblog_approval_status" value="1" checked="checked"/>
+                        {{ text_yes }}
+                      {% else %}
+                        <input type="radio" name="module_bossblog_approval_status" value="1"/>
+                        {{ text_yes }}
+                      {% endif %}
+                    </label>
+                    <label class="radio-inline">
+                      {% if (not module_bossblog_approval_status) %}
+                        <input type="radio" name="module_bossblog_approval_status" value="0" checked="checked"/>
+                        {{ text_no }}
+                      {% else %}
+                        <input type="radio" name="module_bossblog_approval_status" value="0"/>
+                        {{ text_no }}
+                      {% endif %}
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <div class="tab-pane" id="tab-image">
+              <div class="form-group required">
+                <label class="col-sm-3 control-label" for="input-blog-image-category">{{ entry_image_category }}</label>
+                <div class="col-sm-9">
+                  <input type="text" name="module_bossblog_image_category_width" value="{{ module_bossblog_image_category_width is defined ? module_bossblog_image_category_width : '' }}" class="form-control"/>
+                  <input type="text" name="module_bossblog_image_category_height" value="{{ module_bossblog_image_category_height is defined ? module_bossblog_image_category_height : '' }}" class="form-control"/>
+                  {% if (error_blog_image_category is not empty) %}
+                    <div class="text-danger">{{ error_blog_image_category }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="form-group required">
+                <label class="col-sm-3 control-label" for="input-blog-image-article">{{ entry_image_article }}</label>
+                <div class="col-sm-9">
+                  <input type="text" name="module_bossblog_image_article_width" value="{{ module_bossblog_image_article_width is defined ? module_bossblog_image_article_width : '' }}" class="form-control"/>
+                  <input type="text" name="module_bossblog_image_article_height" value="{{ module_bossblog_image_article_height is defined ? module_bossblog_image_article_height : '' }}" class="form-control"/>
+                  {% if (error_blog_image_article is not empty) %}
+                    <div class="text-danger">{{ error_blog_image_article }}</div>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="form-group required">
+                <label class="col-sm-3 control-label" for="input-blog-image-title">{{ entry_image_title }}</label>
+                <div class="col-sm-9">
+                  <input type="text" name="module_bossblog_image_title_width" value="{{ module_bossblog_image_title_width is defined ? module_bossblog_image_title_width : '' }}" class="form-control"/>
+                  <input type="text" name="module_bossblog_image_title_height" value="{{ module_bossblog_image_title_height is defined ? module_bossblog_image_title_height : '' }}" class="form-control"/>
+                  {% if (error_blog_image_title is not empty) %}
+                    <div class="text-danger">{{ error_blog_image_title }}</div>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="form-group required">
+                <label class="col-sm-3 control-label" for="input-blog-image-related">{{ entry_image_related }}</label>
+                <div class="col-sm-9">
+                  <input type="text" name="module_bossblog_image_related_width" value="{{ module_bossblog_image_related_width is defined ? module_bossblog_image_related_width : '' }}" class="form-control"/>
+                  <input type="text" name="module_bossblog_image_related_height" value="{{ module_bossblog_image_related_height is defined ? module_bossblog_image_related_height : '' }}" class="form-control"/>
+                  {% if (error_blog_image_related is not empty) %}
+                    <div class="text-danger">{{ error_blog_image_related }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  <!--
+  $('#module li:first-child a').tab('show');
+
+  //-->
+</script>
+{{ footer }}

@@ -1,0 +1,19 @@
+@import '../_main';
+/*list*/
+.list-group a {
+	border: 1px solid $color_alto_approx;
+	color: $color_suva_gray_approx;
+	padding: 8px 12px;
+}
+.list-group-item.active {
+	background-color: none;
+	border: none;
+	&:hover {
+		background-color: none;
+		border: none;
+	}
+	&:focus {
+		background-color: none;
+		border: none;
+	}
+}

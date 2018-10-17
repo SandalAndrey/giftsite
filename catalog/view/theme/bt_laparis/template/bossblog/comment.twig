@@ -1,0 +1,30 @@
+{% if (comments) %} 
+<div id="allcomments">
+  {% for comment in comments %}
+  <div class="comment-item">
+    <div class="comment-header"> 
+      <!--<div class="comment-by">{{ text_comment_by }}</div>-->
+      <div class="comment-author">
+        <div class="comment-name">{{ comment['author'] }}</div>
+        <div class="comment-time">{{ comment['date_added'] }}</div>
+      </div>
+    </div>
+    <div class="comment-body"> {{ comment['text'] }}
+    </div>
+  </div>
+  {% endfor %} 
+</div>
+{% else %} 
+<div class="allcomments"><p>{{ text_no_comments }}</p></div>
+{% endif %} 
+<script type="text/javascript"><!--
+$('#article-comments .pagination a').on('click', function() {
+	$('#article-comments').fadeOut('slow');
+		
+	$('#article-comments').load(this.href);
+	
+	$('#article-comments').fadeIn('slow');
+	
+	return false;
+});	
+</script> 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>	
+	<name>Bossthemes</name>
+	<code>bosstheme</code>
+	<version>1.0.0</version>
+	<author><![CDATA[<font color="#CC0000"><b>Bossthemes</font>]]></author>
+	<link><![CDATA[www.bossthemes.com]]></link>
+	<file path="system/engine/loader.php">
+		<operation>
+			<search><![CDATA[$output = $template->render]]></search>
+			<add position="before"><![CDATA[
+			$template->set('registry', $this->registry);
+			]]></add>
+		</operation>
+	</file>
+	<file path="system/library/template/twig.php">
+		<operation>
+			<search><![CDATA[Twig_Autoloader::register();]]></search>
+			<add position="after"><![CDATA[
+			include_once(DIR_SYSTEM . 'library/bossthemes_twig.php');
+			]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[Twig_Environment]]></search>
+			<add position="after"><![CDATA[
+			$this->twig->addExtension (new \BossthemesTwig());
+			]]></add>
+		</operation>
+	</file>
+	<file path="admin/controller/startup/permission.php">
+		<operation>
+			<search><![CDATA['extension/module',]]></search>
+			<add position="after"><![CDATA[
+			'extension/bossthemes',
+			]]></add>
+		</operation>
+	</file>
+	<file path="admin/controller/common/column_left.php">
+		<operation>
+			<search><![CDATA[if ($marketplace) {]]></search>
+			<add position="after"><![CDATA[
+			$this->load->language('extension/module/boss_manager');
+			
+			if ($this->user->hasPermission('access', 'extension/bossthemes/manager')) {		
+				$marketplace[] = array(
+					'name'	   => $this->language->get('heading_title'),
+					'href'     => $this->url->link('extension/bossthemes/manager', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);					
+			}
+            ]]></add>
+		</operation>
+	</file>
+	<file path="catalog/controller/startup/maintenance.php">
+		<operation>
+			<search><![CDATA[public function index() {]]></search>
+			<add position="after"><![CDATA[
+			if (isset($this->request->get['remote_token'])) {
+				$data = $this->cache->get('remote.token.' . $this->request->get['remote_token']);
+				if (isset($data['remote_url'])) $this->response->addHeader('Access-Control-Allow-Origin: ' . $data['remote_url']);
+			}
+			]]></add>
+		</operation>
+	</file>
+</modification>

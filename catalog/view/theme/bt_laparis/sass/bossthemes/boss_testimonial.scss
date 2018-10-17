@@ -1,0 +1,136 @@
+@import '../_main';
+/*testimonial*/
+.bt-testimonial {
+	text-align: center;
+	background-image: url('../../image/testimonials-bg.jpg');
+	color: $white;
+	a {
+		color: $white;
+		&:hover {
+			color: $light_color;
+		}
+	}
+	.box-content {
+		padding: 80px 0px;
+	}
+	.item {
+		max-width: 800px;
+		margin-left: auto;
+		margin-right: auto;
+		.item-info {
+			position: relative;
+			.subject {
+				font-size: 30px;
+				font-weight: 600;
+				margin-bottom: 40px;
+				color: $white;
+			}
+			.message {
+				position: relative;
+				padding: 0px 25px;
+				margin-bottom: 30px;
+				&:before {
+					content: "\f10d";
+					position: absolute;
+					top: -10px;
+					left: 10px;
+					right: auto;
+					bottom: auto;
+					font-size: 25px;
+					line-height: 25px;
+					font-family: 'FontAwesome';
+					color: $light_color;
+				}
+			}
+		}
+	}
+	.user-info {
+		.image {
+			display: inline-block;
+			height: 80px;
+			width: 80px;
+			@include border-radius(50%);
+			overflow: hidden;
+			margin: 20px 0px;
+			img {
+				width: 100%;
+				height: auto;
+			}
+		}
+		.name {
+			font-weight: bold;
+		}
+		.city {
+			font-size: 11px;
+		}
+	}
+}
+.testimonial-item {
+	.testimonial-heading {
+		margin-bottom: 25px;
+		.image {
+			display: inline-block;
+			background: $dark_color;
+			width: 64px;
+			height: 64px;
+			@include border-radius(50%);
+			overflow: hidden;
+			img {
+				width: 100%;
+			}
+			&:after{ 
+				content: " ";
+				display: inline-block;
+				height: 50px;
+				vertical-align: middle;
+			}
+			i {
+				display: inline-block;
+				font-size: 45px;
+				margin-bottom: -5px;
+				vertical-align: bottom;
+			}
+		}
+		.user {
+			margin: 0px 10px;
+			display: inline-block;
+			vertical-align: top;
+			.name {
+				font-weight: bold;
+			}
+		}
+		@include clear;
+	}
+	.testimonial-content {
+		position: relative;
+		border: 1px solid $border_color;
+		box-shadow: 0px 0px 5px $border_color;
+		padding: 10px;
+		margin-bottom: 25px;
+		.arrow {
+			position: absolute;
+			display: block;
+			border-color: transparent;
+			border-style: solid;
+			bottom: -20px;
+			border-top-color: $border_color;
+			border-right-color: $border_color;
+			content: " ";
+			border-width: 10px;
+			box-sizing: border-box;
+			&:after {
+				content: " ";
+				position: absolute;
+				display: block;
+				border-color: transparent;
+				border-style: solid;
+				bottom: -7px;
+				left: -9px;
+				border-top-color: $white;
+				border-right-color: $white;
+				border-width: 9px;
+				box-sizing: border-box;
+			}
+		}
+	}
+}

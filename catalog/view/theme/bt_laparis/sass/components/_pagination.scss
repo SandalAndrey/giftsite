@@ -1,0 +1,87 @@
+@import '../_main';
+/*pagination*/
+.pagination {
+	margin: 0;
+	> li {
+		&:first-child {
+			> a {
+				@include border-radius(0px);
+			}
+			> span {
+				@include border-radius(0px);
+			}
+		}
+		&:last-child {
+			> a {
+				@include border-radius(0px);
+			}
+			> span {
+				@include border-radius(0px);
+			}
+		}
+		> a {
+			color: $dark_color;
+			border: none;
+			background: transparent;
+			&:hover {
+				color: $text_color;
+				background: transparent;
+				border-color: transparent;
+			}
+			&:focus {
+				color: $text_color;
+				background: transparent;
+				border-color: transparent;
+			}
+		}
+		> span {
+			color: $dark_color;
+			border: none;
+			background: transparent;
+			&:hover {
+				color: $text_color;
+				background: transparent;
+				border-color: transparent;
+			}
+			&:focus {
+				color: $text_color;
+				background: transparent;
+				border-color: transparent;
+			}
+		}
+	}
+	> .active {
+		> a {
+			color: $text_color;
+			font-weight: bold;
+			background: transparent;
+			border-color: transparent;
+			&:hover {
+				color: $text_color;
+				background: transparent;
+				border-color: transparent;
+			}
+			&:focus {
+				color: $text_color;
+				background: transparent;
+				border-color: transparent;
+			}
+		}
+		> span {
+			color: $text_color;
+			font-weight: bold;
+			background: transparent;
+			border-color: transparent;
+			&:hover {
+				color: $text_color;
+				background: transparent;
+				border-color: transparent;
+			}
+			&:focus {
+				color: $text_color;
+				background: transparent;
+				border-color: transparent;
+			}
+		}
+	}
+}

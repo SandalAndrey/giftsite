@@ -1,0 +1,148 @@
+<div id="boss-newslette-{{ module }}">
+  {% if (sidebar) %} 
+  <div class="bt-newsletter box style-2 sidebar cover-bg" {% if (bg_image) %} style="background-image: url('{{ bg_image }}');" {% endif %}>
+    <div class="box-heading">
+      <h2> {{ title }}</h2>
+    </div>
+    <div class="box-content">
+      <div class="sub-title">{{ sub_title }}</div>
+      <form id="subscribe-{{ module }}">
+        <div class="boss-newsletter">
+          <input class="form-control input-new" size="50" type="text" placeholder="{{ text_email }}" name="subscribe_email" id="subscribe_email" />
+        </div>
+        <div class="boss-newslette-result"></div>
+        <div class="buttons">
+          <a class="btn btn-default" onclick="email_subscribe(this);">{{ text_subscribe }}</a>
+          {% if (unsubscribe) %} 
+          <a class="btn btn-default" onclick="email_unsubscribe(this);"><span>{{ entry_unbutton }}</span></a>
+          {% endif %} 
+        </div>
+        <input type="hidden" name="module_id" value="{{ module_id }}" />
+        <input type="hidden" name="subscribe_name" />
+      </form>
+    </div>
+  </div>
+  {% else %} 
+  <div class="bt-newsletter content parallax-bg" {% if (bg_image) %} style="background-image: url('{{ bg_image }}');" {% endif %}>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="title text-center">
+            <h2>{{ title }}</h2>
+            <p>{{ sub_title }}</p>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="newsletter-content">
+            <div id="frm_subscribe">
+              <form id="subscribe-{{ module }}">
+                <div class="input-group boss-newsletter">
+                  <input class="form-control input-new" size="50" type="text" placeholder="{{ text_email }}" name="subscribe_email" id="subscribe_email" />
+                  <span class="input-group-addon"> <a class="" onclick="email_subscribe(this);">{{ text_subscribe }}</a></span> </div>
+                <div class="boss-newslette-result"></div>
+                {% if (unsubscribe) %} 
+                <div class="buttons text-center"> <a class="btn btn-default" onclick="email_unsubscribe(this);"><span>{{ entry_unbutton }}</span></a> </div>
+                {% endif %} 
+                <input type="hidden" name="module_id" value="{{ module_id }}" />
+                <input type="hidden" name="subscribe_name" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %} 
+  <script type="text/javascript"><!--
+function email_subscribe(index){
+	$.ajax({
+		type: 'post',
+		url: 'index.php?route=extension/module/newslettersubscribe/subscribe',
+		dataType: 'json',
+		data: $(index).parents('form').serialize(),
+		success: function (json) {
+			if (json['success']) {
+				$(index).parents('form').find('.boss-newslette-result').html(json['success']);
+			} else {
+				$(index).parents('form').find('.boss-newslette-result').html(json['error']);
+			}
+		}
+	}); 
+}
+function email_unsubscribe(index){
+	$.ajax({
+		type: 'post',
+		url: 'index.php?route=extension/module/newslettersubscribe/unsubscribe',
+		dataType: 'json',
+		data: $(index).parents('form').serialize(),
+		success: function (json) {
+			if (json['success']) {
+				$(index).parents('form').find('.boss-newslette-result').html(json['success']);
+			} else {
+				$(index).parents('form').find('.boss-newslette-result').html(json['error']);
+			}
+		}
+	}); 
+}
+
+$('.boss-newsletter input[name="subscribe_email"]').on('keyup', function(e) {
+	if (e.keyCode == 13) {
+		$(this).parent().find('a').trigger('click');
+	}
+});
+
+$('#subscribe-{{ module }}').on('submit', function(e) {
+	e.preventDefault();
+	email_subscribe();
+});
+//--></script> 
+</div>
+{% if (show_popup) %} 
+<div id="boss-newslette-popup{{ module }}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="bt-newsletter-popup parallax-bg v-padding-70" {% if (popup['background']) %} style="background-image: url('{{ popup['background'] }}');" {% endif %}>
+        <div class="bt-container">
+          <div class="title text-center">
+            <h2>{{ popup['title'] }}</h2>
+            <p>{{ popup['sub_title'] }}</p>
+          </div>
+          <div class="newsletter-content">
+            <div id="frm_subscribe">
+              <form>
+                <div class="col-sm-8 col-sm-offset-2">
+                  <div class="input-group boss-newsletter">
+                    <input class="form-control input-new" size="50" type="text" placeholder="{{ text_email }}" name="subscribe_email" id="subscribe_email" />
+                    <span class="input-group-addon"> <a class="btn btn-primary" onclick="email_subscribe(this);"><i class="fa fa-paper-plane"></i></a></span> </div>
+                  <label class="checkbox">
+                    <input type="checkbox" value="1" name="subscribe_checkbox" id="subscribe_checkbox" onclick="validate()" />
+                    {{ text_not_show }} </label>
+                  <div class="boss-newslette-result"></div>
+                  {% if (unsubscribe) %} 
+                  <div class="buttons text-center"> <a class="btn btn-default" onclick="email_unsubscribe(this);"><span>{{ entry_unbutton }}</span></a> </div>
+                  {% endif %} 
+                </div>
+                <input type="hidden" name="module_id" value="{{ module_id }}" />
+                <input type="hidden" name="subscribe_name" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+$(window).load(function() {
+	$('#boss-newslette-popup{{ module }}').modal('show');
+});
+
+function validate () {
+	if ($('input[name="subscribe_checkbox"]').is(':checked')) { 
+		document.cookie="b_newsletter_popup=disable"; 
+	} else { 
+		document.cookie="b_newsletter_popup=enable;";
+	}
+}
+</script> 
+</div>
+{% endif %} 

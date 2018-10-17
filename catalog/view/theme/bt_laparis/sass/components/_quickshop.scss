@@ -1,0 +1,36 @@
+@import '../_main';
+/*quickshop*/
+.modal-header .close {
+    margin-top: -10px;
+}
+.product-info-qs {
+	&.product-info {
+		margin-bottom: 10px;
+		.description, .price_info {
+			margin-bottom: 15px;
+		}
+		.image-additional {
+			padding: 0;
+			ul li {
+				display: inline-block;
+				vertical-align: top;
+				margin: 0 5px 10px;
+			}
+		} 
+	}
+	.viewdetail {
+		text-align: right;
+		margin-bottom: 20px;
+		a {
+			color: $primary_color;
+			font-size: 12px;
+			font-weight: 700;
+			a:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+	.bt-product-zoom .image {
+		margin-bottom: 20px;
+	}	
+}

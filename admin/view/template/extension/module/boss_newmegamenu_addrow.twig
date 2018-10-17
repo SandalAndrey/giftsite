@@ -1,0 +1,30 @@
+<div id="btnewmenurow">
+	<table class="table table-striped table-bordered table-hover">
+		{% if (rows['menu_id'] is defined ) %} 
+		<tr><td class="left">{{ text_menu_parent }}</td>
+			<td class="left">{{ btform . makeSelectHTML(arrmenuid, 'menu_id','', rows['menu_id']) }}</td></tr>
+		{% endif %} 
+		<tr><td>{{ entry_height }}</td>
+			<td>{{ btform . textField('height',rows['height'] is defined ?rows['height']:'',11,'class="form-control"') }}</td></tr>
+		<tr><td>{{ entry_sort_order }}</td>
+			<td>{{ btform . textField('sort_order',rows['sort_order'] is defined ?rows['sort_order']:'',11,'class="form-control"') }}</td></tr>
+		<tr><td>{{ entry_status }}</td>
+			<td class="left">{{ btform . makeSelectHTML(arrstatus, 'status','',rows['status'] is defined ? rows['status'] : '','class="form-control"') }}</td></tr>
+		<tr><td>{{ entry_bg_color }}</td>
+			<td>{{ btform . textField('bg_color',rows['bg_color'] is defined ?rows['bg_color']:'',11,'class="form-control"') }} 
+				<br />				
+			<span class="help">Get color code at<a target="_blank" href="http://www.colorpicker.com/"> here</a></span>
+			</td>
+		<tr><td>{{ entry_bg_image }}</td>
+			<td class="left"><div class="image">			
+			<a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="{{ rows['thumb'] is defined ?rows['thumb']:no_image }}" alt="" title="" data-placeholder="{{ no_image }}" /></a>
+			<input type="hidden" name="bg_image" value="{{ rows['bg_image'] is defined ?rows['bg_image']:'' }}" id="input-image" />
+            </div></td>
+	</table>
+</div>
+<style>
+.colorpicker{z-index:9999;}
+.ui-dialog, .ui-dialog-content, .ui-widget-content{
+	overflow: visible;
+}
+</style>

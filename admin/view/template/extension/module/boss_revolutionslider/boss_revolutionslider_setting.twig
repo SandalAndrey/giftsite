@@ -1,0 +1,380 @@
+{{ header }}{{ column_left }} 
+{% if (slider_settings is not empty ) %}{% set setting = json_decode(slider_settings['setting'], constant('true')) %}{% endif %}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-slidersetting" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %}
+      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-slidersetting" class="form-horizontal">
+          <div class="module-setting bt-box">
+            <h3 class="bt-mheading">Module Setting</h3>
+            <div class="bt-maccordion">
+              {% set module_row = slider_id %}
+              <table class="table table-striped table-bordered table-hover">
+                <tr>
+                <tr>
+                  <td><label class="col-sm-2 control-label" for="input-name">{{ 'Name' }}</label></td>
+                  <td>
+                    <input type="text" name="module[name]" value="{{ module['name'] is defined ?module['name']:'' }}" placeholder="{{ 'Name' }}" id="input-name" class="form-control"/>
+                    {% if (error_name) %}
+                      <div class="text-danger">{{ error_name }}</div>
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <td><label>{{ entry_status }}</label></td>
+                  <td>{{ btform . makeSelectHTML(arrstatus, 'module[status]','',module['status'] is defined ? module['status'] : '') }}</td>
+                </tr>
+                <tr>
+                  <td><label>{{ 'Slider Layout:' }}</label></td>
+                  <td>
+                    <div class="radio_inner_wrapper">
+                      <input type="radio" id="slider_type_2" value="custom" {{ setting['slider_type'] is defined and setting['slider_type'] == 'custom' ?'checked=checked' : '' }} name="setting[slider_type]">
+                      <label for="slider_type_2" style="cursor:pointer;">Custom</label>
+                    </div>
+                    <div class="radio_inner_wrapper">
+                      <input type="radio" id="slider_type_4" value="fullscreen" {{ setting['slider_type'] is defined and setting['slider_type'] == 'fullscreen' ?'checked=checked' : '' }} name="setting[slider_type]">
+                      <label for="slider_type_4" style="cursor:pointer;">Full Width</label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label>{{ 'Slider Width' }}</label></td>
+                  <td>
+                    {{ btform . textField('setting[slider_width]',setting['slider_width'] is defined ? setting['slider_width'] : '1200',10) }}{% if (error_width) %}
+                      <div class="text-danger">{{ error_width }}</div>
+                    {% endif %}</td>
+                </tr>
+                <tr>
+                  <td><label>{{ 'Slider Height' }}</label></td>
+                  <td>
+                    {{ btform . textField('setting[slider_height]',setting['slider_height'] is defined ? setting['slider_height'] : '500',10) }}{% if (error_height) %}
+                      <div class="text-danger">{{ error_height }}</div>
+                    {% endif %}</td>
+                </tr>
+                <tr>
+                  <td colspan="2"><input type="hidden" name="module[slider_id]" value="{{ slider_id }}"/></td>
+                </tr>
+              </table>
+            </div>
+            <div id="bt-show" class="lp-fullscreen" style="display: block;">
+              <h3 class="bt-mheading">Layout Example</h3>
+              <div class="clear">&nbsp;</div>
+              <div id="bt-show-page">
+                <div class="layout-preshow-text">BROWSER</div>
+                <div id="bt-show-theme">
+                  <div class="layout-preshow-text">PAGE</div>
+                </div>
+                <div id="bt-show-slider">
+                  <div class="layout-preshow-text">SLIDER</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slider-setting">
+            <div class="general-setting bt-box">
+              <h3 class="bt-heading openNav">
+                <div class="bt-arrow"></div>
+                General Setting
+              </h3>
+              <div class="bt-accordion openNav">
+                <table class="table table-striped table-bordered table-hover">
+                  <tbody>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_delay_option_des }}">{{ text_delay }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[delay]',setting['delay'] is defined ? setting['delay'] : '5000',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_startWithSlide_des }}">{{ text_startWithSlide }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[startWithSlide]',setting['startWithSlide'] is defined ? setting['startWithSlide'] : '0',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_touchenabled_des }}">{{ 'Stop Slider Loop:' }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . makeSelectHTML(arronoff, 'setting[stopslider]','',setting['stopslider'] is defined ? setting['stopslider'] : '') }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_startwidth_option_des }}">{{ 'Stop After Loops' }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[stopafterloops]',setting['stopafterloops'] is defined ? setting['stopafterloops'] : '-1',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_startheight_option_des }}">{{ 'Stop At Slide' }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[stopatslide]',setting['stopatslide'] is defined ? setting['stopatslide'] : '-1',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_touchenabled_des }}">{{ text_touchenabled }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . makeSelectHTML(arronoff, 'setting[touchenabled]','',setting['touchenabled'] is defined ? setting['touchenabled'] : '') }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_onhoverstop_des }}">{{ text_onhoverstop }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . makeSelectHTML(arronoff, 'setting[onhoverstop]','',setting['onhoverstop'] is defined ? setting['onhoverstop'] : '') }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_timeline_des }}">{{ text_timeline }}</span></label>
+                    </td>
+                    <td>
+                      {% set timestatus = { 'on' : 'Disabled','off' : 'Enable' } %}
+                      {{ btform . makeSelectHTML(timestatus, 'setting[timeline]','',setting['timeline'] is defined ? setting['timeline'] : '') }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_shadow_des }}">{{ text_shadow }}</span></label>
+                    </td>
+                    <td>
+                      {% set shadow = {"0" : 0,"1" : 1,"2" : 2,"3" : 3 } %}
+                      {{ btform . makeSelectHTML(shadow, 'setting[shadow]','',setting['shadow'] is defined ? setting['shadow'] : '') }}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="nav-setting bt-box">
+              <h3 class="bt-heading">
+                <div class="bt-arrow"></div>
+                Navigation Setting
+              </h3>
+              <div class="bt-accordion">
+                <table class="table table-striped table-bordered table-hover">
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_navigation_type_des }}">{{ text_navigation_type }}</span></label>
+                    </td>
+                    <td>
+                      {% set navigationtypes = { 'bullet' : 'bullet','thumb' : 'thumb', 'none' : 'none' } %}
+                      {{ btform . makeSelectHTML(navigationtypes, 'setting[navigationtype]','',setting['navigationtype'] is defined ? setting['navigationtype'] : '') }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_navigation_arrow_des }}">{{ text_navigation_arrow }}</span></label>
+                    </td>
+                    <td>
+                      {% set navigationarrows = { 'nexttobullets' : 'nexttobullets','solo' : 'solo' } %}
+                      {{ btform . makeSelectHTML(navigationarrows, 'setting[navigationarrow]','',setting['navigationarrow'] is defined ? setting['navigationarrow'] : '') }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_navigation_style_des }}">{{ text_navigation_style }}</span></label>
+                    </td>
+                    <td>
+                      {% set navigationstyles = {"preview1" : "preview1", "preview2" : "preview2","preview3" : "preview3","preview4" : "preview4","round" : "round", "square" : "square", "round-old" : "round-old", "square-old" : "square-old", "navbar-old" : "navbar-old" } %}
+                      {{ btform . makeSelectHTML(navigationstyles, 'setting[navigationstyle]','',setting['navigationstyle'] is defined ? setting['navigationstyle'] : '') }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_navigationhalign_des }}">{{ text_navigationhalign }}</span></label>
+                    </td>
+                    <td>
+                      {% set navigationhaligns = { 'left' : 'left','center' : 'center','right' : 'right' } %}
+                      {{ btform . makeSelectHTML(navigationhaligns, 'setting[navigationhalign]','',setting['navigationhalign'] is defined ? setting['navigationhalign'] : '') }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_navigationvalign_des }}">{{ text_navigationvalign }}</span></label>
+                    </td>
+                    <td>
+                      {% set navigationvaligns = { 'top' : 'top','center' : 'center','bottom' : 'bottom' } %}
+                      {{ btform . makeSelectHTML(navigationvaligns, 'setting[navigationvalign]','',setting['navigationvalign'] is defined ? setting['navigationvalign'] : '') }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_navigationhoffset_des }}">{{ text_navigationhoffset }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[navigationhoffset]',setting['navigationhoffset'] is defined ? setting['navigationhoffset'] : '0',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_navigationvoffset_des }}">{{ text_navigationvoffset }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[navigationvoffset]',setting['navigationvoffset'] is defined ? setting['navigationvoffset'] : '0',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_soloarrowlefthalign_des }}">{{ text_soloarrowlefthalign }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . makeSelectHTML(navigationhaligns, 'setting[soloarrowlefthalign]','',setting['soloarrowlefthalign'] is defined ? setting['soloarrowlefthalign'] : '') }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_soloarrowleftvalign_des }}">{{ text_soloarrowleftvalign }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . makeSelectHTML(navigationvaligns, 'setting[soloarrowleftvalign]','',setting['soloarrowleftvalign'] is defined ? setting['soloarrowleftvalign'] : '') }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_soloarrowlefthoffset_des }}">{{ text_soloarrowlefthoffset }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[soloarrowlefthoffset]',setting['soloarrowlefthoffset'] is defined ? setting['soloarrowlefthoffset'] : '0',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_soloarrowleftvoffset_des }}">{{ text_soloarrowleftvoffset }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[soloarrowleftvoffset]',setting['soloarrowleftvoffset'] is defined ? setting['soloarrowleftvoffset'] : '0',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_soloarrowrighthalign_des }}">{{ text_soloarrowrighthalign }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . makeSelectHTML(navigationhaligns, 'setting[soloarrowrighthalign]','',setting['soloarrowrighthalign'] is defined ? setting['soloarrowrighthalign'] : '') }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_soloarrowrightvalign_des }}">{{ text_soloarrowrightvalign }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . makeSelectHTML(navigationvaligns, 'setting[soloarrowrightvalign]','',setting['soloarrowrightvalign'] is defined ? setting['soloarrowrightvalign'] : '') }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_soloarrowrighthoffset_des }}">{{ text_soloarrowrighthoffset }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[soloarrowrighthoffset]',setting['soloarrowrighthoffset'] is defined ? setting['soloarrowrighthoffset'] : '0',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_soloarrowrightvoffset_des }}">{{ text_soloarrowrightvoffset }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[soloarrowrightvoffset]',setting['soloarrowrightvoffset'] is defined ? setting['soloarrowrightvoffset'] : '0',30) }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="thumb-setting bt-box">
+              <h3 class="bt-heading">
+                <div class="bt-arrow"></div>
+                Thumbnails Setting
+              </h3>
+              <div class="bt-accordion">
+                <table class="table table-striped table-bordered table-hover">
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_timehidethumbnail_des }}">{{ text_timehidethumbnail }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[timehidethumbnail]',setting['timehidethumbnail'] is defined ? setting['timehidethumbnail'] : '0',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_thumbnailwidth_des }}">{{ text_thumbnailwidth }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[thumbnailwidth]',setting['thumbnailwidth'] is defined ? setting['thumbnailwidth'] : '0',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_thumbnailheight_des }}">{{ text_thumbnailheight }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[thumbnailheight]',setting['thumbnailheight'] is defined ? setting['thumbnailheight'] : '0',30) }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_thumbamount_des }}">{{ text_thumbamount }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[thumbamount]',setting['thumbamount'] is defined ? setting['thumbamount'] : '0',30) }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="mobile-setting bt-box">
+              <h3 class="bt-heading">
+                <div class="bt-arrow"></div>
+                Mobile Setting
+              </h3>
+              <div class="bt-accordion">
+                <table class="table table-striped table-bordered table-hover">
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_hidecapptionatlimit_des }}">{{ text_hidecapptionatlimit }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[hidecapptionatlimit]',setting['hidecapptionatlimit'] is defined ? setting['hidecapptionatlimit'] : '0',30) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_hideallcapptionatlimit_des }}">{{ text_hideallcapptionatlimit }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[hideallcapptionatlimit]',setting['hideallcapptionatlimit'] is defined ? setting['hideallcapptionatlimit'] : '0',30) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label class="control-label"><span data-toggle="tooltip" title="" data-original-title="{{ text_hideslideratlimit_des }}">{{ text_hideslideratlimit }}</span></label>
+                    </td>
+                    <td>
+                      {{ btform . textField('setting[hideslideratlimit]',setting['hideslideratlimit'] is defined ? setting['hideslideratlimit'] : '0',30) }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+    $(".bt-heading").click(function () {
+        $(this).toggleClass('openNav');
+        $(this).next('.bt-accordion').toggleClass('openNav');
+    });
+    //--></script>
+{{ footer }}

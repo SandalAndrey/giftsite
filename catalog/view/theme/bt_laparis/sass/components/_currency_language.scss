@@ -1,0 +1,66 @@
+@import '../_main';
+/*currency - language*/
+#form-currency,	 #form-language {
+	position: relative;
+	.btn-group > .btn {
+		color: $header_nav_color;
+		font-weight: normal;
+		border: none;
+		padding: 0px;
+		height: auto;
+		@include font(12px);
+		text-transform: capitalize;
+		background-color: transparent;
+		&:hover, &:focus {
+			background-color: transparent;
+			text-decoration: none;
+		}
+		i {
+			margin-left: 5px;
+		}
+	}
+	.dropdown-menu {
+		@include border-radius(0px);
+		.btn {
+			color: $link_color;
+			padding: 10px;
+			text-align: initial;
+			font-weight: 400;
+			border: none;
+			text-transform: capitalize;
+			background-color: transparent;
+			span {
+				float: left;
+				+ span {
+					float: right;
+				}
+			}
+			&:hover {
+				background-color: transparent;
+				color: $link_color_hover;
+				text-decoration: none;
+			}
+		}
+	}
+	&:hover {
+		.dropdown-menu {
+			opacity: 1;
+			transform: scale(1);
+			-webkit-transform: scale(1);
+			-moz-transform: scale(1);
+			-ms-transform: scale(1);
+		}
+	}
+}
+#form-currency {
+	.btn {
+		strong {
+			vertical-align: baseline;
+		}
+	}
+}
+#form-language {
+	.btn img {
+		vertical-align: baseline;
+	}
+}

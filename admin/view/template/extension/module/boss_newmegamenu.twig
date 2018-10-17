@@ -1,0 +1,474 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-bestseller" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+  {% if (error_warning) %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+  {% if (success) %}
+	<div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+	</div>
+	{% endif %}
+  <div class="loading" style="position:fixed;top:50%;left:50%"></div>
+  <div class="panel panel-default">
+      <div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+    </div>
+    <div class="panel-body">
+			<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-boss-megamenu" class="form-horizontal">		<div class="form-group">
+				<div class="form-group">
+				<label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+				<div class="col-sm-10">
+				  <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+				  {% if (error_name) %}
+				  <div class="text-danger">{{ error_name }}</div>
+				  {% endif %}
+				</div>
+			  </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+				<div class="col-sm-10">
+				  {{ btform . makeSelectHTML(arrstatus, 'status','',status is defined ? status : '') }}
+				</div>
+			</div>
+			{% if (module_id is defined and module_id) %}
+			<ul class="nav nav-tabs" id="module">
+				<li><a href="#menusetting" data-toggle="tab">{{ 'Menu Setting' }}</a></li>
+				<li><a href="#modulesetting" data-toggle="tab">{{ 'Module Setting' }}</a></li>
+			</ul>
+			<div class="tab-content">
+            <div class="tab-pane active" id="menusetting">
+				<div id="success" class="success"> </div>
+				<ul class="ui-sortable" style="margin-left: -30px;">
+					{% if (menus is not empty ) %}
+					{% set item = 0 %}
+					{% for menu in menus %}
+						<li id="menuorder_{{ menu['menu_id'] }}" class="parent">
+							<div class="menu-title">
+								<p class="bt-open"><strong>{{ menu['title'] is not empty ?menu['title']:text_title_default }}</strong></p>
+								<p>Column: {{ menu['num_column'] }}</p>
+								<p>Link: <span {{strlen(menu['url'])>30?'class="bthidden"':'' }}>{{ menu['url'] }}</span>{% if ((strlen(menu['url']))>30) %}<span class="box_hover">{{ menu['url'] }}</span>{% endif %}</p>
+								<p>Label: {{ menu['label'] }}</p>
+								<p>Icon: {{ menu['icon_class_status']?menu['icon_class']:'<img src="'~menu['icon']~'"' }}</p>
+								<div class="bt-quick-access">
+									<span>Status: <strong>{{ menu['status']?'Enable':'Disable' }}</strong> &nbsp;&nbsp;</span>
+									<a onclick="addMenu('{{ menu['menu_id'] }}','{{ module_id }}');"><i class="fa fa-pencil"></i></a>
+									<i class="fa fa-minus-circle" onclick="deleteMenu('{{ menu['menu_id'] }}','{{ module_id }}');"></i>
+								</div>
+							</div>
+							<div class="bt-sub-menu">
+								{% if (menu['menurow'] is not empty ) %}
+								<ul class="bt-menu-row" style="margin-left: -40px;">
+									{% set menurow = menu['menurow'] %}
+									{% for row in menurow %}
+										<li id="roworder_{{ row['row_id'] }}" class="sub-row">
+											<div class="bt-sub-menu">
+												{% if (row['columns'] is not empty ) %}
+												<ul class="bt-menu-column" style="margin-left: -40px;">
+													{% set menucolumn = row['columns'] %}
+													{% for column in menucolumn %}
+													<li class="col-{{ column['num_column'] }}" id="columnorder_{{ column['column_id'] }}">
+														<div class="column-desc">
+															<p>Column: #{{ column['column_id'] }}</p>
+															<p>Status: <b>{{ column['status']?'Enable':'Disable' }}</b></p>
+															<p>Type: {{ column['type'] }}</p>
+															<p>Num Column: {{ column['num_column'] }}</p>
+														</div>
+														<div class="bt-columnquick-access">
+															<a onclick="addMenuColumn('{{ row['row_id'] }}','{{ column['column_id'] }}','{{ module_id }}');"><i class="fa fa-pencil"></i></a>
+
+															<i class="fa fa-minus-circle" onclick="deleteMenuColumn('{{ column['column_id'] }}','{{ module_id }}');"></i>
+
+														</div>
+													</li>
+													{% endfor %}
+													<li id="rowid_{{ row['row_id'] }}" style="display:none;"></li>
+												</ul>
+												{% endif %}
+												<div class="bt-add" style="float: left;"><a onclick="addMenuColumn('{{ row['row_id'] }}','','{{ module_id }}');" class="btn btn-info">{{ button_add_column }}</a></div>
+											</div>
+											<div class="bt-rowquick-access">
+												<span>Row: #{{ row['row_id'] }}&nbsp;&nbsp; Status: <strong>{{ row['status']?'Enable':'Disable' }}</strong> &nbsp;&nbsp;</span>
+												<a onclick="addMenuRow('{{ menu['menu_id'] }}','{{ row['row_id'] }}','{{ module_id }}');"><i class="fa fa-pencil"></i></a>
+												<i class="fa fa-minus-circle" onclick="deleteMenuRow('{{ row['row_id'] }}','{{ module_id }}');"></i>
+											</div>
+										</li>
+									{% endfor %}
+									<li id="menuid_{{ menu['menu_id'] }}" style="display:none;"></li>
+								</ul>
+								{% endif %}
+								<div class="bt-add"><a onclick="addMenuRow('{{ menu['menu_id'] }}','','{{ module_id }}');" class="btn btn-success">{{ button_add_row }}</a></div>
+							</div>
+						</li>
+					{% set item = item + 1 %}{% endfor %}
+					{% endif %}
+					<li><a onclick="addMenu('','{{ module_id }}');" class="btn btn-primary">{{ button_add_menu }}</a></li>
+				</ul>
+				<div id="formdata" title="{{ menu_form }}"></div>
+			</div>
+
+            <div class="tab-pane" id="modulesetting">
+				{% set module_row = 0 %}
+				<table class="table">
+					<tr><td>{{ entry_menu_width }}</td>
+						<td>{{ btform . textField('boss_newmegamenu_module[menu_width]',module['menu_width'] is defined ? module['menu_width'] : '',3) }}</td></tr>
+					<tr><td>{{ entry_num_column }}</td>
+						<td class="left">{{ btform . makeSelectHTML(arrcolumns, 'boss_newmegamenu_module[num_column]','',module['num_column'] is defined ? module['num_column'] : '') }}</td></tr>
+
+						 <input type="hidden" name="boss_newmegamenu_module[module_id]" value="{{ module_id is defined ? module_id : ''}}" />
+				</table>
+			</div>
+			</div>
+			{% else %}
+				<input type="hidden" name="boss_newmegamenu_module[menu_width]" value="" />
+				<input type="hidden" name="boss_newmegamenu_module[num_column]" value="1" />
+			{% endif %}
+		</form>
+    </div>
+  </div>
+</div>
+</div>
+
+<script type="text/javascript"><!--
+$('#module li:first-child a').tab('show');
+$(document).ready(function(){
+
+	$('#menusetting > ul li.parent p ').click(function(){
+		$(this).parent().parent().toggleClass('openMenu');
+	});
+
+    $("#success").hide();
+
+	$(function() {
+		$("#menusetting ul").sortable({ opacity: 0.8, cursor: 'move', update: function() {
+			var order = $(this).sortable("serialize") + '&update=update';
+			$.post("index.php?route=extension/module/boss_newmegamenu/updateSortMenu&user_token={{ user_token }}", order, function(theResponse){
+				$("#success").html(theResponse);
+				$("#success").slideDown('slow');
+				slideout();
+			});
+		{{ '}}' }});
+
+		$("#menusetting ul ul.bt-menu-row").sortable({ opacity: 0.8, cursor: 'move', update: function() {
+			var roworder = $(this).sortable("serialize") + '&update=update';
+			$.post("index.php?route=extension/module/boss_newmegamenu/updateSortRow&user_token={{ user_token }}", roworder, function(theResponse){
+				$("#success").html(theResponse);
+				$("#success").slideDown('slow');
+				slideout();
+			});
+		{{ '}}' }});
+
+		$("#menusetting ul ul.bt-menu-column").sortable({ opacity: 0.8, cursor: 'move', update: function() {
+			var columnorder = $(this).sortable("serialize") + '&update=update';
+			$.post("index.php?route=extension/module/boss_newmegamenu/updateSortColumn&user_token={{ user_token }}", columnorder, function(theResponse){
+				$("#success").html(theResponse);
+				$("#success").slideDown('slow');
+				slideout();
+			});
+		{{ '}}' }});
+
+	});
+
+});
+
+function summernote() {
+	$('[data-toggle=\'summernote\']').each(function() {
+		var element = this;
+
+		if ($(this).attr('data-lang')) {
+			$('head').append('<script type="text/javascript" src="view/javascript/summernote/lang/summernote-' + $(this).attr('data-lang') + '.js"></script>');
+		}
+
+		$(element).summernote({
+			lang: $(this).attr('data-lang'),
+			disableDragAndDrop: true,
+			height: 300,
+			emptyPara: '',
+			codemirror: { // codemirror options
+				mode: 'text/html',
+				htmlMode: true,
+				lineNumbers: true,
+				theme: 'monokai'
+			},
+			fontsize: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '24', '30', '36', '48' , '64'],
+			toolbar: [
+				['style', ['style']],
+				['font', ['bold', 'underline', 'clear']],
+				['fontname', ['fontname']],
+				['fontsize', ['fontsize']],
+				['color', ['color']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['table', ['table']],
+				['insert', ['link', 'image', 'video']],
+				['view', ['fullscreen', 'codeview', 'help']]
+			],
+			popover: {
+           		image: [
+					['custom', ['imageAttributes']],
+					['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+					['float', ['floatLeft', 'floatRight', 'floatNone']],
+					['remove', ['removeMedia']]
+				],
+			},
+			buttons: {
+    			image: function() {
+					var ui = $.summernote.ui;
+
+					// create button
+					var button = ui.button({
+						contents: '<i class="note-icon-picture" />',
+						tooltip: $.summernote.lang[$.summernote.options.lang].image.image,
+						click: function () {
+							$('#modal-image').remove();
+
+							$.ajax({
+								url: 'index.php?route=common/filemanager&user_token=' + getURLVar('user_token'),
+								dataType: 'html',
+								beforeSend: function() {
+									$('#button-image i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
+									$('#button-image').prop('disabled', true);
+								},
+								complete: function() {
+									$('#button-image i').replaceWith('<i class="fa fa-upload"></i>');
+									$('#button-image').prop('disabled', false);
+								},
+								success: function(html) {
+									$('body').append('<div id="modal-image" class="modal">' + html + '</div>');
+
+									$('#modal-image').modal('show');
+
+									$('#modal-image').delegate('a.thumbnail', 'click', function(e) {
+										e.preventDefault();
+
+										$(element).summernote('insertImage', $(this).attr('href'));
+
+										$('#modal-image').modal('hide');
+									});
+								}
+							});
+						}
+					});
+
+					return button.render();
+				}
+  			}
+		});
+	});
+}
+
+function slideout(){
+	setTimeout(function(){
+		$("#success").slideUp("slow", function () {});
+
+	}, 3000);
+}
+
+function addMenu(id,module_id){
+	$.ajax({
+		url: 'index.php?route=extension/module/boss_newmegamenu/addMenu&user_token={{ user_token }}&module_id='+module_id+'&menu_id='+id,
+		dataType: 'json',
+		beforeSend: function() {
+			$('.loading').html('<span class="wait">&nbsp;<img src="../admin/view/image/loading.gif" alt="" /></span>');
+		},
+		complete: function() {
+			$('.wait').remove();
+
+		},
+
+		success: function(json) {
+			if (json['output']) {
+				$( "#formdata" ).html(json['output']);
+				$( "#formdata" ).dialog({
+					width: 790 ,
+					buttons:[{ text: "Save",
+								click: function() {saveMenu(id,module_id);}
+							 },
+							 {  text: "Cancel",
+								click: function() { $(this).dialog("close");}
+							}]
+				});
+				$( ".ui-dialog" ).css({'z-index': '1050', });
+			}
+		}
+	});
+}
+
+function addMenuRow(menu_id,row_id,module_id){
+	$.ajax({
+		url: 'index.php?route=extension/module/boss_newmegamenu/addMenuRow&user_token={{ user_token }}&module_id='+module_id+'&row_id='+row_id,
+		dataType: 'json',
+		beforeSend: function() {
+			$('.loading').html('<span class="wait">&nbsp;<img src="../admin/view/image/loading.gif" alt="" /></span>');
+		},
+		complete: function() {
+			$('.wait').remove();
+		},
+		success: function(json) {
+			if (json['output']) {
+				$( "#formdata" ).html(json['output']);
+				var initLayout = function() {
+					$('#colorSelector').ColorPicker({
+						onSubmit: function(hsb, hex, rgb, el) {
+							$(el).val(hex);
+							$(el).ColorPickerHide();
+						},
+						onBeforeShow: function () {
+							$(this).ColorPickerSetColor(this.value);
+						}
+					})
+					.bind('keyup', function(){
+						$(this).ColorPickerSetColor(this.value);
+					});
+				};
+				EYE.register(initLayout, 'init');
+
+				$( "#formdata" ).dialog({
+					width: 790 ,
+					buttons:[{ text: "Save",
+								click: function() {saveMenuRow(menu_id,row_id,module_id);}
+							 },
+							 {  text: "Cancel",
+								click: function() { $(this).dialog("close");}
+							}]
+				});
+			}
+		}
+	});
+}
+
+function addMenuColumn(row_id,column_id,module_id){
+	$.ajax({
+		url: 'index.php?route=extension/module/boss_newmegamenu/addMenuColumn&user_token={{ user_token }}&module_id='+module_id+'&column_id='+column_id+'&row_id='+row_id,
+		dataType: 'json',
+		beforeSend: function() {
+			$('.loading').html('<span class="wait">&nbsp;<img src="../admin/view/image/loading.gif" alt="" /></span>');
+		},
+		complete: function() {
+			$('.wait').remove();
+		},
+		success: function(json) {
+			if (json['output']) {
+				$( "#formdata" ).html(json['output']);
+				summernote();
+				$( "#formdata" ).dialog({
+					width: 790 ,
+					buttons:[{ text: "Save",
+								click: function() {saveMenuColumn(row_id,column_id,module_id);}
+							 },
+							 {  text: "Cancel",
+								click: function() { $(this).dialog("close");}
+							}]
+				});
+				$( ".ui-dialog" ).css({'z-index': '1050', });
+			}
+		}
+	});
+}
+
+function saveMenu(id,module_id){
+	$.ajax({
+		url: 'index.php?route=extension/module/boss_newmegamenu/saveMenu&user_token={{ user_token }}&module_id='+module_id+'&menu_id='+id,
+		type: 'post',
+		data: $('#btnewmenu input[type=\'text\'], #btnewmenu input[type=\'hidden\'], #btnewmenu select'),
+		dataType: 'json',
+		success: function(json) {
+			$( "#formdata" ).dialog("close");
+			location = json['redirect'];
+
+		}
+	});
+}
+
+function saveMenuRow(menu_id,row_id,module_id){
+	$.ajax({
+		url: 'index.php?route=extension/module/boss_newmegamenu/saveMenuRow&user_token={{ user_token }}&module_id='+module_id+'&menu_id='+menu_id+'&row_id='+row_id,
+		type: 'post',
+		data: $('#btnewmenurow input[type=\'text\'], #btnewmenurow input[type=\'hidden\'], #btnewmenurow select'),
+		dataType: 'json',
+		success: function(json) {
+			$( "#formdata" ).dialog("close");
+			location = json['redirect'];
+
+		}
+	});
+}
+
+function saveMenuColumn(row_id,column_id,module_id){
+	$.ajax({
+		url: 'index.php?route=extension/module/boss_newmegamenu/saveMenuColumn&user_token={{ user_token }}&module_id='+module_id+'&row_id='+row_id+'&column_id='+column_id,
+		type: 'post',
+		data: $('#btnewmenucolumn input[type=\'text\'], #btnewmenucolumn input[type=\'checkbox\']:checked,#btnewmenucolumn textarea, #btnewmenucolumn input[type=\'radio\']:checked, #btnewmenucolumn input[type=\'hidden\'], #btnewmenucolumn select'),
+		dataType: 'json',
+		success: function(json) { //alert(json['test']['content_text'][1]);
+			$( "#formdata" ).dialog("close");
+			location = json['redirect'];
+
+		}
+	});
+}
+
+function deleteMenu(id,module_id){
+	if (!confirm('{{ text_confirm }}')) {
+		return false;
+	}else{
+		$.ajax({
+			url: 'index.php?route=extension/module/boss_newmegamenu/deleteMenu&user_token={{ user_token }}&module_id='+module_id+'&menu_id='+id,
+			async:false,
+			type: 'post',
+			dataType: 'json',
+			success: function(json) {
+				location = json['redirect'];
+			}
+		});
+	}
+}
+
+function deleteMenuRow(id,module_id){
+	if (!confirm('{{ text_confirm }}')) {
+		return false;
+	}else{
+		$.ajax({
+			url: 'index.php?route=extension/module/boss_newmegamenu/deleteMenuRow&user_token={{ user_token }}&module_id='+module_id+'&row_id='+id,
+			async:false,
+			type: 'post',
+			dataType: 'json',
+			success: function(json) {
+				location = json['redirect'];
+			}
+		});
+	}
+}
+
+function deleteMenuColumn(id,module_id){
+	if (!confirm('{{ text_confirm }}')) {
+		return false;
+	}else{
+		$.ajax({
+			url: 'index.php?route=extension/module/boss_newmegamenu/deleteMenuColumn&user_token={{ user_token }}&module_id='+module_id+'&column_id='+id,
+			async:false,
+			type: 'post',
+			dataType: 'json',
+			success: function(json) {
+				location = json['redirect'];
+			}
+		});
+	}
+}
+//--></script>
+
+{{ footer }}

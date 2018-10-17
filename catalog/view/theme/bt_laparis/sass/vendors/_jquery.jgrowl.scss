@@ -1,0 +1,189 @@
+@import '../_main';
+
+div {
+	&.jGrowl {
+		z-index: 9999;
+		color: $primary_color;
+		font-size: 12px;
+		position: absolute;
+		&.top-left {
+			left: 0;
+			top: 0;
+		}
+		&.top-right {
+			right: 0;
+			top: 50px;
+		}
+		&.bottom-left {
+			left: 0;
+			bottom: 0;
+		}
+		&.bottom-right {
+			right: 0;
+			bottom: 0;
+		}
+		&.center {
+			top: 0;
+			width: 50%;
+			left: 25%;
+		}
+		div {
+			&.jGrowl-notification {
+				zoom: 1;
+				width: 280px;
+				margin-top: 5px;
+				margin-bottom: 5px;
+				font-size: 1em;
+				text-align: left;
+				display: none;
+				border: 1px solid $silver_border;
+				overflow: hidden;
+				background-color: $white;
+				box-shadow: 0 5px 10px 5px $black_10;
+				position: relative;
+				margin: 10px;
+				min-height: 40px;
+				div {
+					&.jGrowl-header {
+						font-size: 14px;
+						font-weight: 400;
+						color: $primary_color;
+						padding: 8px 15px;
+						border-bottom: 1px solid $mercury;
+						text-transform: uppercase;
+						.right-to-left & {
+							text-align: right;
+						}
+					}
+					&.jGrowl-message {
+						padding: 15px;
+						overflow: hidden;
+						.right-to-left & {
+							text-align: right;
+						}
+						img {
+							float: left;
+							margin-right: 15px;
+							.right-to-left & {
+								float: right;
+								margin-right: 0;
+								margin-left: 15px;
+							}
+						}
+						h3 {
+							font-size: 14px;
+							font-weight: 400;
+							line-height: 22px;
+							text-transform: none;
+							color: $color_storm_dust_approx;
+							margin: 0;
+							overflow: hidden;
+							a {
+								font-weight: 400;
+								text-decoration: none;
+								color: $primary_color;
+								&:hover {
+									text-decoration: underline;
+								}
+							}
+						}
+					}
+					&.jGrowl-close {
+						cursor: pointer;
+						display: inline-block;
+						float: right;
+						font-size: 18px;
+						line-height: 24px;
+						font-weight: bold;
+						height: 24px;
+						width: 24px;
+						z-index: 99;
+						position: absolute;
+						right: 5px;
+						top: 5px;
+						color: $white;
+						background-color: $primary_color;
+						border-radius: 50%;
+						text-align: center;
+						&:hover {
+							background-color: $secondary_color;
+							color: $white;
+						}
+						.right-to-left & {
+							left: 5px;
+							right: auto;
+						}
+					}
+				}
+				.jGrowl-button .buttons {
+					margin: 0;
+					background: $primary_color;
+					padding: 15px;
+					.btn {
+						background-color: transparent;
+						border: 1px solid $white;
+						width: 48%;
+						padding-left: 15px;
+						padding-right: 15px;
+						float: left;
+						color: $white;
+						text-transform: uppercase;
+						&:hover {
+							background-color: $white;
+							color: $primary_color;
+							border-color: $white;
+						}
+						+ .btn {
+							float: right;
+						}
+					}
+				}
+			}
+			&.jGrowl-closer {
+				zoom: 1;
+				width: 280px;
+				margin-top: 5px;
+				margin-bottom: 5px;
+				font-size: 1em;
+				text-align: left;
+				display: none;
+				border: 1px solid $silver_border;
+				overflow: hidden;
+				background-color: $white;
+				box-shadow: 0 5px 10px 5px $black_10;
+				position: relative;
+				margin: 10px;
+				padding-top: 4px;
+				padding-bottom: 4px;
+				cursor: pointer;
+				font-size: .9em;
+				font-weight: bold;
+				text-align: center;
+				color: $text_color;
+				text-transform: uppercase;
+				font-family: $font_0, $font_1;
+				&:hover {
+					color: $primary_color;
+				}
+			}
+		}
+	}
+	&.center div {
+		&.jGrowl-notification {
+			margin-left: auto;
+			margin-right: auto;
+		}
+		&.jGrowl-closer {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+}
+@media print {
+	div.jGrowl {
+		display: none;
+	}
+}
+body > div.jGrowl {
+	position: fixed;
+}

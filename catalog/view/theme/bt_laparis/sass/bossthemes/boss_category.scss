@@ -1,0 +1,73 @@
+@import '../_main';
+/*bt-category*/
+.bt-category {
+	border: none;
+	.box-heading {
+		h2 {
+			@include font1(13px);
+			font-weight: 600;
+			line-height: 1;
+			text-transform: uppercase;
+			padding-bottom: 15px;
+			margin-bottom: 10px;
+			border-bottom: 1px dotted $text_color;
+		}
+	}
+	.box-category {
+		li {
+			position: relative;
+			a {
+				color: $text_color;
+				text-transform: capitalize;
+				display: inline-block;
+				font-size: 13px;
+				text-transform: uppercase;
+				&:hover, &.active {
+					background-color: transparent;
+					font-weight: 600;
+				}
+			}
+			> .plus-minus {
+				&:before {
+					content: "-";
+					margin-right: 7px;
+				}
+			}
+			.item_child {
+				display: none;
+				li {
+					a{
+						border: none;
+						padding: 7px 0px;
+					}
+				}
+			}
+			&.cutom-parent-li {
+				> .plus-minus {
+					cursor: pointer;
+					&:before {
+						content: "+";
+					}
+				}
+			}
+			&.expand {
+				> .plus-minus {
+					&:before {
+						content: "-";
+					}
+				}
+			}
+		}
+		> li {
+			> a {
+				position: relative;
+				padding: 7px 0px;
+			}
+			> ul {
+				li > ul {
+					padding-left: 18px;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,80 @@
+@import '../_main';
+/*module*/
+.box {
+	margin-bottom: 50px;
+	.box-heading {
+		text-transform: uppercase;
+	}
+	.box-description {
+		text-align: center;
+		text-transform: initial;
+		font-size: 12px;
+		a {
+			text-decoration: underline;
+			font-weight: 600;
+		}
+	}
+	.box-content {
+		@include clear;
+	}
+	&.style-1 {
+		margin-bottom: 100px;
+		.box-heading {
+			display: flex;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			align-items: center;
+			margin-bottom: 40px;
+			h2 {
+				height: 20px;
+				margin: 0px;
+				padding: 0px;
+				font-weight: 600;
+				text-align: center;
+				@include font1(20px);
+				line-height: 1.12;
+			}
+			h2 + .box-description {
+				margin-top: 15px;
+			}
+			&:before, &:after {
+				content: " ";
+				border-top: 1px dotted $text_color;
+				height: 1px;
+				-webkit-box-flex: 1;
+				-ms-flex: 1 1 auto;
+				flex: 1 1 auto;
+			}
+			&:before {
+				margin-right: 25px;
+			}
+			&:after {
+				margin-left: 25px;
+			}
+		}
+	}
+	&.style-2 {
+		margin-bottom: 40px;
+		.box-heading {
+			h2 {
+				@include font1(13px);
+				font-weight: 600;
+				line-height: 1;
+				text-transform: uppercase;
+				padding-bottom: 20px;
+				margin-bottom: 20px;
+				border-bottom: 1px dotted $text_color;
+			}
+		}
+		.box-content {
+			
+		}
+	}
+}
+.bt-row {
+	&:before, &:after {
+		content: " ";
+		display: block;
+		clear: both;
+	}
+}

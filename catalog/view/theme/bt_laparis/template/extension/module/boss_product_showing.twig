@@ -1,0 +1,39 @@
+<div class="bt-product-showing box style-1">
+  <div class="box-content">
+    <div class="row product-content">
+      <div class="col-lg-3 md-lg-3 hidden-sm hidden-xs">
+        <div class="attribute">
+          {% for attribute in attributes %} 
+          <div class="attribute-item">
+            {% if (attribute['image']) %} 
+            <span class="icon"><img src="{{ attribute['image'] }}" alt="{{ attribute['name'] }}" /></span>
+            {% endif %} 
+            <span>{{ attribute['name'] }}</span> </div>
+          {% endfor %} 
+        </div>
+      </div>
+      <div class="col-lg-6 md-lg-6 col-sm-5">
+        <div class="image"><a href="{{ href }}" title="{{ name }}"><img src="{{ image }}" class="img-responsive" alt="{{ heading_title }}" /> </a></div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-7">
+        <div class="product-thumb">
+          <h2>{{ heading_title }}</h2>
+          <p class="price">
+            {% if (not special) %} 
+            {{ price }} 
+            {% else %} 
+            <span class="price-new">{{ special }}</span> <span class="price-old">{{ price }}</span>
+            {% endif %} 
+            {% if (tax) %} 
+            <span class="price-tax">{{ text_tax }} {{ tax }}</span>
+            {% endif %} 
+          </p>
+          <div class="description">{{ description }}</div>
+          <div class="buttons"> <a href="{{ href }}" title="{{ name }}" class="btn btn-primary btn-block">{{ button_product_detail }}</a>
+            <button type="button" onclick="btadd.cart('{{ product_id }}', '{{ minimum }}');" class="btn btn-primary btn-block">{{ button_shop_now }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

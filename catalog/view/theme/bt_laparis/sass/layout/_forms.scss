@@ -1,0 +1,119 @@
+@import '../_main';
+/*form*/
+.form-control {
+	background-color: $white;
+	border-color: $input_border_color;
+	background-image: none;
+	@include border-radius(0px);
+	color: $input_color;
+	display: block;
+	@include font(13px);
+	line-height: 16px;
+	height: 40px;
+	margin: 0px;
+	padding: 11px 10px;
+	vertical-align: middle;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	&:hover, &:active, &:focus {
+		border-color: $input_border_color_hover;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+}
+.form-group {
+	.control-label {
+		margin-bottom: 10px;
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+}
+.input-group {
+	input {
+		font-size: 12px;
+	}
+	select {
+		font-size: 12px;
+		
+	}
+	.dropdown-menu {
+		font-size: 12px;
+	}
+	.popover {
+		font-size: 12px;
+	}
+	.form-control {
+		border-color: $input_border_color_hover;
+		@include border-radius(0px);
+		height: 38px;
+		font-weight: normal;
+	}
+	.input-group-addon {
+		border-color: $input_border_color_hover;
+		color: $input_color;
+		font-size: 12px;
+		height: 38px;
+		@include border-radius(0px);
+	}
+	.input-group-addon+.form-control{
+		margin-top: 0px;
+	}
+	.input-group-btn {
+		.btn, button {
+			margin-left: -1px;
+			height: 38px;
+			padding: 10px;
+			&.btn-default {
+				border-width: 1px;
+				border-color: $input_border_color_hover;
+				color: $input_color;
+			}
+		}
+	}
+}
+.radio {
+	margin-top: 0px;
+	margin-bottom: 10px;
+	input[type="radio"] {
+		@extend %extend_radio_checkbox;
+	}
+	label {
+		padding-left: 0;
+		font-size: 13px;
+	}
+	+ .radio {
+		margin-top: 0px;
+		margin-bottom: 10px;
+	}
+}
+.radio-inline {
+	padding-left: 0;
+	input[type="radio"] {
+		@extend %extend_radio_checkbox;
+	}
+}
+.checkbox {
+	margin-top: 0px;
+	margin-bottom: 10px;
+	input[type="checkbox"] {
+		@extend %extend_radio_checkbox;
+	}
+	label {
+		padding-left: 0;
+		font-size: 13px;
+	}
+	+ .checkbox {
+		margin-top: 0px;
+		margin-bottom: 10px;
+	}
+}
+.checkbox-inline {
+	padding-left: 0;
+	input[type="checkbox"] {
+		@extend %extend_radio_checkbox;
+	}
+}
+select.form-control {
+	padding: 5px 10px;
+	line-height: 28px;
+}

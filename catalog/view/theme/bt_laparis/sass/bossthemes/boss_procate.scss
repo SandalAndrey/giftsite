@@ -1,0 +1,27 @@
+@import '../_main';
+/*featured product*/
+.bt-product-category {
+	background-size: cover;
+	background-repeat: repeat-y;
+	padding: 80px 0px;
+	margin-bottom: 75px;
+	h2 {
+		font-size: 20px;
+		font-weight: 600;
+		padding-bottom: 15px;
+		margin-bottom: 25px;
+		border-bottom: 1px dotted $text_color;
+	}
+	.tabs-headings {
+		text-transform: uppercase;
+		li {
+			padding: 5px 0px;
+			&:hover, &.active {
+				font-weight: 600;
+			}
+		}
+	}
+	&.non-slide {
+		margin-bottom: 45px;
+	}
+}

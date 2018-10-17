@@ -1,0 +1,40 @@
+@import '../_main';
+/*search*/
+#search {
+	position: relative;
+	padding: 10px 0px;
+	border-bottom: 1px solid #323232;
+	text-align: center;
+	input, button {
+		padding: 0px;
+		margin: 0px;
+		height: auto;
+		border: none;
+		background: transparent;
+		color: $header_color;
+	}
+	input {
+		font-size: 12px;
+	}
+	.dropdown-menu {
+		position: static;
+		display: inline-block;
+		vertical-align: middle;
+		background: transparent;
+		min-width: 0px;
+		margin: 0px;
+		float: none;
+		padding: 0px;
+		width: 0px;
+		box-shadow: none;
+		-webkit-transform: initial;
+		-ms-transform: initial;
+		transform: initial;
+		
+	}
+	&:hover, &.open {
+		.dropdown-menu {
+			width: 170px;
+		}
+	}
+}

@@ -1,0 +1,273 @@
+{{ header }}{{ column_left }} 
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right"> <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %} 
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %} 
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %} 
+    <div class="message"></div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-buildlayout" class="form-horizontal">
+          <input type="hidden" name="layout_id" value="{{ layout_id }}" />
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-name">{{ entry_layout }}</label>
+            <div class="col-sm-4">
+              <select type="text" name="change_layouts" id="change_layouts" class="form-control" onchange="window.location.href=this.options [this.selectedIndex].value">
+                {% for layout in layouts %}
+                <option value="{{ layout['edit'] }}" {% if (layout['layout_id'] == layout_id) %}selected="selected"{% endif %}>{{ layout['name'] }} </option>
+                {% endfor %} 
+              </select>
+            </div>
+            <div class="col-sm-3"> <a onclick="Layout.apply()" class="btn btn-success pull-right">Save Setting</a> </div>
+          </div>
+          <div class="row layout-builder" id="layout-builder">
+            <div class="col-md-3 col-sm-5 hidden-xs pull-right">
+              <div class="block_relative">
+                <div id="module_list" class="module_list" data-text-confirm="{{ text_confirm }}" data-text-edit="{{ text_edit_module }}">
+                  <div class="heading-bar">{{ text_module_list }}
+                    <div class="btn-group pull-right"> <a class="btn" onclick="Layout.refresh_module_list()" data-toggle="tooltip" title="{{ 'Refresh Installed Modules' }}" target="_blank"><i class="fa fa-refresh"></i></a> <a class="btn" href="{{ module_manager }}" data-toggle="tooltip" title="{{ text_all_module }}" target="_blank"><i class="fa fa-external-link"></i></a> </div>
+                  </div>
+                  <div class="bt-module-accordion bt-accordion">
+                    {% for module in modules %} 
+                    <div class="ds_heading">{{ strip_tags(module['name']) }} 
+                      <div class="btn-group"><a class="btn btn-xs btn-edit" href="{{ module['edit'] }}" data-type="iframe" data-title="{{ strip_tags(module['name']) }}" data-toggle="tooltip" title="{{ text_edit_module }}"><i class="fa fa-edit"></i></a></div>
+                    </div>
+                    <div class="ds_content bt-drag">
+                      {% for module in module['module'] %} 
+                      <div class="module-block" data-code="{{ module['code'] }}"> <i class="fa fa-puzzle-piece bt-enable"></i> {{ strip_tags(module['name']) }} <a class="btn btn-sm btn-edit" href="{{ module['edit'] }}"><i class="fa fa-edit" data-toggle="tooltip" title="{{ text_edit_module }}"></i></a> </div>
+                      {% endfor %} 
+                    </div>
+                    {% endfor %} 
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-9  col-sm-7">
+              <div class="bt-layout-content">
+                <div class="container-fluid">
+                  <div class="row colsliders">
+                    <div class="col-md-12 position sidebar_column bt-left">
+                      <div class="dashed bt-placeholder" data-position="header_top" data-placeholder="{{ text_header_top }}">
+                        {% set module_row = 0 %} 
+                        {% for layout_module in layout_modules %} 
+                        {% if (layout_module['position'] == 'header_top') %} 
+                        <div class="mblock" data-code="{{ layout_module['code'] }}">
+                          <div class="bt-module-label"><i class="fa fa-puzzle-piece bt-enable"></i> {{ layout_module['name'] }}</div>
+                          <div class="btn-group"> <a class="btn btn-xs btn-edit" href="{{ layout_module['href'] }}">{{ text_edit_module }}</a> <a class="btn btn-xs btn-remove" onclick="confirm('{{ addslashes(text_confirm) }}')?$(this).parents('.mblock').remove():false;">Remove</a> </div>
+                          <input type="hidden" name="layout_module[{{ module_row }}][code]" value="{{ layout_module['code'] }}">
+                          <input type="hidden" name="layout_module[{{ module_row }}][position]" class="layout_position" value="header_top">
+                          <input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module['sort_order'] }}" class="sort">
+                        </div>
+                        {% endif %} 
+                        {% set module_row = module_row + 1 %} 
+                        {% endfor %} 
+                      </div>
+                    </div>
+                    <div class="col-md-12 position sidebar_column bt-left">
+                      <div class="dashed bt-placeholder" data-position="header_menu" data-placeholder="{{ text_header_menu }}">
+                        {% set module_row = 0 %} 
+                        {% for layout_module in layout_modules %} 
+                        {% if (layout_module['position'] == 'header_menu') %} 
+                        <div class="mblock" data-code="{{ layout_module['code'] }}">
+                          <div class="bt-module-label"><i class="fa fa-puzzle-piece bt-enable"></i> {{ layout_module['name'] }}</div>
+                          <div class="btn-group"> <a class="btn btn-xs btn-edit" href="{{ layout_module['href'] }}">{{ text_edit_module }}</a> <a class="btn btn-xs btn-remove" onclick="confirm('{{ addslashes(text_confirm) }}')?$(this).parents('.mblock').remove():false;">Remove</a> </div>
+                          <input type="hidden" name="layout_module[{{ module_row }}][code]" value="{{ layout_module['code'] }}">
+                          <input type="hidden" name="layout_module[{{ module_row }}][position]" class="layout_position" value="header_menu">
+                          <input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module['sort_order'] }}" class="sort">
+                        </div>
+                        {% endif %} 
+                        {% set module_row = module_row + 1 %} 
+                        {% endfor %} 
+                      </div>
+                    </div>
+                    <div class="col-md-12 position sidebar_column bt-left">
+                      <div class="dashed bt-placeholder" data-position="header_bottom" data-placeholder="{{ text_header_bottom }}">
+                        {% set module_row = 0 %} 
+                        {% for layout_module in layout_modules %} 
+                        {% if (layout_module['position'] == 'header_bottom') %} 
+                        <div class="mblock" data-code="{{ layout_module['code'] }}">
+                          <div class="bt-module-label"><i class="fa fa-puzzle-piece bt-enable"></i> {{ layout_module['name'] }}</div>
+                          <div class="btn-group"> <a class="btn btn-xs btn-edit" href="{{ layout_module['href'] }}">{{ text_edit_module }}</a> <a class="btn btn-xs btn-remove" onclick="confirm('{{ addslashes(text_confirm) }}')?$(this).parents('.mblock').remove():false;">Remove</a> </div>
+                          <input type="hidden" name="layout_module[{{ module_row }}][code]" value="{{ layout_module['code'] }}">
+                          <input type="hidden" name="layout_module[{{ module_row }}][position]" class="layout_position" value="header_bottom">
+                          <input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module['sort_order'] }}" class="sort">
+                        </div>
+                        {% endif %} 
+                        {% set module_row = module_row + 1 %} 
+                        {% endfor %} 
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row colsliders">
+                    <div class="bt-wrap">
+                      <div class="col-md-3 position sidebar_column bt-left">
+                        <div class="dashed bt-placeholder" data-position="column_left" data-placeholder="{{ text_column_left }}">
+                          {% set module_row = 0 %} 
+                          {% for layout_module in layout_modules %} 
+                          {% if (layout_module['position'] == 'column_left') %} 
+                          <div class="mblock" data-code="{{ layout_module['code'] }}">
+                            <div class="bt-module-label"><i class="fa fa-puzzle-piece bt-enable"></i> {{ layout_module['name'] }}</div>
+                            <div class="btn-group"> <a class="btn btn-xs btn-edit" href="{{ layout_module['href'] }}">{{ text_edit_module }}</a> <a class="btn btn-xs btn-remove" onclick="confirm('{{ addslashes(text_confirm) }}')?$(this).parents('.mblock').remove():false;">Remove</a> </div>
+                            <input type="hidden" name="layout_module[{{ module_row }}][code]" value="{{ layout_module['code'] }}">
+                            <input type="hidden" name="layout_module[{{ module_row }}][position]" class="layout_position" value="column_left">
+                            <input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module['sort_order'] }}" class="sort">
+                          </div>
+                          {% endif %} 
+                          {% set module_row = module_row + 1 %} 
+                          {% endfor %} 
+                        </div>
+                      </div>
+                      <div class="col-md-6 bt-center">
+                        <div class="row">
+                          <div class="col-md-12 position column-content column-content-top">
+                            <div class="dashed bt-placeholder" data-position="content_top" data-placeholder="{{ text_content_top }}">
+                              {% set module_row = 0 %} 
+                              {% for layout_module in layout_modules %} 
+                              {% if (layout_module['position'] == 'content_top') %} 
+                              <div class="mblock" data-code="{{ layout_module['code'] }}">
+                                <div class="bt-module-label"><i class="fa fa-puzzle-piece bt-enable"></i> {{ layout_module['name'] }}</div>
+                                <div class="btn-group"> <a class="btn btn-xs btn-edit" href="{{ layout_module['href'] }}">{{ text_edit_module }}</a> <a class="btn btn-xs btn-remove" onclick="confirm('{{ addslashes(text_confirm) }}')?$(this).parents('.mblock').remove():false;">Remove</a> </div>
+                                <input type="hidden" name="layout_module[{{ module_row }}][code]" value="{{ layout_module['code'] }}">
+                                <input type="hidden" name="layout_module[{{ module_row }}][position]" class="layout_position" value="content_top">
+                                <input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module['sort_order'] }}" class="sort">
+                              </div>
+                              {% endif %} 
+                              {% set module_row = module_row + 1 %} 
+                              {% endfor %} 
+                            </div>
+                          </div>
+                          <div class="col-md-12 position column-content">
+                            <div class="dashed bt-placeholder" data-position="content_bottom" data-placeholder="{{ text_content_bottom }}">
+                              {% set module_row = 0 %} 
+                              {% for layout_module in layout_modules %} 
+                              {% if (layout_module['position'] == 'content_bottom') %} 
+                              <div class="mblock" data-code="{{ layout_module['code'] }}">
+                                <div class="bt-module-label"><i class="fa fa-puzzle-piece bt-enable"></i> {{ layout_module['name'] }}</div>
+                                <div class="btn-group"> <a class="btn btn-xs btn-edit" href="{{ layout_module['href'] }}">{{ text_edit_module }}</a> <a class="btn btn-xs btn-remove" onclick="confirm('{{ addslashes(text_confirm) }}')?$(this).parents('.mblock').remove():false;">Remove</a> </div>
+                                <input type="hidden" name="layout_module[{{ module_row }}][code]" value="{{ layout_module['code'] }}">
+                                <input type="hidden" name="layout_module[{{ module_row }}][position]" class="layout_position" value="content_bottom">
+                                <input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module['sort_order'] }}" class="sort">
+                              </div>
+                              {% endif %} 
+                              {% set module_row = module_row + 1 %} 
+                              {% endfor %} 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 position sidebar_column bt-right">
+                        <div class="dashed bt-placeholder" data-position="column_right" data-placeholder="{{ text_column_right }}">
+                          {% set module_row = 0 %} 
+                          {% for layout_module in layout_modules %} 
+                          {% if (layout_module['position'] == 'column_right') %} 
+                          <div class="mblock" data-code="{{ layout_module['code'] }}">
+                            <div class="bt-module-label"><i class="fa fa-puzzle-piece bt-enable"></i> {{ layout_module['name'] }}</div>
+                            <div class="btn-group"> <a class="btn btn-xs btn-edit" href="{{ layout_module['href'] }}">{{ text_edit_module }}</a> <a class="btn btn-xs btn-remove" onclick="confirm('{{ addslashes(text_confirm) }}')?$(this).parents('.mblock').remove():false;">Remove</a> </div>
+                            <input type="hidden" name="layout_module[{{ module_row }}][code]" value="{{ layout_module['code'] }}">
+                            <input type="hidden" name="layout_module[{{ module_row }}][position]" class="layout_position" value="column_right">
+                            <input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module['sort_order'] }}" class="sort">
+                          </div>
+                          {% endif %} 
+                          {% set module_row = module_row + 1 %} 
+                          {% endfor %} 
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row colsliders bt-footer">
+                    <div class="col-md-12 position sidebar_column bt-left">
+                      <div class="dashed bt-placeholder" data-position="footer_top" data-placeholder="{{ text_footer_top }}">
+                        {% set module_row = 0 %} 
+                        {% for layout_module in layout_modules %} 
+                        {% if (layout_module['position'] == 'footer_top') %} 
+                        <div class="mblock" data-code="{{ layout_module['code'] }}">
+                          <div class="bt-module-label"><i class="fa fa-puzzle-piece bt-enable"></i> {{ layout_module['name'] }}</div>
+                          <div class="btn-group"> <a class="btn btn-xs btn-edit" href="{{ layout_module['href'] }}">{{ text_edit_module }}</a> <a class="btn btn-xs btn-remove" onclick="confirm('{{ addslashes(text_confirm) }}')?$(this).parents('.mblock').remove():false;">Remove</a> </div>
+                          <input type="hidden" name="layout_module[{{ module_row }}][code]" value="{{ layout_module['code'] }}">
+                          <input type="hidden" name="layout_module[{{ module_row }}][position]" class="layout_position" value="footer_top">
+                          <input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module['sort_order'] }}" class="sort">
+                        </div>
+                        {% endif %} 
+                        {% set module_row = module_row + 1 %} 
+                        {% endfor %} 
+                      </div>
+                    </div>
+                    <div class="col-md-6 position sidebar_column bt-left">
+                      <div class="dashed bt-placeholder" data-position="footer_first" data-placeholder="{{ text_footer_first }}">
+                        {% set module_row = 0 %} 
+                        {% for layout_module in layout_modules %} 
+                        {% if (layout_module['position'] == 'footer_first') %} 
+                        <div class="mblock" data-code="{{ layout_module['code'] }}">
+                          <div class="bt-module-label"><i class="fa fa-puzzle-piece bt-enable"></i> {{ layout_module['name'] }}</div>
+                          <div class="btn-group"> <a class="btn btn-xs btn-edit" href="{{ layout_module['href'] }}">{{ text_edit_module }}</a> <a class="btn btn-xs btn-remove" onclick="confirm('{{ addslashes(text_confirm) }}')?$(this).parents('.mblock').remove():false;">Remove</a> </div>
+                          <input type="hidden" name="layout_module[{{ module_row }}][code]" value="{{ layout_module['code'] }}">
+                          <input type="hidden" name="layout_module[{{ module_row }}][position]" class="layout_position" value="footer_first">
+                          <input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module['sort_order'] }}" class="sort">
+                        </div>
+                        {% endif %} 
+                        {% set module_row = module_row + 1 %} 
+                        {% endfor %} 
+                      </div>
+                    </div>
+                    <div class="col-md-6 position sidebar_column bt-left">
+                      <div class="dashed bt-placeholder" data-position="footer_second" data-placeholder="{{ text_footer_second }}">
+                        {% set module_row = 0 %} 
+                        {% for layout_module in layout_modules %} 
+                        {% if (layout_module['position'] == 'footer_second') %} 
+                        <div class="mblock" data-code="{{ layout_module['code'] }}">
+                          <div class="bt-module-label"><i class="fa fa-puzzle-piece bt-enable"></i> {{ layout_module['name'] }}</div>
+                          <div class="btn-group"> <a class="btn btn-xs btn-edit" href="{{ layout_module['href'] }}">{{ text_edit_module }}</a> <a class="btn btn-xs btn-remove" onclick="confirm('{{ addslashes(text_confirm) }}')?$(this).parents('.mblock').remove():false;">Remove</a> </div>
+                          <input type="hidden" name="layout_module[{{ module_row }}][code]" value="{{ layout_module['code'] }}">
+                          <input type="hidden" name="layout_module[{{ module_row }}][position]" class="layout_position" value="footer_second">
+                          <input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module['sort_order'] }}" class="sort">
+                        </div>
+                        {% endif %} 
+                        {% set module_row = module_row + 1 %} 
+                        {% endfor %} 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="data_index" data-index="{{ count(layout_modules) }}"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+	$(document).ready(function() {	
+		Layout.init();
+		$.lockfixed(".module_accordion",{offset: {top: 10, bottom: 200}});
+	});
+	if(typeof(console)=='undefined' || console==null) { console={}; console.log=function(){}}
+//--></script>
+<div id="module-modal" class="modal-box modal fade">
+  <div class="modal-dialog modal-fw">
+    <div class="modal-content">
+      <div class="modal-body">
+        <iframe id="modal-iframe" class="modal-iframe" frameborder="0" allowtransparency="true" seamless></iframe>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ button_close }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

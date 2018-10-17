@@ -1,0 +1,59 @@
+{{ header }} 
+<div class="bt-breadcrumb">
+  <div class="container">
+    <ul class="breadcrumb">
+      {% for breadcrumb in breadcrumbs %} 
+      <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ breadcrumb['href'] }}" itemprop="url"><span itemprop="title">{{ breadcrumb['text'] }}</span></a></li>
+      {% endfor %} 
+    </ul>
+  </div>
+</div>
+<div class="container">
+  <div class="row">{{ column_left }}
+    {% if (column_left and column_right) %} 
+    {% set class = 'col-sm-6' %} 
+    {% elseif (column_left or column_right) %} 
+    {% set class = 'col-sm-9' %} 
+    {% else %} 
+    {% set class = 'col-sm-12' %} 
+    {% endif %} 
+    <div id="content" class="{{ class }}">{{ content_top }} 
+      <h1 class="heading-title">{{ heading_title }}</h1>
+      {% if (testimonials) %} 
+      {% for testimonial in testimonials %} 
+      <div class="testimonial-item">
+        <div class="testimonial-content">
+          <div class="title">{{ testimonial['title'] }}</div>
+          <div class="description"> {{ testimonial['description'] }} </div>
+          <div class="arrow col-sm-push-1"></div>
+        </div>
+        <div class="testimonial-heading col-xs-offset-1">
+          <div class="image"> <img src="{{ testimonial['avatar'] }}" alt="{{ testimonial['name'] }}" title="{{ testimonial['name'] }}"/> </div>
+          <div class="user">
+            <div class="name">{{ testimonial['name'] }}</div>
+            <div class="city">{{ testimonial['city'] }}</div>
+            <div class="date-added">{{ testimonial['date_added'] }}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %} 
+      {% if ( pagination is defined) %} 
+      <div class="pagination-result">
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ results }}</div>
+          <div class="col-sm-6 text-right">{{ pagination }}</div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="buttons">
+      <a class="btn btn-primary pull-left" href="{{ write_url }}" title="{{ write }}">{{ write }}</a>
+      {% if (showall_url is defined) %} 
+      <a class="btn btn-default pull-right" href="{{ showall_url }}" title="{{ showall }}">{{ showall }}</a>
+      {% endif %}
+      </div>
+      {% endif %} 
+      {{ content_bottom }}</div>
+    {{ column_right }}
+  </div>
+</div>
+{{ footer }} 

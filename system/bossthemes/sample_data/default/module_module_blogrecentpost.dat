@@ -1,0 +1,1 @@
+[{"module_id":"36","name":"Blog Left (Recent Post)","setting":{"name":"Blog Left (Recent Post)","blogrecentpost_module":{"title":{"1":"RECENT POST","2":"RECENT POST"},"limit":"3"},"status":"1"},"layout":[{"layout_module_id":"76","layout_id":"14","code":"blogrecentpost.36","position":"column_left","sort_order":"3","name":"Boss Blog"}]}]

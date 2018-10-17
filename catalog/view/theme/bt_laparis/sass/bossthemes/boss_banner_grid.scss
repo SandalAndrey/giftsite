@@ -1,0 +1,30 @@
+/*******DRAG DROP***********/
+@import '../_main';
+
+.bt-banner-grid {
+	.banner-layout {
+		margin-bottom: 30px;
+	}
+	.banner-title {
+		h2 {
+			background: $white;
+			margin: 20px 0px 0px 0px;
+			text-align: center;
+			@include font1(14px);
+			font-weight: 600;
+			text-decoration: underline;
+		}
+	}
+	margin-bottom: 70px;
+	.autogrid {
+		margin-left: -6px;
+		margin-right: -6px;
+		> * {
+			padding-left: 6px;
+			padding-right: 6px;
+		}
+		.banner-layout {
+			margin-bottom: 12px;
+		}
+	}
+}

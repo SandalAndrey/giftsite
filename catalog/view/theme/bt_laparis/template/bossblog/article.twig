@@ -1,0 +1,370 @@
+{{ header }} 
+
+{% set config = registry.get('config') %}
+
+{% set language_id = config.get('config_language_id') %}
+
+{% set text_save_off = config.get('theme_' ~ config.get('config_theme') ~ '_text_save_off') %}
+{% set text_save_off = text_save_off[language_id] is defined ? text_save_off[language_id] : '' %}
+{% set template_directory = config.get('theme_' ~ config.get('config_theme') ~ '_directory') %}
+
+{% if (products) %} 
+<script src="catalog/view/javascript/bossthemes/owl-carousel/owl.carousel.min.js" type="text/javascript"></script>
+<link href="catalog/view/javascript/bossthemes/owl-carousel/owl.carousel.min.css" type="text/css" rel="stylesheet" media="screen" />
+<link href="catalog/view/theme/{{ template_directory }}/stylesheet/bossthemes/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
+{% endif %} 
+<div class="bt-breadcrumb">
+  <div class="container">
+    <ul class="breadcrumb">
+      {% for breadcrumb in breadcrumbs %} 
+      <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ breadcrumb['href'] }}" itemprop="url"><span itemprop="title">{{ breadcrumb['text'] }}</span></a></li>
+      {% endfor %} 
+    </ul>
+  </div>
+</div>
+<div class="container">
+  <div class="row">{{ column_left }} 
+    {% if (column_left and column_right) %} 
+    {% set class = 'col-sm-6' %} 
+    {% elseif (column_left or column_right) %} 
+    {% set class = 'col-sm-9' %} 
+    {% else %} 
+    {% set class = 'col-sm-12' %} 
+    {% endif %} 
+    <div id="content" class="{{ class }}">{{ content_top }} 
+      <div id="article-detail">
+        <div class="content">
+          <div class="article-image"><img src="{{ thumb }}" alt="{{ name }}" title="{{ name }}"/></div>
+          <div class="article-info">
+            <div class="post-date">
+              <div class="day">{{ day }}</div>
+              <div class="month-year">
+                <p>{{ month }} {{ year }}</p>
+              </div>
+            </div>
+            <h1>{{ heading_title }}</h1>
+          </div>
+        </div>
+        <div class="article-content">
+          <p>{{ title }}</p>
+          {{ content }} </div>
+        <div class="row">
+          <div class="col-sm-6">
+            {% if (tags and tags is not empty) %} 
+            <div class="tags"><span>{{ text_tags }} </span>
+              <ul>
+                {% set i = 0 %}{% for i in i..tags %} 
+                {% if (i < (count(tags) - 1)) %} 
+                <li class="item"><a href="{{ tags[i]['href'] }}">{{ tags[i]['tag'] }}</a></li>
+                {% else %} 
+                <li class="item"><a href="{{ tags[i]['href'] }}">{{ tags[i]['tag'] }}</a></li>
+                {% endif %} 
+                {% endfor %} 
+              </ul>
+            </div>
+            {% endif %} 
+          </div>
+          <div class="col-sm-6 text-right">
+            <div class="sharing"> 
+              <!-- AddThis Button BEGIN -->
+              <div class="addthis_toolbox addthis_default_style addthis_20x20_style" data-addthis-title="{{ name }}" data-addthis-description="{{ substr(strip_tags(html_entity_decode(content, constant('ENT_QUOTES'), 'UTF-8')), 0, 150) ~ '..' }}" data-addthis-media="{{ thumb }}"><a class="addthis_button_facebook"></a> <a class="addthis_button_twitter"></a> <a class="addthis_button_google_plusone_share"></a><a class="addthis_button_pinterest_share"></a><a class="addthis_button_email"></a><a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a></div>
+              <script type="text/javascript">
+				$(".sharing").find('[data-addthis-title]').each(function(index){
+					$(this).attr("addthis:title",$(this).attr("data-addthis-title"));
+					$(this).removeAttr('data-addthis-title');
+					
+					$(this).attr("addthis:description",$(this).attr("data-addthis-description"));
+					$(this).removeAttr('data-addthis-description');
+					
+					$(this).attr("addthis:media",$(this).attr("data-addthis-media"));
+					$(this).removeAttr('data-addthis-media');
+				});
+				</script> 
+              <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script> 
+              <!-- AddThis Button END --> 
+            </div>
+          </div>
+        </div>
+        <div class="article-button">
+          {% if (pre_href is defined and pre_href != '') %} 
+          <a class="btn btn-default" href="{{ pre_href }}"><i class="fa fa-angle-left"></i></a>
+          {% endif %} 
+          {% if (next_href is defined and next_href != '') %} 
+          <a class="btn btn-default" href="{{ next_href }}"><i class="fa fa-angle-right"></i></a>
+          {% endif %} 
+        </div>
+      </div>
+      {% if (comment_status == 1 or allow_comment == 1) %} 
+      <div id="blog-review">
+        <div class="nav-heading">
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#article-comments">{{ view_comment }}</a></li>
+            <li><a data-toggle="tab" href="#comment-box">{{ text_comment }}</a></li>
+            {% if (boss_facecomments is not empty and boss_facecomments['status']) %} 
+            <li><a data-toggle="tab" href="#facebook-comment">Facebook Comment</a></li>
+            {% endif %} 
+          </ul>
+        </div>
+        <div class="tab-content">
+          <div id="article-comments" class="tab-pane fade in active"></div>
+          <div id="comment-box" class="tab-pane fade">
+		    <div id="comment-alert"></div>
+            <div class="row v-margin-20">
+              <div class="col-sm-6">
+                {% if (not login) %}
+                <div class="field">
+                  <label class="" for="username">{{ text_username }}<em>*</em></label>
+                  <div class="input-box">
+                    <input type="text" class="form-control required-entry" value="" placeholder="{{ text_username }}" id="username" name="username">
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="" for="email-blog">{{ text_email }}<em>*</em></label>
+                  <div class="input-box">
+                    <input type="text" class="form-control required-entry validate-email" value="" placeholder="{{ text_username }}" id="email-blog" name="email_blog">
+                  </div>
+                </div>
+                {% else %} 
+                <input type="hidden" class="form-control required-entry" value="{{ username }}" id="username" name="username">
+                <input type="hidden" class="form-control required-entry validate-email" value="{{ email }}" id="email-blog" name="email_blog">
+                {% endif %} 
+              </div>
+              <div class="{% if (not login) %}col-sm-6{% else %}col-sm-12{% endif %}">
+                <div class="input-box-comment">
+                  <label class="tt_input" for="comment">{{ entry_comment }}<em>*</em></label>
+                  <textarea rows="2" cols="10" class="required-entry form-control" style="height: 107px" placeholder="{{ entry_comment }}" id="comment" name="comment_content"></textarea>
+                </div>
+              </div>
+            </div>
+            {% if (site_key) %} 
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <div class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
+                {% if (error_captcha) %} 
+                <div class="text-danger">{{ error_captcha }}</div>
+                {% endif %} 
+              </div>
+            </div>
+            {% endif %} 
+            <div class="text-center v-margin-20"> <a id="button-comment" class="btn btn-default">{{ button_submit }}</a> </div>
+          </div>
+        </div>
+      </div>
+      {% endif %} 
+      {% if (boss_facecomments is not empty and boss_facecomments['status']) %} 
+      <div id="facebook-comment" class="bt-facecomments">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="fb-comments" data-href="{{ url_f }}" data-colorscheme="{{ boss_facecomments['color_scheme'] }}" data-numposts="{{ boss_facecomments['num_posts'] }}" data-order-by="{{ boss_facecomments['order_by'] }}" ></div>
+          </div>
+        </div>
+        <div id="fb-root"></div>
+      </div>
+      {% endif %} 
+      {% if (column_left and column_right) %} 
+      {% set per_row = 2 %} 
+      {% elseif (column_left or column_right) %} 
+      {% set per_row = 3 %} 
+      {% else %} 
+      {% set per_row = 4 %} 
+      {% endif %} 
+      {% if (articles) %} 
+      <div class="box-title">
+        <h2>{{ text_article_related }} ({{ count(articles) }})</h2>
+      </div>
+      <div class="box-content">
+        <div id="article-related" class="owl-carousel-2 owl-theme-2 nav-top-right nav-visible">
+          {% for article in articles %} 
+          <div class="article-layout article-related">
+            <div class="article-thumb">
+              <div class="article-image"><a href="{{ article['href'] }}"><img src="{{ article['thumb'] }}" alt="{{ article['name'] }}" title="{{ article['name'] }}" class="img-responsive" /></a></div>
+              <div class="article-info">
+                <div class="post-date">
+                  <div class="day">{{ article['day'] }}</div>
+                  <div class="month-year">
+                    <p>{{ article['month'] }}</p>
+                    <p>{{ article['year'] }}</p>
+                  </div>
+                </div>
+                <div class="article-name"> <a href="{{ article['href'] }}">{{ article['name'] }}</a> </div>
+                <a href="{{ article['href'] }}" class="view-more">{{ button_read_more }}</a> </div>
+            </div>
+          </div>
+          {% endfor %} 
+        </div>
+      </div>
+      {% endif %} 
+      {% if (products) %} 
+      <div class="box-title">
+        <h2>{{ text_product_related }} ({{ count(products) }})</h2>
+      </div>
+      <div class="box-content">
+        <div id="product-related" class="owl-carousel-2 owl-theme-2 nav-middle nav-visible">
+          {% for product in products %} 
+          <div class="product-layout product-related">
+            <div class="product-thumb">
+              <div class="image"><a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a>
+                <div class="button-group">
+                  <button type="button" onclick="btadd.cart('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>
+                  <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist('{{ product['product_id'] }}');"><i class="lnr lnr-heart"></i></button>
+                  <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare('{{ product['product_id'] }}');"><i class="lnr lnr-sync"></i></button>
+                </div>
+              </div>
+              <div class="caption">
+                <h4 class="name"><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+                <p class="price">
+                  {% if (not product['special']) %} 
+                  {{ product['price'] }} 
+                  {% else %} 
+                  <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                  {% endif %} 
+                  {% if (product['tax']) %} 
+                  <span class="price-tax">{{ text_tax }} {{ product['tax'] }}</span>
+                  {% endif %} 
+                </p>
+                {% if (product['rating']) %} 
+                <div class="rating">
+                  {% set i = 1 %}{% for i in i..5 %} 
+                  {% if (product['rating'] < i) %} 
+                  <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                  {% else %} 
+                  <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                  {% endif %} 
+                  {% endfor %} 
+                </div>
+                {% endif %} 
+              </div>
+              {% if (product['special']) %} 
+              <div class="save-off">{{ text_save_off }}</div>
+              {% endif %} 
+            </div>
+          </div>
+          {% endfor %} 
+        </div>
+      </div>
+      {% endif %} 
+      {{ content_bottom }}</div>
+    {{ column_right }} </div>
+</div>
+{% if (products) %} 
+<script type="text/javascript">
+$(function() {
+	if ($('html').attr('dir') == 'rtl') {
+		var rtl = true;
+	} else {
+		var rtl = false;
+	}
+	
+	var elm = $('#product-related');
+	var loop = (elm.children().length > {{ per_row }}) ? true : false;
+	
+	elm.owlCarousel2({
+		items: {{ per_row }},
+		loop: loop,
+		nav: true,
+		navText: ['<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjIuNDU3MjA3NCAxLjAwNzQ2MTQ3bC0yMSAyMC4wMjQ4MjE0MyAyMC45NDc5Mzk3IDE5Ljk3NTE3ODYiIHN0cm9rZT0iIzJEMkQyRCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==" />', '<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMS40NTY3OSAxLjAwNzQ2MTQ3bDIxIDIwLjAyNDgyMTQzTDEuNTA4ODUgNDEuMDA3NDYxNSIgc3Ryb2tlPSIjMkQyRDJEIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+" />'],
+		dots: false,
+		margin: 20,
+		rtl: rtl,
+		responsive:{
+			992: {
+				items: {{ per_row }} 
+			},
+			768: {
+				items: {{ round(per_row/2) }} 
+			},
+			560: {
+				items: {{ round(per_row/2) }} 
+			},
+			0: {
+				items: 1
+			}
+		}	
+	});
+});
+</script>
+{% endif %} 
+{% if (articles) %} 
+<script type="text/javascript">
+$(function() {
+	if ($('html').attr('dir') == 'rtl') {
+		var rtl = true;
+	} else {
+		var rtl = false;
+	}
+	
+	var elm = $('#article-related');
+	var loop = (elm.children().length > {{ per_row }}) ? true : false;
+	
+	elm.owlCarousel2({
+		items: {{ per_row }},
+		loop: loop,
+		nav: true,
+		navText: ['<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjIuNDU3MjA3NCAxLjAwNzQ2MTQ3bC0yMSAyMC4wMjQ4MjE0MyAyMC45NDc5Mzk3IDE5Ljk3NTE3ODYiIHN0cm9rZT0iIzJEMkQyRCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==" />', '<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMS40NTY3OSAxLjAwNzQ2MTQ3bDIxIDIwLjAyNDgyMTQzTDEuNTA4ODUgNDEuMDA3NDYxNSIgc3Ryb2tlPSIjMkQyRDJEIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+" />'],
+		dots: false,
+		margin: 20,
+		rtl: rtl,
+		responsive:{
+			992: {
+				items: {{ per_row }} 
+			},
+			768: {
+				items: {{ round(per_row/2) }} 
+			},
+			560: {
+				items: {{ round(per_row/2) }} 
+			},
+			0: {
+				items: 1
+			}
+		}
+	});
+});
+</script>
+{% endif %} 
+{% if (boss_facecomments is not empty and boss_facecomments['status']) %} 
+<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId={{ boss_facecomments['app_id'] }}";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+</script>
+{% endif %} 
+<script type="text/javascript"><!--
+$('#article-comments').load('index.php?route=bossblog/article/comment&blog_article_id={{ blog_article_id }}');
+$('#button-comment').bind('click', function() { 
+	$.ajax({
+		url: 'index.php?route=bossblog/article/write&blog_article_id={{ blog_article_id }}&need_approval={{ need_approval }}&approval_status={{ approval_status }}',
+		type: 'post',
+		dataType: 'json',
+		data: 'username=' + encodeURIComponent($('input[name=\'username\']').val()) + '&comment_content=' + encodeURIComponent($('textarea[name=\'comment_content\']').val()) + '&email=' + encodeURIComponent($('input[name=\'email_blog\']').val()) + '&g-recaptcha-response=' + encodeURIComponent($('textarea[name=\'g-recaptcha-response\']').val()),
+		beforeSend: function() {
+			$('#button-comment').attr('disabled', true);
+			$('#comment-alert').html('');
+		},
+		complete: function() { 
+			$('#button-comment').attr('disabled', false);
+			$('#captcha').attr('src', 'index.php?route=tool/captcha#'+new Date().getTime());
+			$('.attention').remove();
+			$('input[name=\'captcha\']').val('');
+		},		
+		success: function(json) { 
+			if (json['error']) {
+				$('#comment-alert').html('<div class="warning">' + json['error'] + '</div>');
+			}
+			
+			if (json['success']) {
+				$('#comment-alert').html('<div class="success">' + json['success'] + '</div>');
+				$('#article-comments').load('index.php?route=bossblog/article/comment&blog_article_id={{ blog_article_id }}');				
+				$('input[name=\'username\']').val('');
+				$('textarea[name=\'comment_content\']').val('');
+				$('input[name=\'email_blog\']').val('');
+                $('input[name=\'captcha\']').val('');
+			}
+		}
+	});
+});
+//--></script> 
+{{ footer }}

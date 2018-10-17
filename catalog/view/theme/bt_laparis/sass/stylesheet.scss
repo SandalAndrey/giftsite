@@ -1,0 +1,62 @@
+@import '_main';
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+	border: 3px solid $color_gallery_approx;
+}
+::-webkit-scrollbar-button {
+	&:start:decrement {
+		@extend %extend_scroll_bar;
+	}
+	&:end:increment {
+		@extend %extend_scroll_bar;
+	}
+}
+::-webkit-scrollbar-track {
+	background: $color_gallery_approx;
+	border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+	height: 50px;
+	width: 50px;
+	background: $black_50;
+	border-radius: 8px;
+}
+
+@import 'components/_node';
+
+@import 'components/_alert';
+@import 'components/_back_top';
+@import 'components/_background';
+@import 'components/_breadcrumb';
+@import 'components/_button';
+@import 'components/_carousel';
+@import 'components/_list';
+@import 'components/_module_box';
+@import 'components/_navigation';
+@import 'components/_pagination';
+@import 'components/_quickshop';
+@import 'components/_table';
+
+@import 'rewrites/_bootstrap';
+@import 'vendors/_jquery.jgrowl';
+
+@import 'layout/_grid';
+@import 'layout/_header';
+@import 'layout/_sidebar';
+@import 'layout/_content';
+@import 'layout/_forms';
+@import 'layout/_footer';
+
+@import 'pages/_account';
+@import 'pages/_brand';
+@import 'pages/_cart';
+@import 'pages/_category';
+@import 'pages/_checkout';
+@import 'pages/_compare';
+@import 'pages/_home';
+@import 'pages/_product';
+@import 'pages/_sitemap';
+
+@import '_custom';

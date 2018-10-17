@@ -1,0 +1,312 @@
+{% if (product_data['mainproduct'] is not empty or product_data['products'] is not empty) %}
+
+<div class="bt-featured-pro box {{ sidebar ? 'sidebar style-2' : 'style-1' }}" >
+  <div class="container-fluid">
+    <div class="row">
+      {% if (heading_title or description) %}
+      <div class="box-heading title">
+        {% if (heading_title) %}
+        <h2>{{ heading_title }}</h2>
+        {% endif %}
+        {% if (description) %}
+        <div class="box-description"> {{ description }} </div>
+        {% endif %}
+      </div>
+      {% endif %} 
+      <div class="box-content">
+        {% if (banner_left and banner_right) %}
+        {% set class = 'col-sm-6' %}
+        {% elseif (banner_left or banner_right) %}
+        {% set class = 'col-sm-9' %}
+        {% else %}
+        {% set class = '' %}
+        {% endif %}
+        <div class="{{ banner_left or banner_right ? 'row' : '' }}">
+          {% if (banner_left) %}
+          <div class="col-sm-3 hidden-xs banner-left">
+            <div class="image"><a href="{{ banner_left['link'] }}" title="{{ heading_title }}"><img src="image/{{ banner_left['image'] }}" class="img-responsive" alt="{{ heading_title }}" /></a></div>
+          </div>
+          {% endif %}
+          <div class="{{ class }}">
+            {% if (product_data['mainproduct'] and not sidebar) %}
+            <div class="row">
+              {% set product = product_data['mainproduct'] %}
+              <div class="product-layout {{ product_layout }} col-sm-6">
+                <div class="product-thumb">
+                  <div class="image"><a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a>
+                    {% if (not sidebar) %}
+                    <div class="button-group">
+                      <button type="button" onclick="btadd.cart('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>
+                      <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist('{{ product['product_id'] }}');"><i class="lnr lnr-heart"></i></button>
+                      <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare('{{ product['product_id'] }}');"><i class="lnr lnr-sync"></i></button>
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="caption">
+                    <h4 class="name"><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+                    {% if (product['price']) %}
+                    <p class="price">
+                      {% if (not product['special']) %}
+                      {{ product['price'] }}
+                      {% else %}
+                      <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                      {% endif %}
+                    </p>
+                    {% endif %}
+                    {% if (product['rating']) %}
+                    <div class="rating">
+                      {% set i = 1 %}{% for i in i..5 %}
+                      {% if (product['rating'] < i) %}
+                      <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                      {% else %}
+                      <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                      {% endif %}
+                      {% endfor %}
+                    </div>
+                    {% endif %}
+                  </div>
+                  {% if (product['special']) %}
+                  <div class="save-off">{{ text_save_off }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="row">
+                  {% for product in product_data['products'] %}
+                  <div class="product-layout {{ product_layout }} col-lg-{{ 12/column }} col-md-{{ 12/column }} col-sm-{{ 12/round(column/2) }} col-xs-12">
+                    <div class="product-thumb">
+                      <div class="image"><a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a>
+                        {% if (not sidebar and column < 3) %}
+                        <div class="button-group">
+                          <button type="button" onclick="btadd.cart('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>
+                          <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist('{{ product['product_id'] }}');"><i class="lnr lnr-heart"></i></button>
+                          <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare('{{ product['product_id'] }}');"><i class="lnr lnr-sync"></i></button>
+                        </div>
+                        {% endif %}
+                      </div>
+                      <div class="caption">
+                        <h4 class="name"><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+                        {% if (product['price']) %}
+                        <p class="price">
+                          {% if (not product['special']) %}
+                          {{ product['price'] }}
+                          {% else %}
+                          <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                          {% endif %}
+                        </p>
+                        {% endif %}
+                        {% if (product['rating']) %}
+                        <div class="rating">
+                          {% set i = 1 %}{% for i in i..5 %}
+                          {% if (product['rating'] < i) %}
+                          <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                          {% else %}
+                          <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                          {% endif %}
+                          {% endfor %}
+                        </div>
+                        {% endif %}
+                      </div>
+                      {% if (product['special']) %}
+                      <div class="save-off">{{ text_save_off }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            {% elseif (show_slider) %}
+            <div id="boss_featured_{{ module }}" class="box-product {{ js == 'owl' ? 'owl-carousel-2 owl-theme-2 nav-middle' : '' }} {{ mode }}">
+              {% for products in array_chunk(product_data['products'], num_row) %}
+              <div class="bt-item">
+                {% for product in products %}
+                <div class="product-layout {{ product_layout }}">
+                  <div class="product-thumb">
+                    <div class="image"><a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a>
+                      {% if (not sidebar or product_layout != 'product-list') %}
+                      <div class="button-group">
+                        <button type="button" onclick="btadd.cart('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>
+                        <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist('{{ product['product_id'] }}');"><i class="lnr lnr-heart"></i></button>
+                        <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare('{{ product['product_id'] }}');"><i class="lnr lnr-sync"></i></button>
+                      </div>
+                      {% endif %}
+                    </div>
+                    <div class="caption">
+                      <h4 class="name"><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+                      {% if (product['price']) %}
+                      <p class="price">
+                        {% if (not product['special']) %}
+                        {{ product['price'] }}
+                        {% else %}
+                        <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                        {% endif %}
+                      </p>
+                      {% endif %}
+                      {% if (product['rating']) %}
+                      <div class="rating">
+                        {% set i = 1 %}{% for i in i..5 %}
+                        {% if (product['rating'] < i) %}
+                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                        {% else %}
+                        <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                        {% endif %}
+                        {% endfor %}
+                      </div>
+                      {% endif %}
+                    </div>
+                    {% if (product['special']) %}
+                    <div class="save-off">{{ text_save_off }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% endfor %}
+            </div>
+            {% else %}
+            {% if (product_data['products']) %}
+            <div class="{{ not sidebar ? 'row' : '' }}">
+              {% for product in product_data['products'] %}
+              <div class="product-layout {{ product_layout }} col-lg-{{ 12/column }} col-md-{{ 12/column }} col-sm-{{ 12/round(column/2) }} col-xs-12">
+                <div class="product-thumb">
+                  <div class="image"><a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a>
+                    {% if (not sidebar or product_layout != 'product-list') %}
+                    <div class="button-group">
+                      <button type="button" onclick="btadd.cart('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>
+                      <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist('{{ product['product_id'] }}');"><i class="lnr lnr-heart"></i></button>
+                      <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare('{{ product['product_id'] }}');"><i class="lnr lnr-sync"></i></button>
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="caption">
+                    <h4 class="name"><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+                    {% if (product['price']) %}
+                    <p class="price">
+                      {% if (not product['special']) %}
+                      {{ product['price'] }}
+                      {% else %}
+                      <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                      {% endif %}
+                    </p>
+                    {% endif %}
+                    {% if (product['rating']) %}
+                    <div class="rating">
+                      {% set i = 1 %}{% for i in i..5 %}
+                      {% if (product['rating'] < i) %}
+                      <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                      {% else %}
+                      <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                      {% endif %}
+                      {% endfor %}
+                    </div>
+                    {% endif %}
+                  </div>
+                  {% if (product['special']) %}
+                  <div class="save-off">{{ text_save_off }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+            {% endif %}
+          </div>
+          {% if (banner_right) %}
+          <div class="col-sm-3 hidden-xs banner-right">
+            <div class="image"><a href="{{ banner_right['link'] }}" title="{{ heading_title }}"><img src="image/{{ banner_right['image'] }}" class="img-responsive" alt="{{ heading_title }}" /></a></div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% if (show_slider and mode == 'center-mode') %}
+<script type="text/javascript"><!--
+$(function() {
+	function setPrevNext(index) {
+		index.removeClass('slide-prev slide-next').addClass('slide-center').height('auto');
+		index.prevAll().removeClass('slide-next slide-center').addClass('slide-prev');
+		index.nextAll().removeClass('slide-prev slide-center').addClass('slide-next');
+	}
+
+	if ($('html').attr('dir') == 'rtl') {
+		var rtl = true;
+	} else {
+		var rtl = false;
+	}
+
+	$('#boss_featured_{{ module }}').on('init', function(event, slick){
+		setPrevNext($('[data-slick-index="' + slick.currentSlide + '"]', this));
+	});
+
+	$('#boss_featured_{{ module }}').slick({
+		initialSlide: 1,
+		slidesToShow: {{ per_row }},
+		slidesToScroll: 1,
+		prevArrow: '<div class="slick-prev"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjIuNDU3MjA3NCAxLjAwNzQ2MTQ3bC0yMSAyMC4wMjQ4MjE0MyAyMC45NDc5Mzk3IDE5Ljk3NTE3ODYiIHN0cm9rZT0iIzJEMkQyRCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==" /></div>',
+		nextArrow: '<div class="slick-next"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMS40NTY3OSAxLjAwNzQ2MTQ3bDIxIDIwLjAyNDgyMTQzTDEuNTA4ODUgNDEuMDA3NDYxNSIgc3Ryb2tlPSIjMkQyRDJEIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+" /></div>',
+		dots: {{ pagination ? 'true' : 'false' }},
+		centerPadding: '12.5%',
+		centerMode: true,
+		variableWidth: true,
+		speed: 300,
+		rtl: rtl
+	});
+
+	$('#boss_featured_{{ module }}').on('beforeChange', function(event, slick, currentSlide, nextSlide){
+		var height = $('[data-slick-index="' + currentSlide + '"]', this).height();
+		$('.slick-slide', this).first().height(height);
+
+		setPrevNext($('[data-slick-index="' + nextSlide + '"]', this));
+	});
+});
+//--></script>
+{% elseif (show_slider) %}
+<script type="text/javascript"><!--
+$(window).load(function(){
+	if ($('html').attr('dir') == 'rtl') {
+		var rtl = true;
+	} else {
+		var rtl = false;
+	}
+
+	if ({{ sidebar }} || {{ infinite }}) {
+		var responsive = {};
+	} else {
+		var responsive = {
+			992: {
+				items: {{ per_row }}
+			},
+			768: {
+				items: {{ round(per_row/2) }}
+			},
+			560: {
+				items: {{ round(per_row/2) }}
+			},
+			0: {
+				items: 1
+			}
+		}
+	}
+
+	var elm = $('#boss_featured_{{ module }}');
+	var loop = (elm.children().length > {{ per_row }}) ? true : false;
+
+	elm.owlCarousel2({
+		items: {{ sidebar or infinite ? 1 : per_row }},
+		loop: loop,
+		nav: true,
+		navText: ['<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjIuNDU3MjA3NCAxLjAwNzQ2MTQ3bC0yMSAyMC4wMjQ4MjE0MyAyMC45NDc5Mzk3IDE5Ljk3NTE3ODYiIHN0cm9rZT0iIzJEMkQyRCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==" />', '<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMS40NTY3OSAxLjAwNzQ2MTQ3bDIxIDIwLjAyNDgyMTQzTDEuNTA4ODUgNDEuMDA3NDYxNSIgc3Ryb2tlPSIjMkQyRDJEIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+" />'],
+		dots: {{ pagination ? 'true' : 'false' }},
+		center: {{ center ? 'true' : 'false' }},
+		autoWidth: {{ infinite ? 'true' : 'false' }},
+		margin: 20,
+		rtl: rtl,
+		responsive: responsive
+	});
+});
+//--></script>
+{% endif %}
+{% endif %}

@@ -1,0 +1,15 @@
+@import '../_main';
+/*table*/
+.table-responsive {
+	border: none;
+	overflow-x: auto;
+	> .table-bordered {
+		border: 1px solid $color_alto_approx;
+	}
+}
+.table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+    border-bottom-width: 1px;
+}
+.table > tbody + tbody {
+	border: none;
+}

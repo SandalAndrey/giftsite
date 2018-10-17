@@ -1,0 +1,11 @@
+@import '../_main';
+/*alert*/
+.alert {
+	padding: 8px 14px;
+	border-radius: 0;
+	margin-top: 10px;
+}
+.alert-danger {
+	color: $color_roman_approx;
+	background-color: $color_cosmos_approx;
+}

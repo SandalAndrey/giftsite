@@ -1,0 +1,41 @@
+#boss-dynamic-html {
+	
+}
+#boss-dynamic-html .nav-tabs {
+	background: #ddd;
+	margin-bottom: 0px;
+}
+#boss-dynamic-html .tab-content {
+	border-style: solid;
+	border-color: #ddd;
+	border-width: 0px 1px 1px 1px;
+}
+#boss-dynamic-html .element-background {
+	opacity: 0;
+}
+#boss-dynamic-html *[data-background="true"] {
+	position: relative;
+}
+#boss-dynamic-html *[data-background="true"]:hover > .element-background{
+	opacity: 1;
+}
+#boss-dynamic-html .btn {
+	border-radius: 0px;
+}
+#boss-dynamic-html .html-content-preview {
+	padding-top: 50px;
+	padding-bottom: 50px;
+	overflow: hidden;
+}
+.cp-color-picker {
+	z-index: 1100;
+}
+.popover {
+	z-index: 1040;
+}
+.modal {
+	z-index: 1060;
+}
+.modal-backdrop {
+	z-index: 1050;
+}

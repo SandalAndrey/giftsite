@@ -1,0 +1,86 @@
+<div class="bt-testimonial box style-1 parallax" id="boss_testimonial_min_height_{{ module }}">
+  {% if (testimonial_title) %}
+    <div class="box-heading title">
+      <h2>{{ testimonial_title }}</h2>
+    </div>
+  {% endif %}
+  <div class="box-content">
+    <div class="content" id="content{{ module }}">
+      <div id="boss_testimonial_{{ module }}" class="{{ auto_scroll ? 'owl-carousel-2 owl-theme-2 nav-middle nav-visible' : '' }}">
+        {% for testimonials in array_chunk(testimonials, row) %}
+          <div class="item">
+            {% for testimonial in testimonials %}
+              <div class="item-info">
+                {% if (show_subject is defined and show_subject) %}
+                  <h2 class="subject"> {{ testimonial['title'] }} </h2>
+                {% endif %}
+                {% if (show_message is defined and show_message) %}
+                  <div class="message"> {{ testimonial['description'] }}
+                    {% if (show_date is defined and show_date) %}
+                      <div class="date">
+                        <span class="time-stamp"><small>{{ testimonial['date_added'] }}</small></span>
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+                <div class="user-info">
+                  {% if (show_name is defined and show_name) %}
+                    <div class="name"> {{ testimonial['name'] }} </div>
+                  {% endif %}
+                  {% if (show_city is defined and show_city) %}
+                    <div class="city"> {{ testimonial['city'] }} </div>
+                  {% endif %}
+                  {% if (show_image is defined and show_image) %}
+                    <div class="image"><img alt="{{ testimonial['name'] }}" src="{{ testimonial['avatar'] }}"/></div>
+                  {% endif %}
+                </div>
+                {% if (show_rating is defined and show_rating) %}
+                  <div class="rating">
+                    {% set i = 1 %}{% for i in i..5 %}
+                      {% if (testimonial['rating'] < i) %}
+                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                      {% else %}
+                        <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+      {% if (show_all_link is defined and show_all_link) %}
+        <div class="show-all-url"><a href="{{ showall_url }}" title="{{ show_all }}">{{ show_all }}</a></div>
+      {% endif %}
+      {% if (show_write is defined and show_write) %}
+        <div class="show-write"><a href="{{ isitesti }}" title="{{ isi_testimonial }}">{{ isi_testimonial }}</a></div>
+      {% endif %}
+    </div>
+    <div id="bt_testimonial_pag_{{ module }}" class="bt-pag"></div>
+  </div>
+</div>
+{% if (auto_scroll) %}
+  <script type="text/javascript"><!--
+      $(function () {
+          if ($('html').attr('dir') == 'rtl') {
+              var rtl = true;
+          } else {
+              var rtl = false;
+          }
+
+          var elm  = $('#boss_testimonial_{{ module }}');
+          var loop = (elm.children().length > {{ per_row }}) ? true : false;
+
+          elm.owlCarousel2({
+              items   : {{ per_row }},
+              loop    : loop,
+              nav     : false,
+              navText : ['<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjIuNDU3MjA3NCAxLjAwNzQ2MTQ3bC0yMSAyMC4wMjQ4MjE0MyAyMC45NDc5Mzk3IDE5Ljk3NTE3ODYiIHN0cm9rZT0iIzJEMkQyRCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==" />', '<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMS40NTY3OSAxLjAwNzQ2MTQ3bDIxIDIwLjAyNDgyMTQzTDEuNTA4ODUgNDEuMDA3NDYxNSIgc3Ryb2tlPSIjMkQyRDJEIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+" />'],
+              dots    : true,
+              autoplay: false,
+              rtl     : rtl
+          });
+      });
+      //--></script>
+{% endif %} 

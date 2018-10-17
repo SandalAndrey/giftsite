@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items_setting>
+  <groups>
+    <title>General</title>
+    <item>
+      <text>Font</text>
+      <selector>body</selector>
+      <property>font-family</property>
+      <value></value>
+      <type>font</type>
+      <keyword>body_font</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Layout</text>
+      <selector>body</selector>
+      <property>width</property>
+      <value></value>
+      <type>select</type>
+      <keyword>body_layout</keyword>
+      <ref>{"" : "Inherit", "100%" : "Full width",  "1170px" : "Boxed"}</ref>
+    </item>
+    <item>
+      <text>Logo</text>
+      <selector>#logo a img</selector>
+      <property>src</property>
+      <value></value>
+      <type>image</type>
+      <keyword>logo</keyword>
+      <ref></ref>
+    </item>
+  </groups>
+  <groups>
+    <title>Header</title>
+    <item>
+      <text>Header background</text>
+      <selector>header</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>header_bg_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Header text color</text>
+      <selector>header,#form-currency .btn-group>.btn-link, #form-language .btn-group>.btn-link,header a,header .dropdown-toggle,#search input, #search button</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>header_text_color</keyword>
+      <ref></ref>
+    </item>
+  </groups>
+  <groups>
+    <title>Menu</title>
+    <item>
+      <text>Menu background</text>
+      <selector>.menu-wrap,.menu-wrap .mega-menu</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>menu_bg_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Item color</text>
+      <selector>.mega-menu>ul.nav>li>a</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>header_item_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Item color (hover)</text>
+      <selector>.mega-menu>ul.nav>li>a:hover</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>header_item_hover_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Item background color (hover)</text>
+      <selector>.mega-menu>ul.nav>li>a:hover</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>header_item_bg_hover_color</keyword>
+      <ref></ref>
+    </item>
+  </groups>
+  <groups>
+    <title>Body</title>
+    <item>
+      <text>Background Image</text>
+      <selector>body</selector>
+      <property>background-image</property>
+      <value></value>
+      <type>image</type>
+      <keyword>body_background_image</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Body background</text>
+      <selector>body</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>body_background_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Title color</text>
+      <selector>h1,h2,h3,.box-heading h2,.title h2,h1.title,h2.title,h3.title</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>body_title_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Text color</text>
+      <selector>body</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>body_text_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Links color</text>
+      <selector>a</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>link_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Links color (hover)</text>
+      <selector>a:hover</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>link_hover_color</keyword>
+      <ref></ref>
+    </item>
+  </groups>
+  <groups>
+    <title>Footer</title>
+    <item>
+      <text>Footer background color</text>
+      <selector>footer</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>footer_bg_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Footer content background color</text>
+      <selector>footer > .container,footer .content</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>footer_content_bg_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Footer content background image</text>
+      <selector>footer .content</selector>
+      <property>background-image</property>
+      <value></value>
+      <type>image</type>
+      <keyword>footer_content_bg_image</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Footer title color</text>
+      <selector>footer h1,footer h2,footer h3</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>footer_title_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Footer text color</text>
+      <selector>footer,footer a,footer a:hover,footer .social .list-inline li a</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>footer_text_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Powered background color</text>
+      <selector>footer .powered</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>footer_powered_bg_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Powered text color</text>
+      <selector>footer .powered,footer .powered a,footer .powered a:hover</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>footer_powered_text_color</keyword>
+      <ref></ref>
+    </item>
+  </groups>
+  <groups>
+    <title>Button</title>
+    <item>
+      <text>Primary background color</text>
+      <selector>.btn-primary</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_primary_bg_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Primary background color (hover)</text>
+      <selector>.btn-primary:hover</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_primary_hover_bg_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Primary border color</text>
+      <selector>.btn-primary</selector>
+      <property>border-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_primary_border_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Primary border color (hover)</text>
+      <selector>.btn-primary:hover</selector>
+      <property>border-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_primary_hover_border_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Primary text color</text>
+      <selector>.btn-primary</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_primary_text_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Primary text color (hover)</text>
+      <selector>.btn-primary:hover</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_primary_text_hover_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Default background color</text>
+      <selector>.btn-default</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_default_bg_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Default background color (hover)</text>
+      <selector>.btn-default:hover</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_default_hover_bg_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Default border color</text>
+      <selector>.btn-default</selector>
+      <property>border-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_default_border_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Default border color (hover)</text>
+      <selector>.btn-default:hover</selector>
+      <property>border-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_default_hover_border_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Default text color</text>
+      <selector>.btn-default</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_default_text_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Default text color (hover)</text>
+      <selector>.btn-default:hover</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>btn_default_text_hover_color</keyword>
+      <ref></ref>
+    </item>
+  </groups>
+  <groups>
+    <title>Product</title>
+    <item>
+      <text>Product name</text>
+      <selector>.product-thumb .name a,.product-thumb .name a:hover</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>product_name_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Product price</text>
+      <selector>.product-thumb .price,.product-thumb .price-new</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>product_price_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Product button background</text>
+      <selector>.product-thumb .button-group button</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>product_button_bg_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Product button background (hover)</text>
+      <selector>.product-thumb .button-group button:hover, .product-thumb .button-group button:focus, .product-thumb .button-group button:active, .product-thumb .button-group button:active:focus, .product-thumb .button-group button.active</selector>
+      <property>background-color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>product_button_hover_bg_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Product button text</text>
+      <selector>.product-thumb .button-group button</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>product_button_text_color</keyword>
+      <ref></ref>
+    </item>
+    <item>
+      <text>Product button text (hover)</text>
+      <selector>.product-thumb .button-group button:hover, .product-thumb .button-group button:focus, .product-thumb .button-group button:active, .product-thumb .button-group button:active:focus, .product-thumb .button-group button.active</selector>
+      <property>color</property>
+      <value></value>
+      <type>color</type>
+      <keyword>product_button_hover_text_color</keyword>
+      <ref></ref>
+    </item>
+  </groups>
+</items_setting>

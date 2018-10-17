@@ -1,0 +1,10 @@
+@import '../_main';
+/*my account*/
+.account-login {
+	.well {
+		border: none;
+		box-shadow: none;
+		@include border-radius(0px);
+		background: $white;
+	}
+}

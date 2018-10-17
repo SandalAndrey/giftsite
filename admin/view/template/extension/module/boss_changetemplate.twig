@@ -1,0 +1,91 @@
+{% if (objXML is defined ) %} 
+{% set i = 0 %} 
+{% for xml in objXML.groups %} 
+
+<div class="panel panel-default color-default">
+  <div class="panel-heading">
+    <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#color-accordion" href="#color-collapse{{ i }}">{{xml.title }}</a> </h4>
+  </div>
+  <div id="color-collapse{{ i }}" class="panel-collapse collapse">
+    <div class="panel-body">
+      {% for item in xml.item %} 
+      <div class="form-group">
+        <label class="control-label col-sm-2">{{ item.text }}</label>
+        <div class="col-sm-2">
+          <input size=6 type="text" class="hex form-control" name="xml[{{ i }}][value][]" id="{{ item.name }}" value="{{ item.value }}">
+        </div>
+      </div>
+      <input type="hidden" name="xml[{{ i }}][title][]" value="{{xml.title }}" />
+      <input type="hidden" name="xml[{{ i }}][text][]" value="{{item.text }}" />
+      <input type="hidden" name="xml[{{ i }}][name][]" value="{{item.name }}" />
+      <input type="hidden" name="xml[{{ i }}][class][]" value="{{item.class }}" />
+      <input type="hidden" name="xml[{{ i }}][style][]" value="{{item.style }}" />
+      {% endfor %} 
+    </div>
+  </div>
+</div>
+{% set i = i + 1 %} 
+{% endfor %} 
+<script type="text/javascript"><!--
+
+    $('#color_default fieldset legend').click(function(){
+        $(this).parent().toggleClass('open');
+    });
+
+
+     {% set code_color = [] %}
+ {% for xml in objXML.groups %}
+ {% for item in xml.item %}
+ {% set code_color = item.name %}
+ {% endfor %}
+ {% endfor %}
+ 
+
+    var id_Color_List_Tem = Array({% for color in code_color %} 
+ {% if (color == end(code_color)) %}
+ {{ "'"~color~"'" }}{% else %} 
+ {{ "'"~color~"'"~", " }}{% endif %}
+
+ {% endfor %});
+
+    $(document).ready(function() {
+        function addStyle(i){
+            $("#" + id_Color_List_Tem[i]).css('background', '#' + $("#" + id_Color_List_Tem[i]).val());
+        }
+        for(var i = 0 ; i < id_Color_List_Tem.length; i++ ){
+            addStyle(i);
+        };
+    });
+    (function($){
+        function changeColorPickerTem(i){
+            $('#' + id_Color_List_Tem[i]).ColorPicker({
+                onSubmit: function(hsb, hex, rgb, el) {
+                    $(el).val(hex);
+                    $(el).css({backgroundColor:"#" + hex});
+                    $(el).ColorPickerHide();
+                },
+                onChange: function (hsb, hex, rgb) {
+
+                    $("#" + id_Color_List_Tem[i]).css('background', '#' + hex);
+                    $("#" + id_Color_List_Tem[i]).val(hex);
+                },
+                onBeforeShow: function () {
+                    $(this).ColorPickerSetColor(this.value);
+                }
+
+            });
+        };
+
+        //var initLayout = function() {
+        for(var i = 0 ; i < id_Color_List_Tem.length; i++ ){
+            changeColorPickerTem(i);
+        };
+        //};
+        //alert(initLayout);
+        //EYE.register(initLayout, 'init');
+    })(jQuery)
+    //--></script> 
+<script type="text/javascript" src="view/javascript/bossthemes/colorpicker.js"></script> 
+<script type="text/javascript" src="view/javascript/bossthemes/eye.js"></script>
+<link rel="stylesheet" type="text/css" href="view/stylesheet/bossthemes/colorpicker.css" />
+{% endif %} 

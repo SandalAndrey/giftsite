@@ -1,0 +1,16 @@
+@import '../_main';
+/*carousel*/
+.carousel-caption {
+	color: $white;
+	text-shadow: 0 1px 0 $black;
+}
+.carousel-control {
+	.icon-prev:before {
+		content: '\f053';
+		font-family: $font_0;
+	}
+	.icon-next:before {
+		content: '\f054';
+		font-family: $font_0;
+	}
+}

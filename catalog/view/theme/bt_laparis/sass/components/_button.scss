@@ -1,0 +1,242 @@
+@import '../_main';
+/*button*/
+.btn-group > {
+	.btn {
+		font-size: 13px;
+	}
+	.dropdown-menu {
+		font-size: 13px;
+	}
+	.popover {
+		font-size: 13px;
+	}
+	.btn-xs {
+		font-size: 9px;
+	}
+	.btn-sm {
+		font-size: 10.2px;
+	}
+	.btn-lg {
+		font-size: 15px;
+	}
+}
+.buttons {
+	margin: 10px 0;
+	overflow: hidden;
+}
+.btn {
+	display: inline-block;
+	vertical-align: top;
+	@include font(13px);
+	line-height: 1;
+	padding: 12px 40px;
+	outline: none;
+	border: none;
+	text-transform: uppercase;
+	@include border-radius(0px);
+	@include transition_ease(0.5s);
+	&:hover, &:active, &:focus, &:active:focus {
+		outline: none;
+		box-shadow: none;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+	}
+}
+/*----Chrome----*/
+@media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
+	.btn {
+		padding: 13px 40px 10px 40px;
+	}
+}
+/*----Safari----*/
+_::-webkit-full-page-media, _:future, :root {
+	.btn {
+		padding: 13px 40px 10px 40px;
+	}
+}
+/*----Firefore----*/
+@-moz-document url-prefix() {
+	.btn {
+		
+	}
+}
+/*----Internet Explore 9+----*/
+@media screen and (min-width:0\0) {
+	.btn {
+		padding-bottom: 11px;
+	}
+}
+/*----Microsoft EDGE----*/
+@supports (-ms-ime-align:auto) {
+	.btn {
+		
+	}
+}
+.btn-block {
+	display: block;
+	width: 100%;
+}
+.btn-xs {
+	font-size: 9px;
+}
+.btn-sm {
+	font-size: 10.2px;
+}
+.btn-lg {
+	padding: 10px 16px;
+	font-size: 15px;
+}
+.btn-primary {
+	@include primary-color;
+}
+.btn-default {
+	padding: 10px 40px;
+	border-width: 2px;
+	border-style: solid;
+	@include secondary-color;
+}
+/*----Chrome----*/
+@media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
+	.btn-default {
+		padding: 11px 40px 8px 40px;
+	}
+}
+/*----Safari----*/
+_::-webkit-full-page-media, _:future, :root {
+	.btn-default {
+		padding: 11px 40px 8px 40px;
+	}
+}
+/*----Firefore----*/
+@-moz-document url-prefix() {
+	.btn-default {
+		
+	}
+}
+/*----Internet Explore 9+----*/
+@media screen and (min-width:0\0) {
+	.btn-default {
+		padding-bottom: 9px;
+	}
+}
+/*----Microsoft EDGE----*/
+@supports (-ms-ime-align:auto) {
+	.btn-default {
+		
+	}
+}
+.btn-warning {
+	&:hover {
+		box-shadow: inset 0 1000px 0 $black_10;
+	}
+	&:active {
+		box-shadow: inset 0 1000px 0 $black_10;
+	}
+	&.active {
+		box-shadow: inset 0 1000px 0 $black_10;
+	}
+	&.disabled {
+		box-shadow: inset 0 1000px 0 $black_10;
+	}
+}
+.btn-warning[disabled] {
+	box-shadow: inset 0 1000px 0 $black_10;
+}
+.btn-danger {
+	
+}
+.btn-success {
+	color: $white;
+	background-color: $color_fern_approx;
+	background-image: linear-gradient(to bottom, $color_fern_approx, $color_fruit_salad_approx);
+	background-repeat: repeat-x;
+	border-color: $color_fruit_salad_approx $color_fruit_salad_approx $color_killarney_approx;
+}
+.btn-info {
+	color: $color_storm_dust_approx;
+	background: none;
+	padding: 0;
+	height: auto;
+	border: none!important;
+	background: none!important;
+	&:hover {
+		background: none;
+		color: $black;
+	}
+	&:active {
+		background: none;
+		color: $black;
+	}
+	&:focus {
+		background: none;
+		color: $black;
+	}
+	&.active {
+		background: none;
+		color: $black;
+	}
+	&.disabled {
+		background: none;
+		color: $black;
+	}
+}
+.btn-info[disabled] {
+	background: none;
+	color: $black;
+}
+.btn-inverse {
+	color: $white;
+	//Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	text-shadow: 0 -1px 0 $black_25;
+	background-color: $color_tuatara_approx;
+	background-image: linear-gradient(to bottom, $color_tundora_approx, $color_log_cabin_approx);
+	background-repeat: repeat-x;
+	border-color: $color_log_cabin_approx $color_log_cabin_approx $black;
+	&:hover {
+		background-color: $color_log_cabin_approx;
+		background-image: linear-gradient(to bottom, $color_mine_shaft_approx, $color_woodsmoke_approx);
+	}
+	&:active {
+		background-color: $color_log_cabin_approx;
+		background-image: linear-gradient(to bottom, $color_mine_shaft_approx, $color_woodsmoke_approx);
+	}
+	&.active {
+		background-color: $color_log_cabin_approx;
+		background-image: linear-gradient(to bottom, $color_mine_shaft_approx, $color_woodsmoke_approx);
+	}
+	&.disabled {
+		background-color: $color_log_cabin_approx;
+		background-image: linear-gradient(to bottom, $color_mine_shaft_approx, $color_woodsmoke_approx);
+	}
+}
+.btn-inverse[disabled] {
+	background-color: $color_log_cabin_approx;
+	background-image: linear-gradient(to bottom, $color_mine_shaft_approx, $color_woodsmoke_approx);
+}
+.btn-quickshop {
+	background: transparent;
+	border: 1px solid $white;
+	color: $white;
+	&:focus, &:active, &.active, &:focus:active {
+		background: transparent;
+		color: $white;
+	}
+	&:hover {
+		background: $primary_color_hover;
+		color: $white;
+	}
+}
+.btn-view {
+	background: transparent;
+	border: 1px solid $border_color;
+	outline: none;
+	color: $text_color;
+	padding: 7px 10px;
+	font-size: 12px;
+	&:hover, &:focus, &:active, &.active, &:focus:active {
+		outline: none;
+		color: $primary_color_hover;
+		border-color: $text_color;
+	}
+}

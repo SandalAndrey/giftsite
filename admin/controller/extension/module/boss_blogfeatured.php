@@ -1,0 +1,421 @@
+<?php
+class ControllerExtensionModuleBossBlogfeatured extends Controller {
+	private $error = array();
+
+	public function index() {
+		$this->language->load('extension/module/boss_blogfeatured');
+
+		$this->document->setTitle($this->language->get('heading_title'));
+
+		$this->load->model('setting/module');
+		$this->load->model('bossblog/category');
+
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+			if (!isset($this->request->get['module_id'])) {
+				$this->model_setting_module->addModule('boss_blogfeatured', $this->request->post);
+			} else {
+				$this->model_setting_module->editModule($this->request->get['module_id'], $this->request->post);
+			}
+
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module', 'SSL'));
+		}
+
+		$data['heading_title'] = $this->language->get('heading_title');
+
+		$data['text_enabled'] = $this->language->get('text_enabled');
+		$data['text_disabled'] = $this->language->get('text_disabled');
+		$data['text_popular_article'] = $this->language->get('text_popular_article');
+		$data['text_latest_article'] = $this->language->get('text_latest_article');
+		$data['text_category_article'] = $this->language->get('text_category_article');
+		$data['text_choose_article'] = $this->language->get('text_choose_article');
+		$data['text_get_article'] = $this->language->get('text_get_article');
+		$data['text_full_width'] = $this->language->get('text_full_width');
+		$data['text_fix_1170'] = $this->language->get('text_fix_1170');
+
+		$data['entry_article'] = $this->language->get('entry_article');
+		$data['entry_column'] = $this->language->get('entry_column');
+		$data['entry_column'] = $this->language->get('entry_column');
+		$data['entry_limit'] = $this->language->get('entry_limit');
+		$data['entry_scrolling'] = $this->language->get('entry_scrolling');
+		$data['entry_use_slider'] = $this->language->get('entry_use_slider');
+		$data['entry_per_row'] = $this->language->get('entry_per_row');
+		$data['entry_num_row'] = $this->language->get('entry_num_row');
+		$data['entry_limit_article'] = $this->language->get('entry_limit_article');
+		$data['entry_limit_des'] = $this->language->get('entry_limit_des');
+		$data['text_edit'] = $this->language->get('text_edit');
+		$data['entry_width'] = $this->language->get('entry_width');
+		$data['entry_height'] = $this->language->get('entry_height');
+		$data['entry_name'] = $this->language->get('entry_name');
+		$data['entry_status'] = $this->language->get('entry_status');
+		$data['entry_title'] = $this->language->get('entry_title');
+		$data['entry_position'] = $this->language->get('entry_position');
+		$data['entry_article_layout'] = $this->language->get('entry_article_layout');
+		$data['entry_layout_width'] = $this->language->get('entry_layout_width');
+
+		$data['button_save'] = $this->language->get('button_save');
+		$data['button_cancel'] = $this->language->get('button_cancel');
+		$data['button_add_module'] = $this->language->get('button_add_module');
+		$data['button_remove'] = $this->language->get('button_remove');
+
+		if (isset($this->error['warning'])) {
+			$data['error_warning'] = $this->error['warning'];
+		} else {
+			$data['error_warning'] = '';
+		}
+
+		if (isset($this->error['name'])) {
+			$data['error_name'] = $this->error['name'];
+		} else {
+			$data['error_name'] = array();
+		}
+
+		if (isset($this->error['width'])) {
+			$data['error_width'] = $this->error['width'];
+		} else {
+			$data['error_width'] = '';
+		}
+
+		if (isset($this->error['height'])) {
+			$data['error_height'] = $this->error['height'];
+		} else {
+			$data['error_height'] = '';
+		}
+		if (isset($this->error['limit'])) {
+			$data['error_limit'] = $this->error['limit'];
+		} else {
+			$data['error_limit'] = '';
+		}
+		if (isset($this->error['num_row'])) {
+			$data['error_num_row'] = $this->error['num_row'];
+		} else {
+			$data['error_num_row'] = '';
+		}
+		if (isset($this->error['per_row'])) {
+			$data['error_per_row'] = $this->error['per_row'];
+		} else {
+			$data['error_per_row'] = '';
+		}
+		if (isset($this->error['limit_article'])) {
+			$data['error_limit_article'] = $this->error['limit_article'];
+		} else {
+			$data['error_limit_article'] = '';
+		}
+		if (isset($this->error['limit_des'])) {
+			$data['error_limit_des'] = $this->error['limit_des'];
+		} else {
+			$data['error_limit_des'] = '';
+		}
+		if (isset($this->error['category'])) {
+			$data['error_category'] = $this->error['category'];
+		} else {
+			$data['error_category'] = '';
+		}
+		$data['breadcrumbs'] = array();
+
+		$data['breadcrumbs'][] = array(
+			'text'      => $this->language->get('text_home'),
+			'href'      => $this->url->link('common/home', 'user_token=' . $this->session->data['user_token'], 'SSL'),
+			'separator' => false
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text'      => $this->language->get('text_module'),
+			'href'      => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module', 'SSL'),
+			'separator' => ' :: '
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text'      => $this->language->get('heading_title'),
+			'href'      => $this->url->link('extension/module/boss_blogfeatured', 'user_token=' . $this->session->data['user_token'], 'SSL'),
+			'separator' => ' :: '
+		);
+
+		if (!isset($this->request->get['module_id'])) {
+			$data['action'] = $this->url->link('extension/module/boss_blogfeatured', 'user_token=' . $this->session->data['user_token'], 'SSL');
+		} else {
+			$data['action'] = $this->url->link('extension/module/boss_blogfeatured', 'user_token=' . $this->session->data['user_token'] . '&module_id=' . $this->request->get['module_id'], 'SSL');
+		}
+
+		$data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module', 'SSL');
+
+		if (isset($this->request->get['module_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+			$module_info = $this->model_setting_module->getModule($this->request->get['module_id']);
+		}
+
+		$data['user_token'] = $this->session->data['user_token'];
+
+		if (isset($this->request->post['name'])) {
+			$data['name'] = $this->request->post['name'];
+		} elseif (!empty($module_info)) {
+			$data['name'] = $module_info['name'];
+		} else {
+			$data['name'] = '';
+		}
+		
+		if (isset($this->request->post['num_row'])) {
+			$data['num_row'] = $this->request->post['num_row'];
+		} elseif (!empty($module_info['num_row'])) {
+			$data['num_row'] = $module_info['num_row'];
+		} else {
+			$data['num_row'] = 1;
+		}
+		
+		if (isset($this->request->post['per_row'])) {
+			$data['per_row'] = $this->request->post['per_row'];
+		} elseif (!empty($module_info['per_row'])) {
+			$data['per_row'] = $module_info['per_row'];
+		} else {
+			$data['per_row'] = 3;
+		}
+		
+		if (isset($this->request->post['limit'])) {
+			$data['limit'] = $this->request->post['limit'];
+		} elseif (!empty($module_info['limit'])) {
+			$data['limit'] = $module_info['limit'];
+		} else {
+			$data['limit'] = 5;
+		}
+		
+		$data['column_values'] = array(
+			1 => 1,
+			2 => 2,
+			3 => 3,
+			4 => 4,
+			6 => 6,
+			12 => 12
+		);
+
+        if (isset($this->request->post['column'])) {
+            $data['column'] = $this->request->post['column'];
+        } elseif (!empty($module_info)) {
+            $data['column'] = $module_info['column'];
+        } else {
+            $data['column'] = 5;
+        }
+		
+		if (isset($this->request->post['limit_article'])) {
+			$data['limit_article'] = $this->request->post['limit_article'];
+		} elseif (!empty($module_info['limit_article'])) {
+			$data['limit_article'] = $module_info['limit_article'];
+		} else {
+			$data['limit_article'] = 30;
+		}
+		
+		if (isset($this->request->post['limit_des'])) {
+			$data['limit_des'] = $this->request->post['limit_des'];
+		} elseif (!empty($module_info['limit_des'])) {
+			$data['limit_des'] = $module_info['limit_des'];
+		} else {
+			$data['limit_des'] = 50;
+		}
+
+		if (isset($this->request->post['image_width'])) {
+			$data['image_width'] = $this->request->post['image_width'];
+		} elseif (!empty($module_info['image_width'])) {
+			$data['image_width'] = $module_info['image_width'];
+		} else {
+			$data['image_width'] = 200;
+		}
+
+		if (isset($this->request->post['image_height'])) {
+			$data['image_height'] = $this->request->post['image_height'];
+		} elseif (!empty($module_info['image_height'])) {
+			$data['image_height'] = $module_info['image_height'];
+		} else {
+			$data['image_height'] = 200;
+		}
+
+		if (isset($this->request->post['status'])) {
+			$data['status'] = $this->request->post['status'];
+		} elseif (!empty($module_info)) {
+			$data['status'] = $module_info['status'];
+		} else {
+			$data['status'] = '';
+		}
+
+		if (isset($this->request->post['title'])) {
+			$data['title'] = $this->request->post['title'];
+		} elseif (!empty($module_info)) {
+			$data['title'] = $module_info['title'];
+		} else {
+			$data['title'] = array();
+		}
+
+		if (isset($this->request->post['show_slider'])) {
+			$data['show_slider'] = $this->request->post['show_slider'];
+		} elseif (!empty($module_info)) {
+			$data['show_slider'] = $module_info['show_slider'];
+		} else {
+			$data['show_slider'] = 0;
+		}
+		if (isset($this->request->post['filter_blog'])) {
+			$data['filter_blog'] = $this->request->post['filter_blog'];
+		} elseif (!empty($module_info)) {
+			$data['filter_blog'] = $module_info['filter_blog'];
+		} else {
+			$data['filter_blog'] = '';
+		}
+
+		$data['articles'] = array();
+
+		$this->load->model('bossblog/articles');
+
+		if (isset($this->request->post['article'])) {
+			$articles = $this->request->post['article'];
+		} elseif (!empty($module_info['article'])) {
+			$articles = $module_info['article'];
+		} else {
+			$articles = array();
+		}
+
+		if(!empty($articles)){
+			foreach ($articles as $article_id) {
+				$articles_info = $this->model_bossblog_articles->getArticle($article_id);
+
+				if ($articles_info) {
+					$data['articles'][] = array(
+						'articles_id' => $articles_info['blog_article_id'],
+						'name'       => $articles_info['name']
+					);
+				}
+			}
+		}
+
+		if (isset($this->request->post['filter_type_category'])) {
+			$data['filter_type_category'] = $this->request->post['filter_type_category'];
+		} elseif (!empty($module_info['filter_type_category'])) {
+			$data['filter_type_category'] = $module_info['filter_type_category'];
+		} else {
+			$data['filter_type_category'] = '';
+		}
+
+		$results = $this->model_bossblog_category->getCategories(0);
+
+		foreach ($results as $result) {
+			$data['categories'][] = array(
+				'blog_category_id' => $result['blog_category_id'],
+				'name'        => $result['name'],
+				'sort_order'  => $result['sort_order'],
+
+			);
+		}
+		
+		$data['position_values'] = array(
+			'content' => $this->language->get('text_content'),
+			'sidebar' => $this->language->get('text_sidebar')
+		);
+		
+        if (isset($this->request->post['position'])) {
+            $data['position'] = $this->request->post['position'];
+        } elseif (!empty($module_info)) {
+            $data['position'] = $module_info['position'];
+        } else {
+            $data['position'] = '';
+        }
+		
+		$data['article_layout_values'] = array(
+			'article-grid' => $this->language->get('text_grid'),
+			'article-list' => $this->language->get('text_list')
+		);
+		
+        if (isset($this->request->post['article_layout'])) {
+            $data['article_layout'] = $this->request->post['article_layout'];
+        } elseif (!empty($module_info)) {
+            $data['article_layout'] = $module_info['article_layout'];
+        } else {
+            $data['article_layout'] = '';
+        }
+		
+		if (isset($this->request->post['layout_width'])) {
+			$data['layout_width'] = $this->request->post['layout_width'];
+		} elseif (!empty($module_info)) {
+			$data['layout_width'] = $module_info['layout_width'];
+		} else {
+			$data['layout_width'] = '';
+		}
+		
+		$this->load->model('localisation/language');
+		$data['languages'] = $this->model_localisation_language->getLanguages();
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+
+		$this->response->setOutput($this->load->view('extension/module/boss_blogfeatured', $data));
+	}
+
+	protected function validate() {
+		if (!$this->user->hasPermission('modify', 'extension/module/featured')) {
+			$this->error['warning'] = $this->language->get('error_permission');
+		}
+
+		if ((utf8_strlen($this->request->post['name']) < 3) || (utf8_strlen($this->request->post['name']) > 64)) {
+			$this->error['name'] = $this->language->get('error_name');
+		}
+
+		if (!$this->request->post['image_width']) {
+			$this->error['width'] = $this->language->get('error_width');
+		}
+
+		if (!$this->request->post['image_height']) {
+			$this->error['height'] = $this->language->get('error_height');
+		}
+		if (!$this->request->post['limit']) {
+			$this->error['limit'] = $this->language->get('error_limit');
+		}
+		if (!$this->request->post['num_row']) {
+			$this->error['num_row'] = $this->language->get('error_num_row');
+		}
+		if (!$this->request->post['per_row']) {
+			$this->error['per_row'] = $this->language->get('error_per_row');
+		}
+		if (!$this->request->post['limit_article']) {
+			$this->error['limit_article'] = $this->language->get('error_limit_article');
+		}
+		if (!$this->request->post['limit_des']) {
+			$this->error['limit_des'] = $this->language->get('error_limit_des');
+		}
+		if (isset($this->request->post['filter_blog']) && $this->request->post['filter_blog'] == 'category' && !isset($this->request->post['filter_type_category'])) {
+			$this->error['category'] = $this->language->get('error_category');
+		}
+		return !$this->error;
+	}
+
+	public function autocomplete() {
+		$json = array();
+
+		if (isset($this->request->get['filter_name'])) {
+			$this->load->model('bossblog/articles');
+
+			if (isset($this->request->get['filter_name'])) {
+				$filter_name = $this->request->get['filter_name'];
+			} else {
+				$filter_name = '';
+			}
+
+			$limit = 20;
+
+			$data = array(
+				'filter_name'  => $filter_name,
+				'start'        => 0,
+				'limit'        => $limit
+			);
+
+			$results = $this->model_bossblog_articles->getArticles($data);
+
+			foreach ($results as $result) {
+
+				$json[] = array(
+					'article_id' => $result['blog_article_id'],
+					'name'       => strip_tags(html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8'))
+				);
+			}
+		}
+
+		$this->response->setOutput(json_encode($json));
+	}
+
+
+}

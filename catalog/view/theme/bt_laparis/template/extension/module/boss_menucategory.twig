@@ -1,0 +1,53 @@
+<div class="menu-category box">
+  <div class="box-heading title">
+    <h2>{{ heading_title }}</h2>
+  </div>
+  <div class="box-content">
+    <ul class="box-category boss-menu-cate">
+      {% if (menus is defined and menus is not empty) %} 
+      {% for menu in menus %} 
+      <li>
+        <div class="nav_title">
+          {% if (menu['icon'] is defined and menu['icon']) %} 
+          <img alt="{{ menu['title'] }}" src="{{ menu['icon'] }}" />
+          {% endif %} 
+          <a class="title" href="{{ menu['href'] }}">{{ menu['title'] }} 
+          {% if (menu['categories']) %}
+          <span class="pull-right"><i class="fa fa-caret-right"></i></span>
+          {% endif %} 
+          </a> </div>
+        {% if (menu['categories']) %} 
+        <div class="nav_submenu" style="width:{{ menu['sub_width'] }}px;">
+          {% if (menu['bgimage']) %} 
+          <a title="{{ menu['title'] }}" href="{{ menu['href'] }}"> <img alt="{{ menu['title'] }}" src="{{ menu['bgimage'] }}" class="bg-img-cate"> </a>
+          {% endif %} 
+          {% set sub_column = menu['sub_width']/menu['column'] %} 
+          <div class="nav_sub_submenu">
+            <ul>
+              {% for category in menu['categories'] %} 
+              <li class="{% if (category['children']) %} {{ 'nav_cat_parent' }}{% endif %}"> <a href="{{ category['href'] }}">{{ category['name'] }} 
+                {% if (category['children']) %} 
+                <span class="pull-right"><i class="fa fa-caret-right"></i></span>
+                {% endif %} 
+                </a>
+                {% if (category['children']) %} 
+                <div class="sub_cat_child" style="width:{{ sub_column }}px;">
+                  <ul>
+                    {% for cat_child in category['children'] %} 
+                    <li><a href="{{ cat_child['href'] }}">{{ cat_child['name'] }}</a></li>
+                    {% endfor %} 
+                  </ul>
+                </div>
+                {% endif %} 
+              </li>
+              {% endfor %} 
+            </ul>
+          </div>
+        </div>
+        {% endif %} 
+      </li>
+      {% endfor %} 
+      {% endif %} 
+    </ul>
+  </div>
+</div>

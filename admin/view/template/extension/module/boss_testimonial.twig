@@ -1,0 +1,262 @@
+{{ header }}{{ column_left }} 
+
+<div id="content">
+<div class="page-header">
+  <div class="container-fluid">
+    <div class="pull-right">
+      <button type="submit" form="form-boss-testimonial" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+      <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+    <h1>{{ heading_title }}</h1>
+    <ul class="breadcrumb">
+      {% for breadcrumb in breadcrumbs %} 
+      <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+      {% endfor %} 
+    </ul>
+  </div>
+</div>
+<div class="container-fluid">
+{% if (error_warning) %} 
+<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+</div>
+{% endif %} 
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+  </div>
+  <div class="panel-body">
+    <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-boss-testimonial" class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+        <div class="col-sm-10">
+          <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+          {% if (error_name) %} 
+          <div class="text-danger">{{ error_name }}</div>
+          {% endif %} 
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ entry_status }}</label>
+        <div class="col-sm-10">
+          <select name="status" id="input-status" class="form-control">
+            {% if (status) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" >{{ entry_title }}</label>
+        <div class="col-sm-10">
+          {% for language in languages %} 
+          <div class="input-group"> <span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input type="text" name="boss_testimonial_module[title][{{ language['language_id'] }}]" value="{{ modules['title'][language['language_id']] is defined ?modules['title'][language['language_id']]:'' }}" placeholder="{{ entry_title }}"  class="form-control" />
+          </div>
+          {% endfor %} 
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" >{{ entry_limit }}</label>
+        <div class="col-sm-10">
+          <input type="text" name="boss_testimonial_module[limit]" value="{{ modules['limit'] is defined ?modules['limit']:20 }}" placeholder="{{ entry_limit }}" class="form-control" />
+          {% if (error_limit) %} 
+          <div class="text-danger">{{ error_limit }}</div>
+          {% endif %} 
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" >{{ entry_row }}</label>
+        <div class="col-sm-10">
+          <input type="text" name="boss_testimonial_module[row]" value="{{ modules['row'] is defined ?modules['row']:1 }}" placeholder="{{ entry_row }}" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" >{{ entry_perrow }}</label>
+        <div class="col-sm-10">
+          <input type="text" name="boss_testimonial_module[per_row]" value="{{ modules['per_row'] is defined ?modules['per_row']:3 }}" placeholder="{{ entry_perrow }}" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" >{{ entry_size }}</label>
+        <div class="col-sm-10">
+          <div class="row">
+            <div class="col-sm-6">
+              <input type="text" name="boss_testimonial_module[width]" value="{{ modules['width'] is defined ?modules['width']:'' }}" placeholder="{{ entry_width }}"  class="form-control" />
+            </div>
+            <div class="col-sm-6">
+              <input type="text" name="boss_testimonial_module[height]" value="{{ modules['height'] is defined ?modules['height']:'' }}" placeholder="{{ entry_height }}"  class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" >{{ entry_character_limit }}</label>
+        <div class="col-sm-10">
+          <input type="text" name="boss_testimonial_module[limit_character]" value="{{ modules['limit_character'] is defined ?modules['limit_character']:20 }}" placeholder="{{ entry_character_limit }}" class="form-control" />
+          {% if (error_limit_character) %} 
+          <div class="text-danger">{{ error_limit_character }}</div>
+          {% endif %} 
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" >Random</label>
+        <div class="col-sm-10">
+          <select name="boss_testimonial_module[random]" class="form-control">
+            {% if (modules['random'] is defined and modules['random']) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" >Auto Scroll</label>
+        <div class="col-sm-10">
+          <select name="boss_testimonial_module[auto_scroll]" class="form-control">
+            {% if (modules['auto_scroll'] is defined and modules['auto_scroll']) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Show name</label>
+        <div class="col-sm-10">
+          <select name="boss_testimonial_module[show_name]" class="form-control">
+            {% if (modules['show_name'] is defined and modules['show_name']) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Show Subject</label>
+        <div class="col-sm-10">
+          <select name="boss_testimonial_module[show_subject]" class="form-control">
+            {% if (modules['show_subject'] is defined and modules['show_subject']) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Show Message</label>
+        <div class="col-sm-10">
+          <select name="boss_testimonial_module[show_message]" class="form-control">
+            {% if (modules['show_message'] is defined and modules['show_message']) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Show City</label>
+        <div class="col-sm-10">
+          <select name="boss_testimonial_module[show_city]" class="form-control">
+            {% if (modules['show_city'] is defined and modules['show_city']) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Show Rating</label>
+        <div class="col-sm-10">
+          <select name="boss_testimonial_module[show_rating]" class="form-control">
+            {% if (modules['show_rating'] is defined and modules['show_rating']) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Show Date</label>
+        <div class="col-sm-10">
+          <select name="boss_testimonial_module[show_date]" class="form-control">
+            {% if (modules['show_date'] is defined and modules['show_date']) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Show Image</label>
+        <div class="col-sm-10">
+          <select name="boss_testimonial_module[show_image]" class="form-control">
+            {% if (modules['show_image'] is defined and modules['show_image']) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Link "Show All"</label>
+        <div class="col-sm-10">
+          <select name="boss_testimonial_module[show_all]" class="form-control">
+            {% if (modules['show_all'] is defined and modules['show_all']) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Link "Write Testimonial"</label>
+        <div class="col-sm-10">
+          <select name="boss_testimonial_module[show_write]" class="form-control">
+            {% if (modules['show_write'] is defined and modules['show_write']) %} 
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            <option value="0">{{ text_disabled }}</option>
+            {% else %} 
+            <option value="1">{{ text_enabled }}</option>
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% endif %} 
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{{ footer }}

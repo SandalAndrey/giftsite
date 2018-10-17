@@ -1,0 +1,416 @@
+<!--module boss - fillter product-->
+{% if (tabs is not empty) %}
+
+<div id="filter-product-{{ module }}" class="bt-filter-product box {{ sidebar ? 'sidebar style-2' : 'style-1' }} {{ scrolling_panel ? 'slide' : 'non-slide' }}">
+  <div class="{{ sidebar ? 'container-fluid' : 'container' }}">
+    <div class="{{ sidebar ? 'row' : 'bt-row' }}">
+      <div id="boss_homefilter_tabs{{ module }}" class="boss_homefilter_tabs">
+        {% if (heading_title) %}
+        <div class="box-heading title">
+          <h2>
+            {% if (icon) %}
+            <i class="fa {{ icon }}"></i>
+            {% endif %}
+            {{ heading_title }}</h2>
+        </div>
+        {% endif %}
+        <div class="clearfix"></div>
+        <div id="tabs_content_container{{ module }}" class="box-content">
+          {% if (use_tab) %}
+          <ul class="tabs-headings {{ scrolling_tab ? 'owl-carousel-2 owl-theme-2 nav-middle nav-visible padding-nav' : '' }}">
+            {% for index,tab in tabs %}
+            <li class="{{ index == 0 ? 'active' : '' }}"> <a href="#filter-product-tab{{ index~module }}" title="tab" data-toggle="tab">
+              {% if (tab['icon'] is not empty) %}
+              <img src="{{ tab['icon'] }}" title="{{ tab['title'] }}" alt="{{ tab['title'] }}"/>
+              {% endif %}
+              {{ tab['title'] }}</a></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <div class="tab-content">
+            {% for index,tab in tabs %}
+            <div id="filter-product-tab{{ index~module }}" class="tab-pane fade {{ index == 0 ? 'in active' : '' }}">
+              {% if (tab['products'] is not empty) %}
+              {% if (product_large and not sidebar) %}
+              <div class="row bt-row">
+                {% set product = tab['products'][0] %}
+                <div class="col-sm-6">
+                  <div class="product-layout large-product {{ class_css }}" data-product="{{ product['product_id'] }}" data-sort="{{ product['sort_order'] }}">
+                    <div class="product-thumb">
+                      <div class="image"><a href="{{ product['href'] }}" title="{{ product['name'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a>
+                        <div class="button-group">
+                          <button type="button" onclick="btadd.cart('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>
+                          <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist('{{ product['product_id'] }}');"><i class="lnr lnr-heart"></i></button>
+                          <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare('{{ product['product_id'] }}');"><i class="lnr lnr-sync"></i></button>
+                        </div>
+                      </div>
+                      <div class="caption">
+                        <h4 class="name"><a href="{{ product['href'] }}" title="{{ product['name'] }}">{{ product['name'] }}</a></h4>
+                        {% if (product['price']) %}
+                        <p class="price">
+                          {% if (not product['special']) %}
+                          {{ product['price'] }}
+                          {% else %}
+                          <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                          {% endif %}
+                        </p>
+                        {% endif %}
+                        {% if (product['rating']) %}
+                        <div class="rating">
+                          {% set i = 1 %}{% for i in i..5 %}
+                          {% if (product['rating'] < i) %}
+                          <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                          {% else %}
+                          <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                          {% endif %}
+                          {% endfor %}
+                        </div>
+                        {% endif %}
+                      </div>
+                      {% if (product['special']) %}
+                      <div class="save-off">{{ text_save_off }}</div>
+                      {% endif %}
+                      <div class="sort-order">{{ product['sort_order'] }}</div>
+                    </div>
+                  </div>
+                  <ul class="addition-image">
+                    {% for image in product['images'] %}
+                    <li class="image-additional text-center"><a href="{{ image['popup'] }}" title="{{ product['name'] }}"> <img src="{{ image['thumb'] }}" title="{{ product['name'] }}" alt="{{ product['name'] }}" /></a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="col-sm-6 list-product">
+                  <div class="row">
+                    {% for index,product in tab['products'] %}
+                    {% if index != 0 %}
+                    <div class="col-sm-4">
+                      <div class="product-thumb">
+                        <div class="image"><a href="{{ product['href'] }}"  title="{{ product['name'] }}" data-product="{{ product['product_id'] }}" data-sort="{{ product['sort_order'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a></div>
+                        <div class="caption">
+                          <h4 class="name"><a href="{{ product['href'] }}"  title="{{ product['name'] }}">{{ product['name'] }}</a></h4>
+                          {% if (product['price']) %}
+                          <p class="price">
+                            {% if (not product['special']) %}
+                            {{ product['price'] }}
+                            {% else %}
+                            <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                            {% endif %}
+                          </p>
+                          {% endif %}
+                        </div>
+                        <div class="sort-order">{{ product['sort_order'] }}</div>
+                      </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              {% elseif (scrolling_panel) %}
+              <div class="box-product owl-carousel-2 owl-theme-2 nav-top-right nav-visible">
+                {% for products in array_chunk(tab['products'], num_row) %}
+                <div class="bt-item">
+                  {% for product in products %}
+                  <div class="product-layout {{ class_css }}">
+                    <div class="product-thumb">
+                      <div class="image"><a href="{{ product['href'] }}"  title="{{ product['name'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a>
+                        <div class="button-group">
+                          <button type="button" onclick="btadd.cart('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>
+                          <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist('{{ product['product_id'] }}');"><i class="lnr lnr-heart"></i></button>
+                          <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare('{{ product['product_id'] }}');"><i class="lnr lnr-sync"></i></button>
+                        </div>
+                      </div>
+                      <div class="caption">
+                        <h4 class="name"><a href="{{ product['href'] }}"  title="{{ product['name'] }}">{{ product['name'] }}</a></h4>
+                        {% if (product['price']) %}
+                        <p class="price">
+                          {% if (not product['special']) %}
+                          {{ product['price'] }}
+                          {% else %}
+                          <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                          {% endif %}
+                          {% if (product['tax']) %}
+                          <span class="price-tax">{{ text_tax }} {{ product['tax'] }}</span>
+                          {% endif %}
+                        </p>
+                        {% endif %}
+                        {% if (product['rating']) %}
+                        <div class="rating">
+                          {% set i = 1 %}{% for i in i..5 %}
+                          {% if (product['rating'] < i) %}
+                          <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                          {% else %}
+                          <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                          {% endif %}
+                          {% endfor %}
+                        </div>
+                        {% endif %}
+                      </div>
+                      {% if (not sidebar) %}
+                      {% if (product['special']) %}
+                      <div class="save-off">{{ text_save_off }}</div>
+                      {% endif %}
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+                {% endfor %}
+              </div>
+              {% else %}
+              <div class="row">
+                {% for product in tab['products'] %}
+                <div class="product-layout {{ class_css }} col-lg-{{ 12/column }} col-md-{{ 12/column }} col-sm-{{ 12/round(column/2) }} col-xs-12">
+                  <div class="product-thumb">
+                    <div class="image"><a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a>
+                      <div class="button-group">
+                        <button type="button" onclick="btadd.cart('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>
+                        <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist('{{ product['product_id'] }}');"><i class="lnr lnr-heart"></i></button>
+                        <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare('{{ product['product_id'] }}');"><i class="lnr lnr-sync"></i></button>
+                      </div>
+                    </div>
+                    <div class="caption">
+                      <h4 class="name"><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+                      <p class="price">
+                        {% if (not product['special']) %}
+                        {{ product['price'] }}
+                        {% else %}
+                        <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                        {% endif %}
+                        {% if (product['tax']) %}
+                        <span class="price-tax">{{ text_tax }} {{ product['tax'] }}</span>
+                        {% endif %}
+                      </p>
+                      {% if (product['rating']) %}
+                      <div class="rating">
+                        {% set i = 1 %}{% for i in i..5 %}
+                        {% if (product['rating'] < i) %}
+                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                        {% else %}
+                        <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                        {% endif %}
+                        {% endfor %}
+                      </div>
+                      {% endif %}
+                    </div>
+                    {% if (product['special']) %}
+                    <div class="save-off">{{ text_save_off }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% if (scrolling_panel and not product_large) %}
+<script type="text/javascript"><!--
+$(function() {
+	if ($('html').attr('dir') == 'rtl') {
+		var rtl = true;
+	} else {
+		var rtl = false;
+	}
+
+	if ({{ sidebar }}) {
+		var responsive = {};
+	} else {
+		var responsive = {
+			992: {
+				items: {{ per_row }}
+			},
+			768: {
+				items: {{ round(per_row/2) }}
+			},
+			560: {
+				items: {{ round(per_row/2) }}
+			},
+			0: {
+				items: 1
+			}
+		}
+	}
+
+	$('#filter-product-{{ module }} .box-product').each(function(index, element) {
+		var elm = $(this);
+		var loop = (elm.children().length > {{ per_row }}) ? true : false;
+
+		elm.owlCarousel2({
+			items: {{ per_row }},
+			loop: loop,
+			nav: true,
+			navText: ['<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjIuNDU3MjA3NCAxLjAwNzQ2MTQ3bC0yMSAyMC4wMjQ4MjE0MyAyMC45NDc5Mzk3IDE5Ljk3NTE3ODYiIHN0cm9rZT0iIzJEMkQyRCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==" />', '<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMS40NTY3OSAxLjAwNzQ2MTQ3bDIxIDIwLjAyNDgyMTQzTDEuNTA4ODUgNDEuMDA3NDYxNSIgc3Ryb2tlPSIjMkQyRDJEIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+" />'],
+			dots: false,
+			margin: 30,
+			rtl:rtl,
+			responsive: responsive,
+			onInitialize: function(e) {
+				var elm = e.target;
+				$(elm).parent().css('display', 'block');
+			},
+			onInitialized : function(e) {
+				var elm = e.target;
+				$(elm).parent().css('display', '');
+			}
+		});
+	});
+});
+//--></script>
+{% endif %}
+{% if (scrolling_tab) %}
+<script type="text/javascript"><!--
+$(function() {
+	if ($('html').attr('dir') == 'rtl') {
+		var rtl = true;
+	} else {
+		var rtl = false;
+	}
+
+	var elm = $('#filter-product-{{ module }} .tabs-headings');
+	var loop = (elm.children().length > {{ num_tab }}) ? true : false;
+
+	elm.owlCarousel2({
+		items: {{ num_tab }},
+		loop: loop,
+		nav: true,
+		navText: ['<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjIuNDU3MjA3NCAxLjAwNzQ2MTQ3bC0yMSAyMC4wMjQ4MjE0MyAyMC45NDc5Mzk3IDE5Ljk3NTE3ODYiIHN0cm9rZT0iIzJEMkQyRCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==" />', '<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyNCA0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMS40NTY3OSAxLjAwNzQ2MTQ3bDIxIDIwLjAyNDgyMTQzTDEuNTA4ODUgNDEuMDA3NDYxNSIgc3Ryb2tlPSIjMkQyRDJEIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+" />'],
+		dots: false,
+		rtl:rtl,
+		responsive:{
+			992: {
+				items: {{ num_tab }}
+			},
+			768: {
+				items: {{ round(num_tab/2) }}
+			},
+			560: {
+				items: {{ round(num_tab/2) }}
+			},
+			0: {
+				items: 1
+			}
+		}
+	});
+
+	$('#filter-product-{{ module }} .tabs-headings li').on('click', function() {
+		$('#filter-product-{{ module }} .tabs-headings li').not(this).removeClass('active');
+	});
+});
+//--></script>
+{% endif %}
+{% if (product_large) %}
+<script type="text/javascript"><!--
+var products = jQuery.parseJSON('{{ products }}');
+
+$('#filter-product-{{ module }}').delegate('.list-product .image a', 'click', function(e) {
+	e.preventDefault();
+
+	var index = $(this).parent().parent();
+	var target = $(this).parents('.list-product').prev().children('.large-product');
+
+	var current_product_id = parseInt(target.attr('data-product'));
+	var current_sort = parseInt(target.attr('data-sort'));
+
+	var product_id = parseInt($(this).attr('data-product'));
+	var sort = parseInt($(this).attr('data-sort'));
+
+	if (typeof products[current_product_id] != 'undefined') {
+		var product = products[current_product_id];
+
+		var html = '';
+		html += '<div class="image">';
+			html += '<a href="' + product['href'] + '" data-product="' + product['product_id'] + '" data-sort="' + current_sort + '"><img src="' + product['thumb'] + '" alt="' + product['name'] + '" title="' + product['name'] + '" class="img-responsive" /></a>';
+		html += '</div>';
+		html += '<div class="caption">';
+			html += '<h4 class="name"><a href="' + product['href'] + '">' + product['name'] + '</a></h4>';
+			if (product['price']) {
+				html += '<p class="price">';
+				if (!product['special']) {
+					html += product['price'];
+				} else {
+					html += '<span class="price-new">' + product['special'] + '</span> <span class="price-old">' + product['price'] + '</span>';
+				}
+				html += '</p>';
+			}
+		html += '</div>';
+		html += '<div class="sort-order">' + current_sort + '</div>';
+
+		index.html(html);
+	}
+
+	if (typeof products[product_id] != 'undefined') {
+		var product = products[product_id];
+
+		var html = '';
+
+		html += '<div class="product-thumb">';
+			html += '<div class="image">';
+				html += '<a href="' + product['href'] + '"><img src="' + product['thumb'] + '" alt="' + product['name'] + '" title="' + product['name'] + '" class="img-responsive" /></a>';
+				html += '<div class="button-group">';
+					html += '<button type="button" onclick="btadd.cart(' + product['product_id'] + ', ' + product['minimum'] + ');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>';
+					html += '<button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist(' + product['product_id'] + ');"><i class="lnr lnr-heart"></i></button>';
+					html += '<button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare(' + product['product_id'] + ');"><i class="lnr lnr-sync"></i></button>';
+				html += '</div>';
+				if (product['special']) {
+					html += '<div class="save-off">{{ text_save_off }}</div>';
+				}
+			html += '</div>';
+
+			html += '<div class="caption">';
+				html += '<h4 class="name"><a href="' + product['href'] + '">' + product['name'] + '</a></h4>';
+				if (!{{ sidebar }}) {
+					//html += '<p>' + product['description'] + '</p>';
+				}
+				if (product['price']) {
+					html += '<p class="price">'
+					if (!product['special']) {
+						html += product['price'];
+					} else {
+						html += '<span class="price-new">' + product['special'] + '</span> <span class="price-old">' + product['price'] + '</span>';
+					}
+					html += '</p>';
+				}
+				if (product['rating']) {
+					html += '<div class="rating">';
+						for (var i = 1; i <= 5; i++) {
+							if (product['rating'] < i) {
+								html += '<span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>';
+							} else {
+								html += '<span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>';
+							}
+						}
+					html += '</div>';
+				}
+			html += '</div>';
+			html += '<div class="sort-order">' + sort + '</div>';
+		html += '</div>';
+
+		target.html(html).attr('data-product', product_id).attr('data-sort', sort);
+
+		var html = '';
+
+		if (product['images'].length) {
+			for (i in product['images']) {
+				html += '<li class="image-additional"><a href="' + product['images'][i]['popup'] + '" title="' + product['name'] + '"> <img src="' + product['images'][i]['thumb'] + '" title="' + product['name'] + '" alt="' + product['name'] + '" /></a></li>';
+			}
+		}
+
+		target.next().html(html);
+	}
+});
+
+$('#filter-product-{{ module }}').delegate('.image-additional a', 'click', function(e) {
+	e.preventDefault();
+
+	$('#filter-product-{{ module }} .large-product .image img').attr('src', $(this).attr('href'));
+});
+//--></script>
+{% endif %}
+{% endif %}

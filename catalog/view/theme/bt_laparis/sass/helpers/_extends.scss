@@ -1,0 +1,12 @@
+@import '_variables';
+// extend-elements
+%extend_radio_checkbox {
+	position: static;
+	margin: 4px 5px 0 0;
+	vertical-align: -2px;
+}
+%extend_scroll_bar {
+	display: block;
+	height: 10px;
+	background: $color_gallery_approx;
+}

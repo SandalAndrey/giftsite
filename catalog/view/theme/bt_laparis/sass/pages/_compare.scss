@@ -1,0 +1,35 @@
+@import '../_main';
+
+/*compare*/
+.product-compare {
+	.btn-remove {
+		.fa {
+			font-size: 14px;
+		}
+	}
+	.image {
+		margin-bottom: 20px;
+	}
+	.name {
+		font-size: 13px;
+		font-weight: 400;
+		margin-bottom: 15px;
+	}
+	.price {
+		color: $primary_color;
+		font-weight: 600;
+		font-size: 18px;
+		margin-bottom: 15px;
+		.price-old {
+			color: $dark_color;
+			text-decoration: line-through;
+			font-weight: 400;
+			font-size: 18px;
+		}
+	}
+	.rating {
+		margin-bottom: 10px;
+		position: initial;
+		display: inline-block;
+	}
+}

@@ -1,0 +1,21 @@
+<div class="box style-2 block boss-recent-post">
+  <div class="box-heading">
+    <h2>{{ heading_title }}</h2>
+  </div>
+  <div class="box-content block-content">
+    {% if (articles) %}
+    <ol>
+      {% for article in articles %} 
+      <li class="item item-recent-post">
+        <div class="image"> <a class="article-title" href="{{ article['href'] }}"><img src="{{ article['image'] }}" alt="{{ article['name'] }}" title="{{ article['name'] }}"/></a> </div>
+        <div class="title"> <a class="article-title" href="{{ article['href'] }}">{{ article['name'] }}</a>
+          <div class="post-date"> {{ article['date_added'] }} </div>
+        </div>
+      </li>
+      {% endfor %} 
+    </ol>
+    {% else %} 
+    {{ 'There are no Articles.' }} 
+    {% endif %} 
+  </div>
+</div>

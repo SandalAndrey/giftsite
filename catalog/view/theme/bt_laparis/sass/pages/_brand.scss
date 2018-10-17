@@ -1,0 +1,11 @@
+@import '../_main';
+/*brand page*/
+.manufacturer-list {
+    border-top: 3px solid $primary_color;
+    box-shadow: 0 0 10px $black_20;
+    -moz-box-shadow: 0 0 10px $black_20;
+    -webkit-box-shadow: 0 0 10px $black_20;
+    -ms-box-shadow: 0 0 10px $black_20;
+    margin-bottom: 20px;
+    padding: 20px;
+}

@@ -1,0 +1,108 @@
+{{ header }}{{ column_left }} 
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <a href="{{ insert }}" data-toggle="tooltip" title="{{ button_insert }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+        <button type="button" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger" onclick="confirm('{{ text_confirm }}') ? $('#form-testimonial-list').submit() : false;"><i class="fa fa-trash-o"></i></button>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %} 
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %} 
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %} 
+    {% if (success) %} 
+    <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }} 
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %} 
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+      </div>
+      <div class="panel-body">
+        <ul class="nav nav-tabs" id="module">
+          <li class="active"><a href="{{ module_testimonial_path }}"> {{ text_module_testimonial }}</a></li>
+          <li><a href="{{ module_settings_path }}"> {{ text_module_settings }}</a></li>
+        </ul>
+        <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-testimonial-list" class="form-horizontal">
+          <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+              <td style="width:1px" style="align: center;"><input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);" /></td>
+
+              <td class="text-left">{% if (sort == 'td.description') %} 
+                <a href="{{ sort_description }}" class="{{ strtolower(order) }}">{{ column_description }}</a>
+                {% else %} 
+                <a href="{{ sort_description }}">{{ column_description }}</a>
+                {% endif %}</td>
+
+
+              <td class="text-left">{% if (sort == 'td.title') %} 
+                <a href="{{ sort_title }}" class="{{ strtolower(order) }}">{{ column_title }}</a>
+                {% else %} 
+                <a href="{{ sort_title }}">{{ column_title }}</a>
+                {% endif %}</td>
+              <td class="text-left">{% if (sort == 't.name') %} 
+                <a href="{{ sort_name }}" class="{{ strtolower(order) }}">{{ column_name }}</a>
+                {% else %} 
+                <a href="{{ sort_name }}">{{ column_name }}</a>
+                {% endif %}</td>
+              <td class="text-right">{% if (sort == 't.date_added') %} 
+                <a href="{{ sort_date_added }}" class="{{ strtolower(order) }}">{{ column_date_added }}</a>
+                {% else %} 
+                <a href="{{ sort_date_added }}">{{ column_date_added }}</a>
+                {% endif %}</td>
+              <td class="text-right">{% if (sort == 't.status') %} 
+                <a href="{{ sort_status }}" class="{{ strtolower(order) }}">{{ column_status }}</a>
+                {% else %} 
+                <a href="{{ sort_status }}">{{ column_status }}</a>
+                {% endif %}</td>
+              <td class="text-right">{{ column_action }}</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% if (testimonials) %} 
+            {% for testimonial in testimonials %} 
+            <tr>
+              <td style="align: center;">{% if (testimonial['selected']) %} 
+                <input type="checkbox" name="selected[]" value="{{ testimonial['testimonial_id'] }}" checked="checked" />
+                {% else %} 
+                <input type="checkbox" name="selected[]" value="{{ testimonial['testimonial_id'] }}" />
+                {% endif %}</td>
+              <td class="text-left">{{ testimonial['description'] }}</td>
+              <td class="text-left">{{ testimonial['title'] }}</td>
+              <td class="text-left">{{ testimonial['name'] }}</td>
+              <td class="text-right">{{ testimonial['date_added'] }}</td>
+              <td class="text-right">{{ testimonial['status'] }}</td>
+              <td class="text-right">{% for action in testimonial['action'] %} 
+                [ <a href="{{ action['href'] }}">{{ action['text'] }}</a> ]
+                {% endfor %}</td>
+            </tr>
+            {% endfor %} 
+            {% else %} 
+            <tr>
+              <td class="text-center" colspan="7">{% if (testimonial_total != -1) %} {{ text_no_results }}{% else %} {{ entry_install_first }}{% endif %}</td>
+            </tr>
+            {% endif %} 
+            </tbody>
+          </table>
+        </form>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ footer }}

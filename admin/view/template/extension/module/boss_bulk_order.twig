@@ -1,0 +1,214 @@
+{{ header }}{{ column_left }} 
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-face-comments" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %} 
+				<li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+				{% endfor %} 
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if (error_warning) %} 
+		<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+		{% endif %} 
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-face-comments" class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+						<div class="col-sm-10">
+							<select name="module_boss_bulk_order[status]" id="input-status" class="form-control">
+								{% if (status) %} 
+								<option value="1" selected="selected">{{ text_enabled }}</option>
+								<option value="0">{{ text_disabled }}</option>
+								{% else %} 
+								<option value="1">{{ text_enabled }}</option>
+								<option value="0" selected="selected">{{ text_disabled }}</option>
+								{% endif %} 
+							</select>
+						</div>
+					</div>
+					<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#generalsetting">{{ setting_general }}</a></li>
+						<li><a data-toggle="tab" href="#optionsetting">{{ setting_option }}</a></li>
+					</ul>
+					<div class="tab-content">
+						<div id="generalsetting" class="tab-pane active">
+							<!-- #option setting-->
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-num-products"><span data-toggle="tooltip" title="{{ help_num_products }}">{{ entry_num_products }}</span></label>
+								<div class="col-sm-10">
+									<input type="text" name="module_boss_bulk_order[num_products]" value="{{ num_products }}" placeholder="{{ entry_num_products }}" id="input-num-products" class="form-control" />
+									{% if (error_num_products) %} 
+									<div class="text-danger">{{ error_num_products }}</div>
+									{% endif %} 
+								</div>
+							</div>
+
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-num-record"><span data-toggle="tooltip" title="{{ help_num_record }}">{{ entry_num_record }}</span></label>
+								<div class="col-sm-10">
+									<input type="text" name="module_boss_bulk_order[num_record]" value="{{ num_record }}" placeholder="{{ entry_num_record }}" id="input-num-record" class="form-control" />
+									{% if (error_num_record) %} 
+									<div class="text-danger">{{ error_num_record }}</div>
+									{% endif %} 
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-order-by">{{ entry_search_type }}</label>
+								<div class="col-sm-10">
+									<table class="table">
+										<tr>
+											<td>{{ text_search_product }}</td>
+											<td><select name="module_boss_bulk_order[search_product]" class="form-control">
+												{% if (search_product) %} 
+												<option value="1" selected="selected">{{ text_enabled }}</option>
+												<option value="0">{{ text_disabled }}</option>
+												{% else %} 
+												<option value="1">{{ text_enabled }}</option>
+												<option value="0" selected="selected">{{ text_disabled }}</option>
+												{% endif %} 
+											</select></td>
+										</tr>
+										<tr>
+											<td>{{ text_search_category }}</td>
+											<td><select name="module_boss_bulk_order[search_category]" class="form-control">
+												{% if (search_category) %} 
+												<option value="1" selected="selected">{{ text_enabled }}</option>
+												<option value="0">{{ text_disabled }}</option>
+												{% else %} 
+												<option value="1">{{ text_enabled }}</option>
+												<option value="0" selected="selected">{{ text_disabled }}</option>
+												{% endif %} 
+											</select></td>
+										</tr>
+										<tr>
+											<td>{{ text_search_model }}</td>
+											<td><select name="module_boss_bulk_order[search_model]" class="form-control">
+												{% if (search_model) %} 
+												<option value="1" selected="selected">{{ text_enabled }}</option>
+												<option value="0">{{ text_disabled }}</option>
+												{% else %} 
+												<option value="1">{{ text_enabled }}</option>
+												<option value="0" selected="selected">{{ text_disabled }}</option>
+												{% endif %} 
+											</select></td>
+										</tr>
+										<tr>
+											<td>{{ text_search_tags }}</td>
+											<td><select name="module_boss_bulk_order[search_tags]" class="form-control">
+												{% if (search_tags) %} 
+												<option value="1" selected="selected">{{ text_enabled }}</option>
+												<option value="0">{{ text_disabled }}</option>
+												{% else %} 
+												<option value="1">{{ text_enabled }}</option>
+												<option value="0" selected="selected">{{ text_disabled }}</option>
+												{% endif %} 
+											</select></td>
+										</tr>
+										<tr>
+											<td>{{ text_search_price }}</td>
+											<td>
+												<table class="table">
+													<tr>
+														<td>{{ display_status }}</td>
+
+														<td><select name="module_boss_bulk_order[search_price]" class="form-control">
+															{% if (search_price) %} 
+															<option value="1" selected="selected">{{ text_enabled }}</option>
+															<option value="0">{{ text_disabled }}</option>
+															{% else %} 
+															<option value="1">{{ text_enabled }}</option>
+															<option value="0" selected="selected">{{ text_disabled }}</option>
+															{% endif %} 
+														</select></td>
+													</tr>
+													<tr>
+														<td>{{ text_price_min }}</td>
+														<td><input type="text" name="module_boss_bulk_order[price_min]" value="{{ price_min is defined ?price_min:1 }}"  class="form-control" /></td>
+													</tr>
+													<tr>
+														<td>{{ text_price_max }}</td>
+														<td><input type="text" name="module_boss_bulk_order[price_max]" value="{{ price_max is defined ?price_max:1200 }}" class="form-control" /></td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-image-size">{{ entry_image_size }}</label>
+								<div class="col-sm-10">
+									<table class="table">
+										<tr>
+											<td>{{ text_image_width }}</td>
+											<td><input type="text" name="module_boss_bulk_order[image_width]" value="{{ image_width }}" placeholder="{{ text_image_width }}" class="form-control" />
+												{% if (error_image_width) %} 
+												<div class="text-danger">{{ error_image_width }}</div>
+												{% endif %}</td>
+										</tr>
+										<tr>
+											<td>{{ text_image_height }}</td>
+											<td><input type="text" name="module_boss_bulk_order[image_height]" value="{{ image_height }}" placeholder="{{ text_image_height }}" class="form-control" />
+												{% if (error_image_height) %} 
+												<div class="text-danger">{{ error_image_height }}</div>
+												{% endif %}</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+
+						<div id="optionsetting" class="tab-pane">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-status">{{ entry_option }}</label>
+								<div class="col-sm-10">
+									<table class="table">
+										<tr>
+											<td><b>{{ option_name }}</b></td>
+											<td><b>{{ option_show }}</b></td>
+										</tr>
+										{% if (options is defined and options is not empty ) %} 
+										{% for option in options %} 
+										<tr>
+											<td>{{ option['name'] }}</td>
+											<td>
+												{% if (option['selected']) %} 
+												<input class="form-control"  data-size="small" type="checkbox" name="module_boss_bulk_order[option][{{ option['option_id'] }}]" value="{{ option['option_id'] }}" checked="checked" />
+												{% else %} 
+												<input class="form-control"  data-size="small" type="checkbox" name="module_boss_bulk_order[option][{{ option['option_id'] }}]" value="{{ option['option_id'] }}" />
+												{% endif %} 
+											</td>
+										</tr>
+										{% endfor %} 
+										{% endif %} 
+										<table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap-switch.min.js"></script>
+<link href="view/stylesheet/bossthemes/bootstrap-switch.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript"><!--
+$("[type='checkbox']").bootstrapSwitch();
+//--></script>
+{{ footer }}

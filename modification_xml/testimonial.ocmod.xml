@@ -1,0 +1,23 @@
+<modification>
+   <name><![CDATA[<font color="#0000"><b>Boss Testimonial</font>]]></name>
+    <version><![CDATA[<b>1.0</b>]]></version>
+	<code>bosstestimonial</code>
+    <author><![CDATA[<font color="#CC0000"><b>Bossthemes</font>]]></author>
+    <link><![CDATA[http://www.bossthemes.com]]></link>
+	<file path="admin/controller/common/column_left.php">
+		<operation>
+			<search><![CDATA[if ($catalog) {]]></search>
+			<add position="after"><![CDATA[
+			$this->load->language('extension/module/boss_testimonial');
+			
+			if ($this->user->hasPermission('access', 'catalog/boss_testimonial')) {		
+				$catalog[] = array(
+					'name'	   => $this->language->get('heading_title'),
+					'href'     => $this->url->link('catalog/boss_testimonial', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);					
+			}
+            ]]></add>
+		</operation>
+	</file>
+</modification>

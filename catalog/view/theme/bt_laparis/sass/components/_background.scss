@@ -1,0 +1,40 @@
+@import '../_main';
+/*background*/
+.parallax-bg {
+	background-attachment: fixed;
+	background-size: cover;
+	background-repeat: repeat-y;
+}
+.cover-bg {
+	background-size: cover;
+	background-repeat: repeat-y;
+	background-position: center center;
+}
+/*alpha*/
+.alpha-1 {
+	background: rgba(0, 0, 0, 0.1);
+}
+.alpha-2 {
+	background: rgba(0, 0, 0, 0.2);
+}
+.alpha-3 {
+	background: rgba(0, 0, 0, 0.3);
+}
+.alpha-4 {
+	background: rgba(0, 0, 0, 0.4);
+}
+.alpha-5 {
+	background: rgba(0, 0, 0, 0.5);
+}
+.alpha-6 {
+	background: rgba(0, 0, 0, 0.6);
+}
+.alpha-7 {
+	background: rgba(0, 0, 0, 0.7);
+}
+.alpha-8 {
+	background: rgba(0, 0, 0, 0.8);
+}
+.alpha-9 {
+	background: rgba(0, 0, 0, 0.9);
+}

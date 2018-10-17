@@ -1,0 +1,35 @@
+@import '../_main';
+/*back-top*/
+#back-top {
+	position: fixed;
+	bottom: 25px;
+	right: 25px;
+	width: 40px;
+	height: 40px;
+	line-height: 45px;
+	background: $white;
+	border: 1px solid $text_color;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	@include border-radius(50%);
+	transition: all 0.3s ease-out 0s;
+	z-index: 9998;
+	span {
+		color: $text_color;
+		line-height: 1;
+		&:before {
+			content: "\f106";
+			font-size: 24px;
+			font-family: 'FontAwesome';
+			z-index: 2;
+		}
+	}
+	&:hover {
+		background: $primary_color_hover;
+		border-color: $white;
+		span {
+			color: $white;
+		}
+	}
+}

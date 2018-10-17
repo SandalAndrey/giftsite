@@ -1,0 +1,203 @@
+@import '../_main';
+
+.bt-carousel {
+	&.normal {
+		.box-content {
+			padding-top: 50px;
+		}
+	}
+	&.flip {
+		.slick-slider {
+			.slick-slide {
+				-webkit-transition: -webkit-transform 0.2s ease 0s;
+				-moz-transition: -moz-transform 0.2s ease 0s;
+				-ms-transition: -ms-transform 0.2s ease 0s;
+				-o-transition: -o-transform 0.2s ease 0s;
+				transition: transform 0.2s ease 0s;
+				img {
+					width: 100%;
+				}
+				&.slick-center {
+					position: relative;
+					-webkit-transform: translateX(-12.5vw);
+					-moz-transform: translateX(-12.5vw);
+					-ms-transform: translateX(-12.5vw);
+					-o-transform: translateX(-12.5vw);
+					transform: translateX(-12.5vw);
+					z-index: 9;
+					+.slick-slide {
+						position: relative;
+						-webkit-transform: translateX(-25vw) scale(.9);
+						-moz-transform: translateX(-25vw) scale(.9);
+						-ms-transform: translateX(-25vw) scale(.9);
+						-o-transform: translateX(-25vw) scale(.9);
+						transform: translateX(-25vw) scale(.9);
+						-webkit-transform-origin: left top;
+						-moz-transform-origin: left top;
+						-ms-transform-origin: left top;
+						-o-transform-origin: left top;
+						transform-origin: left top;
+						z-index: 8;
+						-webkit-filter: brightness(40%);
+						filter: brightness(40%);
+					}
+				}
+			}
+		}
+		.slick-dots {
+			position: absolute;
+			width: auto;
+			left: 87.5vw;
+			bottom: 1vw;
+			white-space: nowrap;
+			-webkit-transform: translate(-50%, 0);
+			-moz-transform: translate(-50%, 0);
+			-ms-transform: translate(-50%, 0);
+			-o-transform: translate(-50%, 0);
+			transform: translate(-50%, 0);
+			li {
+				margin: 0 7px;
+				button {
+					&:before {
+						color: #969696;
+						opacity: 1;
+					}
+				}
+				&.slick-active {
+					button {
+						&:before {
+							opacity: 1;
+							color: #969696;
+							font-size: 14px;
+						}
+					}
+				}
+			}
+		}
+		.slick-arrow {
+			width: auto;
+			height: auto;
+			&.slick-prev {
+				display: none !important;
+			}
+			&.slick-next {
+				background: transparent;
+				top: 45%;
+				right: auto;
+				left: 87.5vw;
+				-webkit-transform: translate(-50%, 0);
+				-moz-transform: translate(-50%, 0);
+				-ms-transform: translate(-50%, 0);
+				-o-transform: translate(-50%, 0);
+				opacity: 1;
+				img {
+					max-height: initial;
+					height: 40px;
+					-webkit-filter: invert(100%);
+					-moz-filter: invert(100%);
+					-ms-filter: invert(100%);
+					-o-filter: invert(100%);
+					filter: invert(100%);
+				}
+			}
+		}
+	}
+	&.vertical {
+		.img-responsive {
+			margin-bottom: 10px;
+		}
+	}
+	.img-opacity {
+		opacity: 0.3;
+		@include transition_ease(0.5s);
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
+
+@include responsive_768 {
+	.bt-carousel {
+		&.flip {
+			.slick-dots {
+				-webkit-transform: initial;
+				-moz-transform: initial;
+				-ms-transform: initial;
+				-o-transform: initial;
+				transform: initial;
+				width: 100%;
+				left: 0px;
+				bottom: -25px;
+			}
+		}
+	}
+}
+/*----rtl----*/
+[dir="rtl"] .bt-carousel.flip {
+	.slick-slider {
+		.slick-slide {
+			&.slick-center {
+				-webkit-transform: translateX(12.5vw);
+				-moz-transform: translateX(12.5vw);
+				-ms-transform: translateX(12.5vw);
+				-o-transform: translateX(12.5vw);
+				transform: translateX(12.5vw);
+				+.slick-slide {
+					position: relative;
+					-webkit-transform: translateX(25vw) scale(.9);
+					-moz-transform: translateX(25vw) scale(.9);
+					-ms-transform: translateX(25vw) scale(.9);
+					-o-transform: translateX(25vw) scale(.9);
+					transform: translateX(25vw) scale(.9);
+				}
+			}
+		}
+	}
+	.slick-dots {
+		left: 12.5vw;
+		-webkit-transform: translate(-50%, 0);
+		-moz-transform: translate(-50%, 0);
+		-ms-transform: translate(-50%, 0);
+		-o-transform: translate(-50%, 0);
+		transform: translate(-50%, 0);
+	}
+	.slick-arrow {
+		width: auto;
+		height: auto;
+		&.slick-prev {
+			display: block !important;
+			background: transparent;
+			top: 45%;
+			right: auto;
+			left: 12.5vw;
+			-webkit-transform: translate(-50%, 0);
+			-moz-transform: translate(-50%, 0);
+			-ms-transform: translate(-50%, 0);
+			-o-transform: translate(-50%, 0);
+			opacity: 1;
+			img {
+				max-height: initial;
+				height: 40px;
+				-webkit-filter: invert(100%);
+				-moz-filter: invert(100%);
+				-ms-filter: invert(100%);
+				-o-filter: invert(100%);
+				filter: invert(100%);
+			}
+		}
+		&.slick-next {
+			display: none !important;
+		}
+	}
+}
+@include responsive_768{
+	[dir="rtl"] .bt-carousel.flip {
+		.slick-dots {
+			-webkit-transform: initial;
+			transform: initial;
+			width: 100%;
+			left: 0px;
+			bottom: -25px;
+		}
+	}
+}

@@ -1,0 +1,407 @@
+{{ header }}{{ column_left }} 
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary submit"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="Cancel" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %} 
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %} 
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %} 
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-boss-dynamic-html">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+              {% if (error_name) %} 
+              <div class="text-danger">{{ error_name }}</div>
+              {% endif %} 
+            </div>
+          </div>
+          <ul class="nav nav-tabs" id="language">
+            {% for language in languages %} 
+            <li><a href="#language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+            {% endfor %} 
+            <li><a href="#css" data-toggle="tab" class="css-tab"><i class="fa fa-css3"></i> {{ tab_css }}</a></li>
+          </ul>
+          <div id="boss-dynamic-html" class="tab-content">
+            <style type="text/css">{{ html_entity_decode(css) }}</style>
+            {% set flag_button = constant('false') %} 
+            {% for language in languages %} 
+            <div class="tab-pane" id="language{{ language['language_id'] }}">
+              <div class="form-group">
+                <label for="input-description{{ language['language_id'] }}">{{ entry_description }}</label>
+                <div class="html-builder">
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#graphic-view{{ language['language_id'] }}" data-toggle="tab" title="{{ button_preview }}" class="graphic-view"><i class="fa fa-eye"></i></a></li>
+                    <li><a href="#code-view{{ language['language_id'] }}" data-toggle="tab" title="{{ button_code }}" class="code-view"><i class="fa fa-code"></i></a></li>
+                    <li>
+                      {% if (flag_button) %} 
+                      <a class="copy-first-language" data-toggle="tooltip" title="{{ button_paste }}"><i class="fa fa-paste"></i></a>
+                      {% endif %} 
+                    </li>
+                  </ul>
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="graphic-view{{ language['language_id'] }}">
+                      <div class="html-content-preview">{{ description[language['language_id']] is defined ? html_entity_decode(description[language['language_id']]) : '' }}</div>
+                    </div>
+                    <div class="tab-pane" id="code-view{{ language['language_id'] }}">
+                      <textarea name="description[{{ language['language_id'] }}]" placeholder="{{ entry_description }}" id="input-description{{ language['language_id'] }}" class="form-control html-content">{{ description[language['language_id']] is defined ? description[language['language_id']] : '' }}</textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% set flag_button = constant('true') %} 
+            {% endfor %} 
+            <div class="tab-pane" id="css">
+              <textarea name="css" placeholder="{{ entry_css }}" id="input-css" class="form-control css-content">{{ css }}</textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="status" id="input-status" class="form-control">
+                {% if (status) %} 
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %} 
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %} 
+              </select>
+            </div>
+          </div>
+          <input type="hidden" name="css_link" value="{{ css_link }}" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('#language a:first').tab('show');
+//--></script> 
+<script type="text/javascript">
+(function($){
+	$.fn.bgpicker=function(){
+		this.each(function(index, element) {
+			var _this = $(this);
+			
+			$('.element-background', _this).remove();
+			
+			var node = $('<div/>', {
+				class: 'btn btn-info element-background',
+				style: 'position: absolute; bottom: 0px; right: 0px; z-index: 998;'
+			}).html('<i class="fa fa-image"></i>');
+			
+			_this.append(node);
+			
+			node.on( "click", function() {
+				$('.popover').popover('destroy', function() {
+					$('.popover').remove();
+				});
+				
+				$(node).popover({
+					html: true,
+					placement: 'top',
+					trigger: 'manual',
+					content: function() {
+						var html = '';
+						html += '<div class="form-group">';
+							html += '<label style="width: 250px; color: #666;">Background Color</label>';
+							html += '<div class="input-group">';
+								html += '<span class="input-group-addon"><i class="fa fa-adjust"></i></span>';
+								html += '<input type="text" name="background-color" value="' + _this.css('background-color') + '" class="form-control color-picker"/>';
+							html += '</div>';
+						html += '</div>';
+						html += '<div class="form-group">';
+							html += '<label style="width: 250px; color: #666;">Background Image</label>';
+							html += '<div class="input-group">';
+								html += '<span class="input-group-addon"><i class="fa fa-photo"></i></span>';
+								html += '<input type="text" name="background-image" value="' + _this.css('background-image').replace(/"/g, "'") + '" class="form-control background-picker" />';
+							html += '</div>';
+						html += '</div>';
+						html += '<div class="button-group">';
+							html += '<div class="btn btn-primary background-change">Change</div>';
+							html += '<div class="btn btn-default cancel">Cancel</div>';
+							html += '<div class="btn btn-warning background-remove">Remove</div>';
+						html += '</div>';
+						return html;
+					}
+				});
+	
+				$(node).popover('show');
+				
+				var popover = node.next();
+				
+				$('.color-picker', popover).colorPicker();
+				
+				$('.background-picker', popover).on( 'click', function(e) {
+					var index = this;
+					
+					$('#modal-image').remove();
+					
+					$.ajax({
+						url: 'index.php?route=common/filemanager&user_token=' + getURLVar('user_token'),
+						dataType: 'html',
+						success: function(html) {
+							
+							
+							$('body').append('<div id="modal-image" class="modal">' + html + '</div>');
+				
+							$('#modal-image').modal('show');
+						}
+					});
+					
+					$(document).delegate('#modal-image .thumbnail', 'click', function(e) {
+						e.preventDefault();
+						
+						var image = $(this).attr('href').replace(/https:/,'').replace(/http:/,'');
+						
+						$(index).val("url('" + image + "')");
+						
+						$('#modal-image').modal('hide');
+					});
+				});
+				
+				$('.background-remove', popover).on( 'click', function(e) {
+					e.preventDefault();
+					_this.css({
+						'background-image' : '',
+						'background-color' : ''
+					});
+					
+					$(node).popover('hide', function() {
+						$('.popover').remove();
+					});
+				});
+				
+				$('.background-change', popover).on( 'click', function(e) {
+					e.preventDefault();
+					
+					_this.css({
+						'background-image' : $('input[name="background-image"]', popover).val(),
+						'background-color' : $('input[name="background-color"]', popover).val()
+						
+					});
+					
+					$(node).popover('hide', function() {
+						$('.popover').remove();
+					});
+				});
+				
+				$('.cancel', popover).on( 'click', function(e) {
+					e.preventDefault();
+					
+					$(node).popover('hide', function() {
+						$('.popover').remove();
+					});
+				});
+			});
+		});
+	}
+})(jQuery);
+</script> 
+<script type="text/javascript">
+function setEditable(){
+	$('*[data-editable="true"]').bind('mousedown.ui-disableSelection selectstart.ui-disableSelection', function(event){
+		event.stopImmediatePropagation();
+	});
+	
+	tinymce.remove();
+	
+	$('*[data-editable="true"]').each(function(index, element) {
+		$(this).removeAttr('id');
+		
+		$(this).tinymce({
+			inline: true,
+			fontsize_formats: "8px 9px 10px 11px 12px 13px 14px 15px 16px 18px 20px 22px 24px 28px 32px 36px 40px 44px 48px 52px 56px 60px 66px 72px 78px 84px 90px 100px",
+			theme: 'modern',
+			plugins: [
+			  'advlist autolink lists link image charmap hr anchor pagebreak',
+			  'searchreplace wordcount visualblocks visualchars code fullscreen',
+			  'insertdatetime media nonbreaking contextmenu directionality',
+			  'emoticons template paste textcolor colorpicker textpattern imagetools',
+			  'table'
+			],
+			toolbar1: 'formatselect | fontselect | fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | insertfile undo redo',
+			toolbar2: 'bold italic underline strikethrough | superscript subscript | forecolor backcolor | table | pastetext | image media link emoticons',
+			image_advtab: true,
+			relative_urls: false,
+			file_browser_callback_types: 'image',
+			file_browser_callback: function(field_name, url, type, win) {
+				$('#modal-image').remove();
+				$.ajax({
+					url: 'index.php?route=common/filemanager&user_token=' + getURLVar('user_token'),
+					dataType: 'html',
+					beforeSend: function() {
+						$('#button-image i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
+						$('#button-image').prop('disabled', true);
+					},
+					complete: function() {
+						$('#button-image i').replaceWith('<i class="fa fa-upload"></i>');
+						$('#button-image').prop('disabled', false);
+					},
+					success: function(html) {
+						$('body').append('<div id="modal-image" class="modal">' + html + '</div>');
+						
+						$('#modal-image').modal('show');
+						
+						$('#modal-image').delegate('a.thumbnail', 'click', function(e) {
+							e.preventDefault();
+							
+							var image = $(this).attr('href').replace(/https:/,'').replace(/http:/,'');
+							
+							win.document.getElementById(field_name).value = image;
+														
+							$('#modal-image').modal('hide');
+						});
+					}
+				});
+			},
+			setup: function (editor) {
+				editor.on('init', function(args) {
+					editor = args.target;
+					editor.on('NodeChange', function(e) {
+						if (e && e.element.nodeName.toLowerCase() == 'img') {
+							tinyMCE.DOM.setAttribs(e.element, {'width': null, 'height': null});
+						}
+					});
+					editor.on('ObjectResized', function(e) {
+						if (e) {
+							tinyMCE.DOM.setAttribs(e.target, {'width': null, 'height': null});
+							tinymce.DOM.setStyle(e.target, 'width', e.width);
+							tinymce.DOM.setStyle(e.target, 'height', e.height);
+						}
+					});
+				});
+			},
+		});
+    });
+	
+	$('*[data-background="true"]').bgpicker();
+}
+
+$('textarea.html-content').each(function(index, element) {
+	var parent = $(this).parents('.html-builder');
+	var preview = $('.html-content-preview', parent);
+	var graphic = $('.graphic-view', parent);
+	var code = $('.code-view', parent);
+	
+	$(this).ace({
+		theme: 'twilight',
+		lang: 'html',
+		width: '100%',
+		height: '768px',
+		wrap: true
+	});
+	
+	var decorator = $(this).data('ace');
+	var editor = decorator.editor.ace;
+	
+	editor.getSession().on('change', function(){
+		preview.html(editor.getSession().getValue());
+	});
+	
+	graphic.on('click', function() {
+		setEditable();
+	});
+	
+	code.on('click', function() {
+		$('*[data-editable="true"]', preview).each(function(e) {
+			$(this).tinymce().remove();
+        });
+		
+		$('.element-background', preview).remove();
+		
+		editor.getSession().setValue(preview.html());
+	});
+});
+$('textarea.css-content').each(function(index, element) {
+	$(this).ace({
+		theme: 'twilight',
+		lang: 'css',
+		width: '100%',
+		height: '768px',
+		wrap: true
+	});
+	
+	var decorator = $(this).data('ace');
+	var editor = decorator.editor.ace;
+	
+	editor.getSession().on('change', function(){
+		$('#boss-dynamic-html style').html(editor.getSession().getValue());
+	});
+});
+$('#form-boss-dynamic-html').on('click', '.copy-first-language', function () {
+	var parent = $(this).parents('.html-builder');
+	var index = $('.html-content-preview', parent);
+	var first = $('.html-content-preview', '.html-builder:eq(0)');
+	
+	tinymce.remove();
+	
+	$('.popover').popover('destroy', function() {
+		$('.popover').remove();
+	});
+	
+	$('.element-background', index).remove();
+	
+	index.html(first.html());
+	
+	parent.find('.graphic-view').trigger('click');
+	
+	setEditable();
+});
+
+$(document).on('click', 'button.submit', function () {
+	tinymce.remove();
+	
+	$('.popover').popover('destroy', function() {
+		$('.popover').remove();
+	});
+	
+	$('.element-background').remove();
+	
+	$('*[data-editable="true"], *[data-editable="true"] *').each(function(index, element) {
+        $(this).removeAttr('spellcheck caption data-mce-src data-mce-href data-mce-style').css({
+			'position': '',
+			'visibility': ''
+		});
+    });
+	
+	$('*[id^="mce"]').removeAttr('id').css({
+		'position': '',
+		'visibility': ''
+	});
+	
+	$('input[name^="mce"]').remove();
+	
+	$('textarea.html-content').each(function(index, element) {
+		var html = $(this).parents('.html-builder').find('.html-content-preview').html();
+		
+		$(this).val(html);
+	});
+	
+	$('#form-boss-dynamic-html').submit();
+});
+
+setEditable();
+</script> 
+{{ footer }}

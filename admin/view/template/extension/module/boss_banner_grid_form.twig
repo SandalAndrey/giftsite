@@ -1,0 +1,344 @@
+{{ header }}{{ column_left }} 
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-boss-banner-grid" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %} 
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %} 
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %} 
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-boss-banner-grid" class="form-horizontal">
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab-general">{{ tab_general }}</a></li>
+            <li><a data-toggle="tab" href="#tab-banner">{{ tab_banner }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div id="tab-general" class="tab-pane fade in active">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+                  {% if (error_name) %} 
+                  <div class="text-danger">{{ error_name }}</div>
+                  {% endif %} 
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-per-row">{{ entry_per_row }}</label>
+                <div class="col-sm-10">
+                  <select name="per_row" id="input-per-row" class="form-control">
+                    <option value="1" {{ per_row == 1 ? 'selected="selected"' : '' }}>1</option>
+                    <option value="2" {{ per_row == 2 ? 'selected="selected"' : '' }}>2</option>
+                    <option value="3" {{ per_row == 3 ? 'selected="selected"' : '' }}>3</option>
+                    <option value="4" {{ per_row == 4 ? 'selected="selected"' : '' }}>4</option>
+                    <option value="6" {{ per_row == 6 ? 'selected="selected"' : '' }}>6</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-auto">{{ entry_auto }}</label>
+                <div class="col-sm-2">
+                  <select name="auto" id="input-auto" class="form-control">
+                    {% if (auto) %} 
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %} 
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %} 
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                <div class="col-sm-2">
+                  <select name="status" id="input-status" class="form-control">
+                    {% if (status) %} 
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %} 
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div id="tab-banner" class="tab-pane fade">
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <div class="col-xs-3">
+                    <ul id="boss-banner-grid-tab" class="nav nav-tabs tabs-left">
+                      {% set banner_row = 0 %} 
+                      {% for banner in banners %} 
+                      <li> <a data-toggle="tab" href="#banner-row-{{ banner_row }}">
+                        <button class="btn btn-danger" onclick="$(this).parent().remove(); $('#banner-row-{{ banner_row }}').remove();" style="padding: 2px 5px;" data-toggle="tooltip" data-original-title="{{ button_remove }}"><i class="fa fa-minus-circle"></i></button>
+                        {{ entry_banner~' '~banner_row }}</a> </li>
+                      {% set banner_row = banner_row + 1 %} 
+                      {% endfor %} 
+                    </ul>
+                    <a onClick="addBossBannerGrid();" data-toggle="tooltip" class="btn btn-success" style="padding: 2px 5px; margin-left: 15px;" data-original-title="{{ button_add }}"><i class="fa fa-plus-circle"></i></a> </div>
+                  <div class="col-sm-9">
+                    <div id="boss-banner-grid" class="tab-content">
+                      {% set banner_row = 0 %} 
+                      {% for banner in banners %} 
+                      <div id="banner-row-{{ banner_row }}" class="tab-pane">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label" for="input-title">{{ entry_title }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="banners[{{ banner_row }}][title]" value="{{ banner['title'] }}" placeholder="{{ entry_title }}" class="form-control" />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label" for="input-image">{{ entry_image }}</label>
+                            <div class="col-sm-10"> <a href="" id="thumb-image-{{ banner_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ banner['thumb'] }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                              <input type="hidden" name="banners[{{ banner_row }}][image]" value="{{ banner['image'] }}" placeholder="{{ entry_image }}" class="form-control" id="input-image-{{ banner_row }}"/>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label" for="input-link">{{ entry_link }}</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="banners[{{ banner_row }}][link]" value="{{ banner['link'] }}" placeholder="{{ entry_link }}" class="form-control" />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label" for="input-caption-effect">{{ entry_effect }}</label>
+                            <div class="col-sm-2">
+                              <select name="banners[{{ banner_row }}][effect]" id="input-caption-effect" class="form-control">
+                                <option value="" {{ banner['effect'] == '' ? 'selected' : '' }}>none</option>
+                                <option value="effect-lily" {{ banner['effect'] == 'effect-lily' ? 'selected' : '' }}>Effect Lily</option>
+                                <option value="effect-central" {{ banner['effect'] == 'effect-central' ? 'selected' : '' }}>Effect Central</option>
+                                <option value="effect-pulse" {{ banner['effect'] == 'effect-pulse' ? 'selected' : '' }}>Effect Pulse</option>
+                                <option value="effect-oscar" {{ banner['effect'] == 'effect-oscar' ? 'selected' : '' }}>Effect Oscar</option>
+                                <option value="effect-ruby" {{ banner['effect'] == 'effect-ruby' ? 'selected' : '' }}>Effect Ruby</option>
+                                <option value="effect-julia" {{ banner['effect'] == 'effect-julia' ? 'selected' : '' }}>Effect Julia</option>
+                                <option value="effect-goliath" {{ banner['effect'] == 'effect-goliath' ? 'selected' : '' }}>Effect Goliath</option>
+                                <option value="effect-apollo" {{ banner['effect'] == 'effect-apollo' ? 'selected' : '' }}>Effect Apollo</option>
+                                <option value="effect-steve" {{ banner['effect'] == 'effect-steve' ? 'selected' : '' }}>Effect Steve</option>
+                                <option value="effect-jazz" {{ banner['effect'] == 'effect-jazz' ? 'selected' : '' }}>Effect Jazz</option>
+                                <option value="effect-lexi" {{ banner['effect'] == 'effect-lexi' ? 'selected' : '' }}>Effect Lexi</option>
+								<option value="effect-duke" {{ banner['effect'] == 'effect-duke' ? 'selected' : '' }}>Effect Duke</option>
+                              </select>
+                            </div>
+                          </div>
+                          <ul class="nav nav-tabs language">
+                            {% for language in languages %} 
+                            {% set language_id = language['language_id'] %} 
+                            <li><a href="#language-{{ banner_row }}-{{ language_id }}" data-toggle="tab"><img src="{{ version_compare(constant('VERSION'), '2.1.0.2', '>') ? 'language/' ~ language['code'] ~ '/' ~ language['code'] ~ '.png' : 'view/image/flags/' ~ language['image'] }}" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                            {% endfor %} 
+                          </ul>
+                          <div class="tab-content">
+                            {% for language in languages %} 
+                            {% set language_id = language['language_id'] %} 
+                            <div class="tab-pane" id="language-{{ banner_row }}-{{ language_id }}">
+                              <textarea name="banners[{{ banner_row }}][caption][{{ language_id }}]" data-toggle="summernote" class="form-control" id="input-banner-caption-{{ banner_row }}">{{ banner['caption'][language_id] is defined ? banner['caption'][language_id] : '' }}</textarea>
+                            </div>
+                            {% endfor %} 
+                          </div>
+                        </div>
+                      </div>
+                      {% set banner_row = banner_row + 1 %} 
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$('.language li:first-child a').tab('show');
+$('.tabs-left li:first-child a').tab('show');
+
+function summernote() {
+	// Override summernotes image manager
+	$('[data-toggle=\'summernote\']').each(function() {
+		var element = this;
+
+		$(element).summernote({
+			lang: $(this).attr('data-lang'),
+			disableDragAndDrop: true,
+			height: 300,
+			emptyPara: '',
+			codemirror: { // codemirror options
+				mode: 'text/html',
+				htmlMode: true,
+				lineNumbers: true,
+				theme: 'monokai'
+			},			
+			fontsize: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '24', '30', '36', '48' , '64'],
+			toolbar: [
+				['style', ['style']],
+				['font', ['bold', 'underline', 'clear']],
+				['fontname', ['fontname']],
+				['fontsize', ['fontsize']],
+				['color', ['color']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['table', ['table']],
+				['insert', ['link', 'image', 'video']],
+				['view', ['fullscreen', 'codeview', 'help']]
+			],
+			popover: {
+           		image: [
+					['custom', ['imageAttributes']],
+					['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+					['float', ['floatLeft', 'floatRight', 'floatNone']],
+					['remove', ['removeMedia']]
+				],
+			},			
+			buttons: {
+    			image: function() {
+					var ui = $.summernote.ui;
+							
+					// create button
+					var button = ui.button({
+						contents: '<i class="note-icon-picture" />',
+						tooltip: $.summernote.lang[$.summernote.options.lang].image.image,
+						click: function () {
+							$('#modal-image').remove();
+							
+							$.ajax({
+								url: 'index.php?route=common/filemanager&user_token=' + getURLVar('user_token'),
+								dataType: 'html',
+								beforeSend: function() {
+									$('#button-image i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
+									$('#button-image').prop('disabled', true);
+								},
+								complete: function() {
+									$('#button-image i').replaceWith('<i class="fa fa-upload"></i>');
+									$('#button-image').prop('disabled', false);
+								},
+								success: function(html) {
+									$('body').append('<div id="modal-image" class="modal">' + html + '</div>');
+									
+									$('#modal-image').modal('show');
+									
+									$('#modal-image').delegate('a.thumbnail', 'click', function(e) {
+										e.preventDefault();
+										
+										$(element).summernote('insertImage', $(this).attr('href'));
+																	
+										$('#modal-image').modal('hide');
+									});
+								}
+							});						
+						}
+					});
+				
+					return button.render();
+				}
+  			}
+		});
+	});
+}
+
+summernote();
+</script>
+<script type="text/javascript">
+var banner_row = {{ banner_row }};
+
+function addBossBannerGrid(){
+	var html = '';
+	
+	html += '<div id="banner-row-'+banner_row+'" class="tab-pane">';
+	  html += '<div class="col-sm-12">';
+		html += '<div class="form-group">';
+		  html += '<label class="col-sm-2 control-label" for="input-title">{{ entry_title }}</label>';
+		  html += '<div class="col-sm-10">';
+			html += '<input type="text" name="banners['+banner_row+'][title]" value="" placeholder="{{ entry_title }}" class="form-control" />';
+		  html += '</div>';
+		html += '</div>';
+		
+		html += '<div class="form-group">';
+		  html += '<label class="col-sm-2 control-label" for="input-image">{{ entry_image }}</label>';
+		  html += '<div class="col-sm-10">';
+			html += '<a href="" id="thumb-image-'+banner_row+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+			html += '<input type="hidden" name="banners['+banner_row+'][image]" value="" placeholder="{{ entry_image }}" class="form-control" id="input-image-'+banner_row+'"/>';
+		  html += '</div>';
+		html += '</div>';
+		
+		html += '<div class="form-group">';
+		  html += '<label class="col-sm-2 control-label" for="input-link">{{ entry_link }}</label>';
+		  html += '<div class="col-sm-10">';
+			html += '<input type="text" name="banners['+banner_row+'][link]" value="" placeholder="{{ entry_link }}" class="form-control" />';
+		  html += '</div>';
+		html += '</div>';
+		
+		html += '<div class="form-group">';
+		  html += '<label class="col-sm-2 control-label" for="input-caption-effect">{{ entry_effect }}</label>';
+		  html += '<div class="col-sm-2">';
+			html += '<select name="banners['+banner_row+'][effect]" id="input-caption-effect" class="form-control">';
+			  html += '<option value="">none</option>';
+			  html += '<option value="effect-lily">Effect Lily</option>';
+			  html += '<option value="effect-pulse">Effect Pulse</option>';
+			  html += '<option value="effect-oscar">Effect Oscar</option>';
+			  html += '<option value="effect-ruby">Effect Ruby</option>';
+			  html += '<option value="effect-julia">Effect Julia</option>';
+			  html += '<option value="effect-goliath">Effect Goliath</option>';
+			  html += '<option value="effect-apollo">Effect Apollo</option>';
+			  html += '<option value="effect-steve">Effect Steve</option>';
+			  html += '<option value="effect-jazz">Effect Jazz</option>';
+			  html += '<option value="effect-lexi">Effect Lexi</option>';
+			  html += '<option value="effect-duke">Effect Duke</option>';
+			html += '</select>';
+		  html += '</div>';
+		html += '</div>';
+		
+		html += '<ul class="nav nav-tabs language">';
+		{% for language in languages %} 
+		  html += '<li><a href="#language-'+banner_row+'-{{ language["language_id"] }}" data-toggle="tab"><img src="{{ version_compare(constant('VERSION'), '2.1.0.2', '>') ? 'language/' ~ language['code'] ~ '/' ~ language['code'] ~ '.png' : 'view/image/flags/' ~ language['image'] }}" title="{{ language['name'] }}" /> {{ language["name"] }}</a></li>';
+		{% endfor %} 
+		html += '</ul>';
+		html += '<div class="tab-content">';
+		  {% for language in languages %} 
+		  html += '<div class="tab-pane" id="language-'+banner_row+'-{{ language["language_id"] }}">';
+		    html += '<textarea name="banners['+banner_row+'][caption][{{ language["language_id"] }}]" data-toggle="summernote" class="form-control" id="input-banner-caption-'+banner_row+'"></textarea>';
+		  html += '</div>';
+		  {% endfor %} 
+		html += '</div>';
+		
+	  html += '</div>';
+	html += '</div>';
+	
+	$('#boss-banner-grid').append(html);
+	summernote();
+	$('.language li:first-child a').tab('show');
+	
+	html = '';
+	html += '<li>';
+		html += '<a data-toggle="tab" href="#banner-row-'+banner_row+'">';
+		html += '<button class="btn btn-danger" onclick="$(this).parent().remove(); $(\'#banner-row-'+banner_row+'\').remove();" style="padding: 2px 5px;" data-toggle="tooltip" data-original-title="{{ button_remove }}"><i class="fa fa-minus-circle"></i></button>';
+		html += ' {{ entry_banner }} '+banner_row;
+		html += '</a>';
+	html += '</li>';
+	
+	$('#boss-banner-grid-tab').append(html);
+	$('#boss-banner-grid-tab li:last-child a').tab('show');
+	
+	banner_row++;
+}
+</script>
+{{ footer }}

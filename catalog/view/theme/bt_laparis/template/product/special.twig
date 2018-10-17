@@ -1,0 +1,147 @@
+{{ header }}
+
+{% set config = registry.get('config') %}
+{% set language_id = config.get('config_language_id') %}
+{% set boss_category = config.get('boss_category') %}
+{% set text_save_off = config.get('theme_' ~ config.get('config_theme') ~ '_text_save_off') %}
+{% set text_save_off = text_save_off[language_id] is defined ? text_save_off[language_id] : '' %}
+{% if (boss_category['layout'] is defined) %}
+<script type="text/javascript">
+var product_layout = '{{ boss_category['layout'] }}';
+
+if (localStorage.getItem('bt_display') == null) {
+	localStorage.setItem('bt_display', product_layout.replace('_', '-'));
+}
+</script>
+{% endif %}
+<div class="bt-breadcrumb">
+  <div class="container">
+    <ul class="breadcrumb">
+      {% for breadcrumb in breadcrumbs %}
+      <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ breadcrumb['href'] }}" itemprop="url"><span itemprop="title">{{ breadcrumb['text'] }}</span></a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+<div class="container">
+  <div class="row">{{ column_left }}
+    {% if (column_left and column_right) %}
+    {% set class = 'col-sm-6' %}
+    {% elseif (column_left or column_right) %}
+    {% set class = 'col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <h2>{{ heading_title }}</h2>
+      {% if (products) %}
+      <div class="product-filter">
+        <div class="row">
+          <div class="col-lg-3 col-md-12 hidden-sm hidden-xs">
+            <div class="product-compare"><a href="{{ compare }}" id="compare-total">{{ text_compare }}</a></div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <div class="input-group input-group-sm">
+              <label class="input-group-addon" for="input-sort">{{ text_sort }}</label>
+              <select id="input-sort" class="form-control" onchange="location = this.value;">
+                {% for sorts in sorts %}
+                {% if (sorts['value'] == sort ~ '-' ~ order) %}
+                <option value="{{ sorts['href'] }}" selected="selected">{{ sorts['text'] }}</option>
+                {% else %}
+                <option value="{{ sorts['href'] }}">{{ sorts['text'] }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-3 col-xs-5">
+            <div class="input-group input-group-sm">
+              <label class="input-group-addon" for="input-limit">{{ text_limit }}</label>
+              <select id="input-limit" class="form-control" onchange="location = this.value;">
+                {% for limits in limits %}
+                {% if (limits['value'] == limit) %}
+                <option value="{{ limits['href'] }}" selected="selected">{{ limits['text'] }}</option>
+                {% else %}
+                <option value="{{ limits['href'] }}">{{ limits['text'] }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-5 col-sm-5 col-xs-7 text-right">
+            <div class="button-group">
+              <button type="button" id="bt-grid-view-2" class="btn btn-view hidden-sm hidden-xs">2</button>
+              <button type="button" id="bt-grid-view-3" class="btn btn-view hidden-sm hidden-xs">3</button>
+              <button type="button" id="bt-grid-view-4" class="btn btn-view hidden-sm hidden-xs">4</button>
+              <button type="button" id="bt-grid-view-6" class="btn btn-view hidden-sm hidden-xs">6</button>
+              <button type="button" id="bt-grid-view" class="btn btn-view hidden-lg hidden-md" data-toggle="tooltip" title="{{ button_grid }}"><i class="fa fa-th"></i></button>
+              <button type="button" id="bt-list-view" class="btn btn-view" data-toggle="tooltip" title="{{ button_list }}"><i class="fa fa-th-list"></i></button>
+              <button type="button" id="bt-table-view" class="btn btn-view"><i class="fa fa-table" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        {% for product in products %}
+        <div class="product-layout product-list col-xs-12">
+          <div class="product-thumb">
+            <div class="image"><a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a>
+              <div class="button-group">
+                <button type="button" onclick="btadd.cart('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>
+                <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist('{{ product['product_id'] }}');"><i class="lnr lnr-heart"></i></button>
+                <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare('{{ product['product_id'] }}');"><i class="lnr lnr-sync"></i></button>
+              </div>
+            </div>
+            <div class="caption">
+              <h4 class="name"><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+              <p class="price">
+                {% if (not product['special']) %}
+                {{ product['price'] }}
+                {% else %}
+                <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                {% endif %}
+                {% if (product['tax']) %}
+                <span class="price-tax">{{ text_tax }} {{ product['tax'] }}</span>
+                {% endif %}
+              </p>
+              {% if (product['rating']) %}
+              <div class="rating">
+                {% set i = 1 %}{% for i in i..5 %}
+                {% if (product['rating'] < i) %}
+                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                {% else %}
+                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                {% endif %}
+                {% endfor %}
+              </div>
+              {% endif %}
+              <p class="description">{{ product['description'] }}</p>
+            </div>
+            <div class="button-list">
+              <button type="button" onclick="btadd.cart('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="lnr lnr-cart"></i> <span>{{ button_cart }}</span></button>
+              <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="btadd.wishlist('{{ product['product_id'] }}');"><i class="lnr lnr-heart"></i></button>
+              <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="btadd.compare('{{ product['product_id'] }}');"><i class="lnr lnr-sync"></i></button>
+            </div>
+            {% if (product['special']) %}
+            <div class="save-off">{{ text_save_off }}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="pagination-result">
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ results }}</div>
+          <div class="col-sm-6 text-right">{{ pagination }}</div>
+        </div>
+      </div>
+      {% else %}
+      <p>{{ text_empty }}</p>
+      <div class="buttons">
+        <div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+      </div>
+      {% endif %}
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+{{ footer }}

@@ -1,0 +1,84 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form-boss-testimonial" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if (error_warning) %}
+        <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        {% if (success) %}
+        <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="nav nav-tabs" id="module">
+                    <li><a href="{{ module_testimonial_path }}"> {{ text_module_testimonial }}</a></li>
+                    <li  class="active"><a href="{{ module_settings_path }}"> {{ text_module_settings }}</a></li>
+                </ul>
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-testimonial-setting" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >{{ entry_admin_approved }}</label>
+                        <div class="col-sm-10">
+                            <select name="testimonial_admin_approved" class="form-control">
+                                {% if (testimonial_admin_approved is defined and testimonial_admin_approved) %}
+                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                <option value="1">{{ text_enabled }}</option>
+                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    {% if (testimonial_default_rating is not defined ) %} {% set testimonial_default_rating = '3' %} {% endif %}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >{{ entry_default_rating }}</label>
+                        <div class="col-sm-10">
+                            <span>{{ entry_bad }}</span>&nbsp;
+                            <input type="radio" name="testimonial_default_rating" value="1" style="margin: 0;" {% if ( testimonial_default_rating == 1 ) %} {{ 'checked="checked"' }}{% endif %} />
+                            &nbsp;
+                            <input type="radio" name="testimonial_default_rating" value="2" style="margin: 0;" {% if ( testimonial_default_rating == 2 ) %} {{ 'checked="checked"' }}{% endif %} />
+                            &nbsp;
+                            <input type="radio" name="testimonial_default_rating" value="3" style="margin: 0;" {% if ( testimonial_default_rating == 3 ) %} {{ 'checked="checked"' }}{% endif %} />
+                            &nbsp;
+                            <input type="radio" name="testimonial_default_rating" value="4" style="margin: 0;" {% if ( testimonial_default_rating == 4 ) %} {{ 'checked="checked"' }}{% endif %} />
+                            &nbsp;
+                            <input type="radio" name="testimonial_default_rating" value="5" style="margin: 0;" {% if ( testimonial_default_rating == 5 ) %} {{ 'checked="checked"' }}{% endif %} />
+                            &nbsp; <span>{{ entry_good }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >{{ entry_all_page_limit }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="testimonial_all_page_limit" value="{{ testimonial_all_page_limit is defined ?testimonial_all_page_limit:20 }}" placeholder="{{ entry_all_page_limit }}" class="form-control" />
+                            {% if (error_all_page_limit) %}
+                            <div class="text-danger">{{ error_all_page_limit }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    {{ footer }}
